@@ -6,7 +6,11 @@ class NcoingeckoApi {
 		this.runer = [];
 	}
 	async add(args) {
-		if (args[0] === 'priceEur') {
+		if (args[0] === 'coinList') {
+			const CoinGeckoClient = new CoinGecko();
+			const data = await CoinGeckoClient.coins.list();
+			return data.data;
+		} else if (args[0] === 'priceEur') {
 			this.runer.push(this.getPriceEur(args[1], this.runer.length - 1));
 			const test = await this.runer[this.runer.length - 1];
 			return test;

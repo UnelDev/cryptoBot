@@ -14,17 +14,10 @@ class NcoingeckoApi {
 			return 'error in args[0]';
 		}
 	}
-	async run() {
-		while (this.actual[0] < this.last) {
-			// console.log(test)
-			this.actual[0]++;
-		}
-		this.actual[0], this.last = 0;
-	}
 
 	async getPriceEur(devise, index) {
 		// fonction asycrone pour récupérer le prix de la devise en euro
-		devise = devise.toLowerCase();
+		// devise = devise.toLowerCase();
 		await this.runer[index - 1];
 		const client = new CoinGecko();
 		const price = await client.simple.price({

@@ -1,7 +1,10 @@
 const marketPresentation = require('./tools/marketPresentation.js');
 async function main() {
-	Promise.all(await marketPresentation()).then((value) => {
-		console.log(value);
+	const marketPresentationResult = await marketPresentation();
+	Promise.all(marketPresentationResult[1]).then((value) => {
+		for (let i = 0; i < marketPresentationResult[0].length; i++) {
+			console.log(marketPresentationResult[0][i] + ': ' + value[i].toFixed(2) + '€');
+		}
 	});
 }
 

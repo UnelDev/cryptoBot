@@ -5,6 +5,8 @@ const idToName = require('./tools/convert/IdTo/idToName.js');
 const idToSymbol = require('./tools/convert/IdTo/idToSymbol.js');
 const nameToId = require('./tools/convert/nameTo/nameToId.js');
 const nameToSymbol = require('./tools/convert/nameTo/nameToSymbol.js');
+const NcoingeckoApi = require('./nCoingeko-api/coingecko-api.js');
+const client = new NcoingeckoApi();
 async function main() {
 	const marketPresentationResult = await marketPresentation();
 	Promise.all(marketPresentationResult[1]).then((value) => {
@@ -13,24 +15,24 @@ async function main() {
 		}
 	});
 
-	const symbolName = await symbolToName('bnb');
-	const symbolId = await symbolToId('bnb');
+	const symbolName = await symbolToName('bnb', client);
+	const symbolId = await symbolToId('bnb', client);
 	console.log('bnb is associated to : ');
 	for (let i = 0; i < symbolName.length; i++) {
 		console.log('	name ' + symbolName[i] + ' => with id ' + symbolId[i]);
 	}
 
-	const idName = await idToName('01coin');
-	const idSymbol = await idToSymbol('01coin');
+	const idName = await idToName('01coin', client);
+	const idSymbol = await idToSymbol('01coin', client);
 	console.log('01coin is associated to : ');
 	for (let i = 0; i < idName.length; i++) {
 		console.log('	name ' + idName[i] + ' => with symbol ' + idSymbol[i]);
 	}
 
-	const nameId = await nameToId('0.5X Long Dogecoin');
-	const nameSymbol = await nameToSymbol('0.5X Long Dogecoin');
+	const nameId = await nameToId('0.5X Long Dogecoin', client);
+	const nameSymbol = await nameToSymbol('0.5X Long Dogecoin', client);
 	console.log('0.5X Long Dogecoin is associated to : ');
-	for (let i = 0; i < nameId.length; i++) {
+	for (let i = 0; i < nameId.length; i++, client) {
 		console.log('	id ' + nameId[i] + ' => with symbol ' + nameSymbol[i]);
 	}
 

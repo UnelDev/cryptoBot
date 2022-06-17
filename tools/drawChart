@@ -1,0 +1,59 @@
+async function symbolToId(devise, client) {
+	const market = await client.add(['fetchMarketChart', devise]);
+	const name = [];
+	const value = [];
+	console.log(market);
+	market.forEach(element => {
+		element[0] = new Date(element[0]).getHours() + ':' + new Date(element[0]).getMinutes();
+		console.log(element[0]);
+		name.push(element[0]);
+		value.push(element[1]);
+	});
+	while (name.length > 250) {
+		name.shift();
+		value.shift();
+	}
+	console.log(name.length);
+	console.log(value.length);
+
+	const fs = require('fs');
+	const ChartJsImage = require('chartjs-to-image');
+	const chart = new ChartJsImage();
+
+	chart.setConfig({
+		type: 'bar',
+		data: {
+			labels: name,
+			datasets: [
+				{
+					label: devise,
+					data: value
+				}
+			]
+		},
+		options: {
+			scales: {
+				yAxes: [
+					{
+						ticks: {
+							callback: (val) => {
+								return '$' + val;
+							}
+						}
+					}
+				]
+			}
+		}
+	});
+	chart.setWidth(500);
+	chart.setHeight(300);
+	if (value[value.length - 1] > value[value.length - 2]) {
+		chart.setBackgroundColor('#0febc2');
+	} else if (value[value.length - 1] < value[value.length - 2]) {
+		chart.setBackgroundColor('lightcoral');
+	}
+	const buf = await chart.toBinary();
+	fs.writeFileSync('chart.png', buf);
+	return true;
+}
+module.exports = symbolToId;

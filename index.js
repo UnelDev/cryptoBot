@@ -6,14 +6,17 @@ const idToSymbol = require('./tools/convert/IdTo/idToSymbol.js');
 const nameToId = require('./tools/convert/nameTo/nameToId.js');
 const nameToSymbol = require('./tools/convert/nameTo/nameToSymbol.js');
 const NcoingeckoApi = require('./nCoingeko-api/coingecko-api.js');
+const drawChart = require('./tools/drawChart');
 const client = new NcoingeckoApi();
 async function main() {
-	const marketPresentationResult = await marketPresentation();
-	Promise.all(marketPresentationResult[1]).then((value) => {
-		for (let i = 0; i < marketPresentationResult[0].length; i++) {
-			console.log(marketPresentationResult[0][i] + ': ' + value[i].toFixed(2) + '€');
-		}
-	});
+	{
+		const marketPresentationResult = await marketPresentation();
+		Promise.all(marketPresentationResult[1]).then((value) => {
+			for (let i = 0; i < marketPresentationResult[0].length; i++) {
+				console.log(marketPresentationResult[0][i] + ': ' + value[i].toFixed(2) + '€');
+			}
+		});
+	}
 
 	const symbolName = await symbolToName('bnb', client);
 	const symbolId = await symbolToId('bnb', client);
@@ -35,6 +38,10 @@ async function main() {
 	for (let i = 0; i < nameId.length; i++, client) {
 		console.log('	id ' + nameId[i] + ' => with symbol ' + nameSymbol[i]);
 	}
+
+	const drawChartResult = await drawChart('bitcoin', client);
+	console.log(drawChartResult);
+
 
 }
 

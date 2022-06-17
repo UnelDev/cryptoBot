@@ -34,7 +34,7 @@ async function symbolToId(devise, client) {
 					{
 						ticks: {
 							callback: (val) => {
-								return '$' + val;
+								return val + '$';
 							}
 						}
 					}
@@ -44,10 +44,11 @@ async function symbolToId(devise, client) {
 	});
 	chart.setWidth(1161);
 	chart.setHeight(500);
-	if (value[value.length - 1] > value[value.length - 2]) {
-		chart.setBackgroundColor('#0febc2');
-	} else if (value[value.length - 1] < value[value.length - 2]) {
-		chart.setBackgroundColor('lightcoral');
+	if (value[value.length - 1] < value[value.length - 2]) {
+		// chart.setBackgroundColor('#0febc2');
+		chart.setBackgroundColor('#dfffeb');
+	} else if (value[value.length - 1] > value[value.length - 2]) {
+		chart.setBackgroundColor('#f8c9c3');
 	}
 	const buf = await chart.toBinary();
 	fs.writeFileSync('chart.png', buf);

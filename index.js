@@ -39,7 +39,7 @@ async function main() {
 		console.log('	id ' + nameId[i] + ' => with symbol ' + nameSymbol[i]);
 	}
 
-	const drawChartResult = await drawChart('bitcoin', client);
+	const drawChartResult = await drawChart('ethereum', client);
 	console.log(drawChartResult);
 
 

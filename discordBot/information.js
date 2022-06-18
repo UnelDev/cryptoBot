@@ -42,7 +42,7 @@ async function presentMoney(message, money, client) {
 		{ name: 'nom', value: money.name },
 		{ name: 'symbole', value: money.symbol },
 		{ name: 'id', value: money.id },
-		{ name: 'marketcap', value: money.market_cap_rank.toString() },
+		{ name: 'marketcap', value: money.market_cap_rank.toString() }
 	);
 	price = await price;
 	embed.addField('price', await price.toFixed(2));

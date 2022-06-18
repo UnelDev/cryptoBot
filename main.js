@@ -7,6 +7,7 @@ const NcoingeckoApiClient = new NcoingeckoApi();
 
 // include all discord Bot commands
 const marketPresntation = require('./discordBot/marketPresentation.js');
+const information = require('./discordBot/information.js');
 
 const client = new Client({
 	intents: [
@@ -74,7 +75,11 @@ client.on('messageCreate', message => {
 	client.channels.fetch(LoggingChannel).then(Channel => Channel.send('[COMMAND] \'' + message.content + '\' from: ' + message.author.tag));
 
 	if (command.startsWith('presentation') || command.startsWith('presnetation du marché') || command.startsWith('p')) {
-		marketPresntation(message, Prefix, NcoingeckoApiClient);
+		marketPresntation(message, NcoingeckoApiClient);
+	} else if (command.startsWith('information') || command.startsWith('info')) {
+		command.replace('information', '');
+		command.replace('info', '');
+		information(message, 'bitcoin', Prefix, NcoingeckoApiClient);
 	}
 
 	return;

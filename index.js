@@ -42,10 +42,11 @@ async function main() {
 
 	await draw('ethereum', client);
 
-	const result = await search('bi', client);
+	const result = await search('bitcoin', client);
 	for (let i = 0; i < result.length; i++) {
 		const Element = result[i];
 		console.log('the ' + i + ' result is : ' + Element.name);
+		console.log(Element);
 	}
 }
 

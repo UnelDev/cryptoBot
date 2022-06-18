@@ -1,4 +1,4 @@
-async function symbolToId(devise, client) {
+async function draw(devise, client) {
 	const market = await client.add(['fetchMarketChart', devise]);
 	const name = [];
 	const value = [];
@@ -8,9 +8,9 @@ async function symbolToId(devise, client) {
 		value.push(element[1]);
 	});
 	// chartjs is limited to 250 names and 250 values
-	while (name.length > 250) {
-		name.shift();
-		// value.shift();
+	if (name.length > 250) {
+		name.splice(0, name.length - 250);
+
 	}
 
 	const fs = require('fs');
@@ -54,4 +54,4 @@ async function symbolToId(devise, client) {
 	fs.writeFileSync('chart.png', buf);
 	return true;
 }
-module.exports = symbolToId;
+module.exports = draw;

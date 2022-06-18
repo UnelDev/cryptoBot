@@ -12,7 +12,6 @@ class NcoingeckoApi {
 			// diferant to 10 minutes in milliseconds
 			const key = 'coinList';
 			if (typeof this.cache[key] != 'undefined' && this.cache[key]['date'] != 'undefined' && new Date().getTime() - this.cache[key]['date'].getTime() <= 60000) {
-				console.log('cache');
 				return this.cache[key]['data'];
 			} else {
 				const CoinGeckoClient = new CoinGecko();
@@ -20,7 +19,6 @@ class NcoingeckoApi {
 				this.cache['coinList'] = [];
 				this.cache['coinList']['date'] = new Date();
 				this.cache['coinList']['data'] = data.data;
-				console.log(data.data);
 				return data.data;
 			}
 		} else if (args[0] === 'priceEur') {
@@ -29,6 +27,10 @@ class NcoingeckoApi {
 			return test;
 		} else if (args[0] === 'fetchMarketChart') {
 			this.runer.push(this.getMarketChart(args[1], this.runer.length - 1));
+			const test = await this.runer[this.runer.length - 1];
+			return test;
+		} else if (args[0] === 'search') {
+			this.runer.push(this.search(args[1], this.runer.length - 1));
 			const test = await this.runer[this.runer.length - 1];
 			return test;
 		} else {
@@ -42,7 +44,6 @@ class NcoingeckoApi {
 		if (typeof this.cache[key] != 'undefined' && this.cache[key]['date'] != 'undefined' && new Date().getTime() - this.cache[key]['date'].getTime() <= 60000) {
 			return this.cache[key]['data'];
 		} else {
-			// console.log('no cache');
 			await this.runer[index - 1];
 			const client = new CoinGecko();
 			const price = await client.simple.price({
@@ -70,8 +71,25 @@ class NcoingeckoApi {
 			return data.data.prices;
 		}
 	}
-}
 
+	async search(find, index) {
+		await this.runer[index - 1];
+		const axios = require('axios');
+		let res = [];
+		await axios.get('https://api.coingecko.com/api/v3/search?query=' + find, {
+			headers: {
+				Accept: 'accept',
+				Authorization: 'authorize'
+			}
+		}).then(response => {
+			res = response.data.coins;
+		}).catch(err => {
+			res = ['error ' + err];
+		});
+		return res;
+	}
+
+}
 module.exports = NcoingeckoApi;
 /*
 [coinList: [value: [], date: Date]]

@@ -71,15 +71,19 @@ client.on('messageCreate', message => {
 	if (!message.content.startsWith(Prefix)) { return; }
 	// Checking if the message is from a bot
 	if (message.author.bot) { return; }
-	const command = message.content.replace(Prefix, '').toLowerCase();
+	let command = message.content.replace(Prefix, '').toLowerCase();
 	client.channels.fetch(LoggingChannel).then(Channel => Channel.send('[COMMAND] \'' + message.content + '\' from: ' + message.author.tag));
 
 	if (command.startsWith('presentation') || command.startsWith('presnetation du marché') || command.startsWith('p')) {
 		marketPresntation(message, NcoingeckoApiClient);
-	} else if (command.startsWith('information') || command.startsWith('info')) {
-		command.replace('information', '');
-		command.replace('info', '');
-		information(message, 'bitcoin', Prefix, NcoingeckoApiClient);
+	} else if (command.startsWith('information') || command.startsWith('info') || command.startsWith('search')) {
+		console.log(command);
+		command = command.replace('information', '');
+		command = command.replace('info', '');
+		command = command.replace('search', '');
+		command = command.split(' ').pop();
+		console.log(command);
+		information(message, command, Prefix, NcoingeckoApiClient);
 	}
 
 	return;

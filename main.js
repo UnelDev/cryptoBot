@@ -38,8 +38,8 @@ if (isPublic) {
 const LoggingChannel = process.env.LOGGING_CHANNEL;
 
 
-// The default prefix is §
-const defaultPrefix = '/';
+// The default prefix is !
+const defaultPrefix = '!';
 let Prefix = defaultPrefix;
 
 
@@ -73,7 +73,7 @@ client.on('messageCreate', message => {
 	const command = message.content.replace(Prefix, '').toLowerCase();
 	client.channels.fetch(LoggingChannel).then(Channel => Channel.send('[COMMAND] \'' + message.content + '\' from: ' + message.author.tag));
 
-	if (command.startsWith('presntation')) {
+	if (command.startsWith('presentation') || command.startsWith('presnetation du marché') || command.startsWith('p')) {
 		marketPresntation(message, Prefix, NcoingeckoApiClient);
 	}
 

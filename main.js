@@ -9,6 +9,7 @@ const NcoingeckoApiClient = new NcoingeckoApi();
 const marketPresntation = require('./discordBot/marketPresentation.js');
 const information = require('./discordBot/information.js');
 const idToName = require('./tools/convert/IdTo/idToName.js');
+const currencyPresentation = require('./discordBot/currencyPresentation.js');
 
 const client = new Client({
 	intents: [
@@ -23,6 +24,7 @@ const client = new Client({
 
 const fs = require('fs');
 const path = require('path');
+
 
 // This variable is changed by me every time I want to change test bot
 const isPublic = false;
@@ -62,9 +64,11 @@ client.on('interactionCreate', async interaction => {
 			// coin name is a array
 			await information(interaction.channel, coinName[0], NcoingeckoApiClient);
 			interaction.deferUpdate();
-			return;
+		} else if (buttonName.startsWith('visualize_')) {
+			buttonName = buttonName.replace('visualize_', '');
+			await currencyPresentation(interaction.channel, buttonName, NcoingeckoApiClient);
+			interaction.deferUpdate();
 		}
-		interaction.deferUpdate();
 	}
 });
 
@@ -85,12 +89,10 @@ client.on('messageCreate', message => {
 	if (command.startsWith('presentation') || command.startsWith('presnetation du marché') || command.startsWith('p')) {
 		marketPresntation(message, NcoingeckoApiClient);
 	} else if (command.startsWith('information') || command.startsWith('info') || command.startsWith('search')) {
-		console.log(command);
 		command = command.replace('information', '');
 		command = command.replace('info', '');
 		command = command.replace('search', '');
 		command = command.split(' ').pop();
-		console.log(command);
 		information(message.channel, command, NcoingeckoApiClient);
 	}
 

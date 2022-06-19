@@ -48,7 +48,7 @@ async function main() {
 		console.log('the ' + i + ' result is : ' + Element.name);
 		console.log(Element);
 	}
-	//convert to name id : ishares-msci-world-etf-tokenized-stock-defichain
+
 
 
 }

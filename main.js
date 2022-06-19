@@ -52,7 +52,6 @@ client.once('ready', () => {
 client.on('interactionCreate', async interaction => {
 	// This part is for buttons interactions
 	if (interaction.isButton()) {
-		interaction.deferUpdate();
 		let buttonName = interaction.customId;
 		client.channels.fetch(LoggingChannel).then(Channel => Channel.send('[BUTTON] \'' + interaction.customId + '\' from: ' + interaction.user.tag));
 		if (buttonName.startsWith('help')) {
@@ -61,8 +60,11 @@ client.on('interactionCreate', async interaction => {
 			buttonName = buttonName.replace('search_', '');
 			const coinName = await idToName(buttonName, NcoingeckoApiClient);
 			// coin name is a array
-			information(interaction.channel, coinName[0], Prefix, NcoingeckoApiClient);
+			await information(interaction.channel, coinName[0], NcoingeckoApiClient);
+			interaction.deferUpdate();
+			return;
 		}
+		interaction.deferUpdate();
 	}
 });
 
@@ -89,10 +91,11 @@ client.on('messageCreate', message => {
 		command = command.replace('search', '');
 		command = command.split(' ').pop();
 		console.log(command);
-		information(message.channel, command, Prefix, NcoingeckoApiClient);
+		information(message.channel, command, NcoingeckoApiClient);
 	}
 
 	return;
+
 });
 
 

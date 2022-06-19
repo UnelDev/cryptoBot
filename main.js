@@ -9,7 +9,6 @@ const NcoingeckoApiClient = new NcoingeckoApi();
 const marketPresntation = require('./discordBot/marketPresentation.js');
 const information = require('./discordBot/information.js');
 const idToName = require('./tools/convert/IdTo/idToName.js');
-const currencyPresentation = require('./discordBot/currencyPresentation.js');
 
 const client = new Client({
 	intents: [
@@ -66,7 +65,7 @@ client.on('interactionCreate', async interaction => {
 			interaction.deferUpdate();
 		} else if (buttonName.startsWith('visualize_')) {
 			buttonName = buttonName.replace('visualize_', '');
-			await currencyPresentation(interaction.channel, buttonName, NcoingeckoApiClient);
+			await information(interaction.channel, buttonName, NcoingeckoApiClient);
 			interaction.deferUpdate();
 		}
 	}

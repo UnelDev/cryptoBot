@@ -1,5 +1,4 @@
 async function draw(devise, client) {
-	console.log(devise);
 	const market = await client.add(['fetchMarketChart', devise]);
 	const name = [];
 	const value = [];

@@ -29,12 +29,18 @@ async function presentMoney(channel, money, client) {
 	const embed = new Discord.MessageEmbed();
 	embed.setTitle('information sur ' + money.name + 'à ' + new Date().getHours() + ':' + new Date().getMinutes());
 	embed.setFooter({ text: 'ces donnée peuve être incorrecte' });
+	console.log(money);
 	embed.addFields(
 		{ name: 'nom', value: money.name },
 		{ name: 'symbole', value: money.symbol },
-		{ name: 'id', value: money.id },
-		{ name: 'marketcap', value: money.market_cap_rank.toString() }
+		{ name: 'id', value: money.id }
 	);
+	if (money.market_cap_rank) {
+		console.log(money.market_cap_rank.toString());
+		embed.addFields(
+			{ name: 'marketcap', value: money.market_cap_rank.toString() }
+		);
+	}
 	price = await price;
 	embed.addField('prix', await price.toFixed(2));
 	embed.setThumbnail(money.large);

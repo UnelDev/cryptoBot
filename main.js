@@ -58,11 +58,9 @@ client.on('interactionCreate', async interaction => {
 		if (buttonName.startsWith('help')) {
 			// helpButton(interaction, defaultPrefix);
 		} else if (buttonName.startsWith('search_')) {
-			console.log(buttonName);
 			buttonName = buttonName.replace('search_', '');
-			console.log(buttonName);
 			const coinName = await idToName(buttonName, NcoingeckoApiClient);
-			console.log('\'' + coinName + '\'');
+			// coin name is a array
 			information(interaction.channel, coinName[0], Prefix, NcoingeckoApiClient);
 		}
 	}
@@ -91,7 +89,7 @@ client.on('messageCreate', message => {
 		command = command.replace('search', '');
 		command = command.split(' ').pop();
 		console.log(command);
-		information(message, command, Prefix, NcoingeckoApiClient);
+		information(message.channel, command, Prefix, NcoingeckoApiClient);
 	}
 
 	return;

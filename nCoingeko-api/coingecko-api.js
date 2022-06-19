@@ -60,10 +60,8 @@ class NcoingeckoApi {
 		// creation de la clef devise pour le cache temps d'expiration 4 heures
 		const key = 'fetchMarketChart_' + devise;
 		if (typeof this.cache[key] != 'undefined' && this.cache[key]['date'] != 'undefined' && new Date().getTime() - this.cache[key]['date'].getTime() <= 14400000) {
-			console.log('cache');
 			return this.cache[key]['data'];
 		} else {
-			console.log('not cache');
 			await this.runer[index - 1];
 			const client = new CoinGecko();
 			const data = await client.coins.fetchMarketChart(devise);

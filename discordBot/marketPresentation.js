@@ -5,7 +5,7 @@ async function marketPresentation(message, client) {
 	const listeOfPrice = [];
 	const embed = new MessageEmbed();
 	embed.setTitle('presentation du marché à ' + new Date().getHours() + ':' + new Date().getMinutes());
-	embed.setFooter({ text: 'ces donnée peuve être incorrecte' });
+	embed.setFooter({ text: 'ces donnée peuvent être incorrecte' });
 	const row = new MessageActionRow();
 	Promise.all(marketPresentationResult[1]).then((value) => {
 		for (let i = 0; i < marketPresentationResult[0].length; i++) {

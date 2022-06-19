@@ -1,12 +1,10 @@
 const { MessageEmbed } = require('discord.js');
-const Discord = require('discord.js');
-const path = require('path');
+const currencyPresentation = require('./discordBot/currencyPresentation.js');
 const search = require('../tools/search');
-const draw = require('../tools/drawchart.js');
 async function information(channel, find, client) {
 	const result = await search(find, client);
 	if (typeof result[0] != 'undefined' && result[0].name.toLowerCase() === find.toLowerCase()) {
-		presentMoney(channel, result[0], client);
+		currencyPresentation(channel, result[0], client);
 	} else {
 
 		// inside a command, event listener, etc.
@@ -20,33 +18,5 @@ async function information(channel, find, client) {
 		channel.send({ embeds: [exampleEmbed] });
 	}
 
-}
-async function presentMoney(channel, money, client) {
-	const img = draw(money.id, client);
-	let price = client.add(['priceEur', money.id]);
-	const embed = new Discord.MessageEmbed();
-	embed.setTitle('information sur ' + money.name + ' à ' + new Date().getHours() + ':' + new Date().getMinutes());
-	embed.setFooter({ text: 'ces donnée peuve être incorrecte' });
-	embed.addFields(
-		{ name: 'nom', value: money.name },
-		{ name: 'symbole', value: money.symbol },
-		{ name: 'id', value: money.id }
-	);
-	if (money.market_cap_rank) {
-		embed.addFields(
-			{ name: 'marketcap', value: money.market_cap_rank.toString() }
-		);
-	}
-	price = await price;
-	embed.addField('prix', await price.toFixed(2));
-	embed.setThumbnail(money.large);
-	embed.setImage('attachment://image.png');
-	channel.send({
-		embeds: [embed],
-		files: [{
-			attachment: path.resolve(await img),
-			name: 'image.png'
-		}]
-	});
 }
 module.exports = information;

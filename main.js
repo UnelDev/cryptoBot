@@ -8,6 +8,7 @@ const NcoingeckoApiClient = new NcoingeckoApi();
 // include all discord Bot commands
 const marketPresntation = require('./discordBot/marketPresentation.js');
 const information = require('./discordBot/information.js');
+const idToName = require('./tools/convert/IdTo/idToName.js');
 
 const client = new Client({
 	intents: [
@@ -48,14 +49,21 @@ client.once('ready', () => {
 	console.log('Connected as ' + client.user.tag);
 });
 
-client.on('interactionCreate', interaction => {
+client.on('interactionCreate', async interaction => {
 	// This part is for buttons interactions
 	if (interaction.isButton()) {
 		interaction.deferUpdate();
-		const buttonName = interaction.customId;
+		let buttonName = interaction.customId;
 		client.channels.fetch(LoggingChannel).then(Channel => Channel.send('[BUTTON] \'' + interaction.customId + '\' from: ' + interaction.user.tag));
 		if (buttonName.startsWith('help')) {
 			// helpButton(interaction, defaultPrefix);
+		} else if (buttonName.startsWith('search_')) {
+			console.log(buttonName);
+			buttonName = buttonName.replace('search_', '');
+			console.log(buttonName);
+			const coinName = await idToName(buttonName, NcoingeckoApiClient);
+			console.log('\'' + coinName + '\'');
+			information(interaction.channel, coinName[0], Prefix, NcoingeckoApiClient);
 		}
 	}
 });

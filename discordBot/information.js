@@ -3,10 +3,12 @@ const Discord = require('discord.js');
 const path = require('path');
 const search = require('../tools/search');
 const draw = require('../tools/drawchart.js');
-async function information(message, find, Prefix, client) {
+async function information(channel, find, Prefix, client) {
 	const result = await search(find, client);
-	if (result[0].name.toLowerCase() === find.toLowerCase()) {
-		presentMoney(message, result[0], client);
+	console.log(result);
+	console.log(find);
+	if (typeof result[0] != 'undefined' && result[0].name.toLowerCase() === find.toLowerCase()) {
+		presentMoney(channel, result[0], client);
 	} else {
 
 		// inside a command, event listener, etc.
@@ -17,11 +19,11 @@ async function information(message, find, Prefix, client) {
 			exampleEmbed.addField(Element.name, Element.symbol);
 		}
 
-		message.channel.send({ embeds: [exampleEmbed] });
+		channel.send({ embeds: [exampleEmbed] });
 	}
 
 }
-async function presentMoney(message, money, client) {
+async function presentMoney(channel, money, client) {
 	const img = draw(money.id, client);
 	let price = client.add(['priceEur', money.id]);
 	const embed = new Discord.MessageEmbed();
@@ -36,7 +38,7 @@ async function presentMoney(message, money, client) {
 	price = await price;
 	embed.addField('prix', await price.toFixed(2));
 	embed.setThumbnail(money.large);
-	message.channel.send({ embeds: [embed] });
-	message.channel.send({ files: [path.resolve(await img)] });
+	channel.send({ embeds: [embed] });
+	channel.send({ files: [path.resolve(await img)] });
 }
 module.exports = information;

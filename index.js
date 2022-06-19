@@ -26,9 +26,9 @@ async function main() {
 		console.log('	name ' + symbolName[i] + ' => with id ' + symbolId[i]);
 	}
 
-	const idName = await idToName('01coin', client);
-	const idSymbol = await idToSymbol('01coin', client);
-	console.log('01coin is associated to : ');
+	const idName = await idToName('ishares-msci-world-etf-tokenized-stock-defichain', client);
+	const idSymbol = await idToSymbol('ishares-msci-world-etf-tokenized-stock-defichain', client);
+	console.log('ishares-msci-world-etf-tokenized-stock-defichain is associated to : ');
 	for (let i = 0; i < idName.length; i++) {
 		console.log('	name ' + idName[i] + ' => with symbol ' + idSymbol[i]);
 	}
@@ -48,6 +48,9 @@ async function main() {
 		console.log('the ' + i + ' result is : ' + Element.name);
 		console.log(Element);
 	}
+	//convert to name id : ishares-msci-world-etf-tokenized-stock-defichain
+
+
 }
 
 main();

@@ -58,15 +58,16 @@ client.on('interactionCreate', async interaction => {
 		if (buttonName.startsWith('help')) {
 			// helpButton(interaction, defaultPrefix);
 		} else if (buttonName.startsWith('search_')) {
+			interaction.deferUpdate();
 			buttonName = buttonName.replace('search_', '');
 			const coinName = await idToName(buttonName, NcoingeckoApiClient);
 			// coin name is a array
-			await information(interaction.channel, coinName[0], NcoingeckoApiClient);
-			interaction.deferUpdate();
+			information(interaction.channel, coinName[0], NcoingeckoApiClient);
+
 		} else if (buttonName.startsWith('visualize_')) {
-			buttonName = buttonName.replace('visualize_', '');
-			await information(interaction.channel, buttonName, NcoingeckoApiClient);
 			interaction.deferUpdate();
+			buttonName = buttonName.replace('visualize_', '');
+			information(interaction.channel, buttonName, NcoingeckoApiClient);
 		}
 	}
 });

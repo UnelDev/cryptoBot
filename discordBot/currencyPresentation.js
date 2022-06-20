@@ -27,32 +27,67 @@ async function currencyPresentation(channel, money, client) {
 
 function constuctFields(info) {
 	const fields = [];
-	let sate;
-	let signe;
-	if (info.market_data.price_change_percentage_24h >= 20) {
-		signe = '+';
-		sate = ':arrow_double_up:';
-	} else if (info.market_data.price_change_percentage_24h > 0) {
-		signe = '+';
-		sate = ':arrow_up:';
-	} else if (info.market_data.price_change_percentage_24h < 20) {
-		signe = '-';
-		sate = ':arrow_double_down:';
-	} else if (info.market_data.price_change_percentage_24h < 0) {
-		signe = '-';
-		sate = ':arrow_down:';
-	} else {
-		signe = '';
-		sate = ':radio_button:';
-	}
 	if (info.market_data.current_price.eur) {
+		const sate = CalculpriceChange(info.market_data.price_change_percentage_24h);
+		const signe = calculeStateChange(info.market_data.price_change_percentage_24h);
 		fields.push({ name: 'prix', value: info.market_data.current_price.eur + '€ (' + signe + info.market_data.price_change_percentage_24h.toFixed(2) + '%)' + sate });
 	}
+	if (info.market_data.price_change_percentage_7d) {
+		const sate = CalculpriceChange(info.market_data.price_change_percentage_7d);
+		const signe = calculeStateChange(info.market_data.price_change_percentage_7d);
+		fields.push({ name: 'evolution en 7 jours', value: signe + info.market_data.price_change_percentage_7d.toFixed(2) + '%' + sate });
+	}
+	if (info.market_data.price_change_percentage_14d) {
+		const sate = CalculpriceChange(info.market_data.price_change_percentage_14d);
+		const signe = calculeStateChange(info.market_data.price_change_percentage_14d);
+		fields.push({ name: 'evolution en 14 jours', value: signe + info.market_data.price_change_percentage_14d.toFixed(2) + '%' + sate });
+	}
+	if (info.market_data.price_change_percentage_30d) {
+		const sate = CalculpriceChange(info.market_data.price_change_percentage_30d);
+		const signe = calculeStateChange(info.market_data.price_change_percentage_30d);
+		fields.push({ name: 'evolution en 30 jours', value: signe + info.market_data.price_change_percentage_30d.toFixed(2) + '%' + sate });
+	}
+	if (info.market_data.price_change_percentage_60d) {
+		const sate = CalculpriceChange(info.market_data.price_change_percentage_60d);
+		const signe = calculeStateChange(info.market_data.price_change_percentage_60d);
+		fields.push({ name: 'evolution en 60 jours', value: signe + info.market_data.price_change_percentage_60d.toFixed(2) + '%' + sate });
+	}
+	if (info.market_data.price_change_percentage_200d) {
+		const sate = CalculpriceChange(info.market_data.price_change_percentage_200d);
+		const signe = calculeStateChange(info.market_data.price_change_percentage_200d);
+		fields.push({ name: 'evolution en 200 jours', value: signe + info.market_data.price_change_percentage_200d.toFixed(2) + '%' + sate });
+	}
+	if (info.market_data.price_change_percentage_1y) {
+		const sate = CalculpriceChange(info.market_data.price_change_percentage_1y);
+		const signe = calculeStateChange(info.market_data.price_change_percentage_1y);
+		fields.push({ name: 'evolution en 1 an', value: signe + info.market_data.price_change_percentage_1y.toFixed(2) + '%' + sate });
+	}
+
 	if (info.links.homepage[0] != '') {
 		fields.push({ name: 'site web', value: info.links.homepage[0] });
 	}
 	return fields;
 }
 
+function calculeStateChange(change) {
+	if (change > 0) {
+		return '+';
+	} else {
+		return '';
+	}
+}
 
+function CalculpriceChange(PriceChange) {
+	if (PriceChange > 0 && PriceChange < 20) {
+		return ':arrow_up_small:';
+	} if (PriceChange >= 20) {
+		return ':arrow_double_up:';
+	} else if (PriceChange < 0 && PriceChange > 20) {
+		return ':arrow_down_small:';
+	} else if (PriceChange <= 20) {
+		return ':arrow_double_down:';
+	} else {
+		return ':radio_button:';
+	}
+}
 module.exports = currencyPresentation;

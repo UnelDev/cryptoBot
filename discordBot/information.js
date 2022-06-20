@@ -30,7 +30,11 @@ async function information(channel, find, client) {
 				);
 			}
 		}
-		channel.send({ embeds: [Embed], components: [row, row2] });
+		if (result.length > 5) {
+			channel.send({ embeds: [Embed], components: [row, row2] });
+		} else {
+			channel.send({ embeds: [Embed], components: [row] });
+		}
 	}
 
 }

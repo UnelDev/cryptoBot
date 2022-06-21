@@ -33,6 +33,10 @@ class NcoingeckoApi {
 			this.runer.push(this.search(args[1], this.runer.length - 1));
 			const test = await this.runer[this.runer.length - 1];
 			return test;
+		} else if (args[0] === 'info') {
+			this.runer.push(this.info(args[1], this.runer.length - 1));
+			const test = await this.runer[this.runer.length - 1];
+			return test;
 		} else {
 			return 'error in args[0]';
 		}
@@ -83,6 +87,23 @@ class NcoingeckoApi {
 			}
 		}).then(response => {
 			res = response.data.coins;
+		}).catch(err => {
+			res = ['error ' + err];
+		});
+		return res;
+	}
+
+	async info(devise, index) {
+		await this.runer[index - 1];
+		const axios = require('axios');
+		let res = [];
+		await axios.get('https://api.coingecko.com/api/v3/coins/' + devise, {
+			headers: {
+				Accept: 'accept',
+				Authorization: 'authorize'
+			}
+		}).then(response => {
+			res = response.data;
 		}).catch(err => {
 			res = ['error ' + err];
 		});

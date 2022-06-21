@@ -44,12 +44,12 @@ async function draw(devise, client) {
 	});
 	chart.setWidth(1161);
 	chart.setHeight(500);
-	if (value[value.length - 1] < value[value.length - 2]) {
-		// chart.setBackgroundColor('#0febc2');
-		chart.setBackgroundColor('#dfffeb');
-	} else if (value[value.length - 1] > value[value.length - 2]) {
-		chart.setBackgroundColor('#f8c9c3');
-	}
+	// if (value[value.length - 1] < value[value.length - 2]) {
+	// 	// chart.setBackgroundColor('#0febc2');
+	// 	chart.setBackgroundColor('#dfffeb');
+	// } else if (value[value.length - 1] > value[value.length - 2]) {
+	// 	chart.setBackgroundColor('#f8c9c3');
+	// }
 	const buf = await chart.toBinary();
 	fs.writeFileSync(devise + '.png', buf);
 	return devise + '.png';

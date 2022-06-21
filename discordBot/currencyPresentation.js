@@ -62,13 +62,21 @@ function constuctFields(info) {
 		const signe = calculeStateChange(info.market_data.price_change_percentage_1y);
 		fields.push({ name: 'evolution en 1 an', value: signe + info.market_data.price_change_percentage_1y.toFixed(2) + '%' + sate });
 	}
-
+	let link = '';
 	if (info.links.homepage[0] != '') {
-		fields.push({ name: 'site web', value: info.links.homepage[0] });
+		link += 'site web: ' + info.links.homepage[0] + '\n';
+	}
+	if (info.links.blockchain_site[0] != '') {
+		link += 'blockchain : ' + info.links.blockchain_site[0] + '\n';
+	}
+	if (info.links.announcement_url[0] != '') {
+		link += 'lien d\'annonce : ' + info.links.announcement_url[0];
+	}
+	if (link != '') {
+		fields.push({ name: 'lien', value: link });
 	}
 	return fields;
 }
-
 function calculeStateChange(change) {
 	if (change > 0) {
 		return '+';

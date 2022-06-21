@@ -51,7 +51,7 @@ async function draw(devise, client) {
 	// 	chart.setBackgroundColor('#f8c9c3');
 	// }
 	const buf = await chart.toBinary();
-	fs.writeFileSync(devise + '.png', buf);
-	return devise + '.png';
+	fs.writeFileSync('./img/' + devise + '.png', buf);
+	return './img/' + devise + '.png';
 }
 module.exports = draw;

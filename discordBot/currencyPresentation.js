@@ -27,10 +27,10 @@ async function currencyPresentation(channel, money, client) {
 
 function constuctFields(info) {
 	const fields = [];
-	if (info.market_data.current_price.eur) {
+	if (info.market_data.current_price.usd) {
 		const sate = CalculpriceChange(info.market_data.price_change_percentage_24h);
 		const signe = calculeStateChange(info.market_data.price_change_percentage_24h);
-		fields.push({ name: 'prix', value: info.market_data.current_price.eur + '€ (' + signe + info.market_data.price_change_percentage_24h.toFixed(2) + '%)' + sate });
+		fields.push({ name: 'prix', value: info.market_data.current_price.usd + '$ (' + signe + info.market_data.price_change_percentage_24h.toFixed(2) + '%)' + sate });
 	}
 	if (info.market_data.price_change_percentage_7d) {
 		const sate = CalculpriceChange(info.market_data.price_change_percentage_7d);

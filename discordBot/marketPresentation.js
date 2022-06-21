@@ -10,8 +10,8 @@ async function marketPresentation(message, client) {
 	Promise.all(marketPresentationResult[1]).then((value) => {
 		for (let i = 0; i < marketPresentationResult[0].length; i++) {
 			// convert all value to name
-			listeOfPrice.push(marketPresentationResult[0][i] + ': ' + value[i].toFixed(2) + '€');
-			embed.addField(marketPresentationResult[0][i].slice(0, 18), value[i].toFixed(2) + '€');
+			listeOfPrice.push(marketPresentationResult[0][i] + ': ' + value[i] + '$');
+			embed.addField(marketPresentationResult[0][i].slice(0, 18), value[i] + '$');
 			row.addComponents(
 				new MessageButton()
 					.setCustomId('search_' + marketPresentationResult[0][i])

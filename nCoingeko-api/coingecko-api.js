@@ -21,8 +21,8 @@ class NcoingeckoApi {
 				this.cache['coinList']['data'] = data.data;
 				return data.data;
 			}
-		} else if (args[0] === 'priceEur') {
-			this.runer.push(this.getPriceEur(args[1], this.runer.length - 1));
+		} else if (args[0] === 'priceUsd') {
+			this.runer.push(this.getPriceUsd(args[1], this.runer.length - 1));
 			const test = await this.runer[this.runer.length - 1];
 			return test;
 		} else if (args[0] === 'fetchMarketChart') {
@@ -42,7 +42,7 @@ class NcoingeckoApi {
 		}
 	}
 
-	async getPriceEur(devise, index) {
+	async getPriceUsd(devise, index) {
 		// creation de la clef devise pour le cache temps d'expiration 1 minute
 		const key = 'priceEur_' + devise;
 		if (typeof this.cache[key] != 'undefined' && this.cache[key]['date'] != 'undefined' && new Date().getTime() - this.cache[key]['date'].getTime() <= 60000) {
@@ -52,12 +52,12 @@ class NcoingeckoApi {
 			const client = new CoinGecko();
 			const price = await client.simple.price({
 				ids: [devise],
-				vs_currencies: ['eur']
+				vs_currencies: ['usd']
 			});
 			this.cache[key] = [];
 			this.cache[key]['date'] = new Date();
-			this.cache[key]['data'] = price.data[devise].eur;
-			return price.data[devise].eur;
+			this.cache[key]['data'] = price.data[devise].usd;
+			return price.data[devise].usd;
 		}
 	}
 	async getMarketChart(devise, index) {

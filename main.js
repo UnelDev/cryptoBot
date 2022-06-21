@@ -9,6 +9,9 @@ const NcoingeckoApiClient = new NcoingeckoApi();
 const marketPresntation = require('./discordBot/marketPresentation.js');
 const information = require('./discordBot/information.js');
 const idToName = require('./tools/convert/IdTo/idToName.js');
+const user = require('./discordBot/user/user.js');
+
+const userListe = new Array();
 
 const client = new Client({
 	intents: [
@@ -94,6 +97,10 @@ client.on('messageCreate', message => {
 		command = command.replace('search', '');
 		command = command.split(' ').pop();
 		information(message.channel, command, NcoingeckoApiClient);
+	} else if (command.startsWith('create')) {
+		const Nuser = new user(message.author.id, message.author.tag);
+		userListe.push(Nuser);
+		Nuser.toPresent(NcoingeckoApiClient, message.channel);
 	}
 
 	return;

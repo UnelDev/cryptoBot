@@ -10,6 +10,7 @@ const marketPresntation = require('./discordBot/marketPresentation.js');
 const information = require('./discordBot/information.js');
 const idToName = require('./tools/convert/IdTo/idToName.js');
 const user = require('./discordBot/user/user.js');
+const presnentWalet = require('./discordBot/user/presentWalet.js');
 
 const userListe = new Array();
 
@@ -100,7 +101,10 @@ client.on('messageCreate', message => {
 	} else if (command.startsWith('create')) {
 		const Nuser = new user(message.author.id, message.author.tag);
 		userListe.push(Nuser);
-		Nuser.toPresent(NcoingeckoApiClient, message.channel);
+		presnentWalet(Nuser, NcoingeckoApi);
+		Nuser.buy(NcoingeckoApiClient, message.channel, 'bitcoin', 1);
+		presnentWalet(Nuser, NcoingeckoApi);
+
 	}
 
 	return;

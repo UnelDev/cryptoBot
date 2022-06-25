@@ -9,6 +9,11 @@ const NcoingeckoApiClient = new NcoingeckoApi();
 const marketPresntation = require('./discordBot/marketPresentation.js');
 const information = require('./discordBot/information.js');
 const idToName = require('./tools/convert/IdTo/idToName.js');
+const user = require('./discordBot/user/user.js');
+const presnentWalet = require('./discordBot/user/presentWalet.js');
+const verifyExist = require('./discordBot/user/gestion/verifyExist');
+
+const userListe = new Array();
 
 const client = new Client({
 	intents: [
@@ -72,7 +77,7 @@ client.on('interactionCreate', async interaction => {
 	}
 });
 
-client.on('messageCreate', message => {
+client.on('messageCreate', async message => {
 	// This part is for commands
 	// This first line is for getting the prefix of the server and if it's not defined, we use the default prefix
 	if (fs.existsSync(path.resolve('./prefix/' + message.guildId + '.json'))) {
@@ -94,12 +99,19 @@ client.on('messageCreate', message => {
 		command = command.replace('search', '');
 		command = command.split(' ').pop();
 		information(message.channel, command, NcoingeckoApiClient);
-	}
+	} else if (command.startsWith('create')) {
 
+		if (verifyExist(userListe, message.author.id) == true) {
+			message.channel.send('desolée vous ne pouvez pas avoir plusieur compte');
+			return;
+		}
+		const Nuser = new user(message.author.id, message.author.tag);
+		userListe.push(Nuser);
+		Nuser.toPresent(NcoingeckoApiClient, message.channel);
+	}
 	return;
 
 });
-
 
 module.exports = {
 	/**

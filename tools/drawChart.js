@@ -16,7 +16,6 @@ async function draw(devise, client) {
 	const fs = require('fs');
 	const ChartJsImage = require('chartjs-to-image');
 	const chart = new ChartJsImage();
-
 	chart.setConfig({
 		type: 'bar',
 		data: {
@@ -51,7 +50,35 @@ async function draw(devise, client) {
 	// 	chart.setBackgroundColor('#f8c9c3');
 	// }
 	const buf = await chart.toBinary();
-	fs.writeFileSync(devise + '.png', buf);
-	return devise + '.png';
+	fs.writeFileSync('./img/' + devise + '.png', buf);
+	return './img/' + devise + '.png';
 }
 module.exports = draw;
+
+/*
+chart.setConfig({
+		type: 'bar',
+		data: {
+			labels: name,
+			datasets: [
+				{
+					label: devise,
+					data: value
+				}
+			]
+		},
+		options: {
+			scales: {
+				yAxes: [
+					{
+						ticks: {
+							callback: (val) => {
+								return val + '$';
+							}
+						}
+					}
+				]
+			}
+		}
+	});
+	*/

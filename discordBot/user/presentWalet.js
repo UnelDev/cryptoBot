@@ -13,7 +13,6 @@ async function presnentWalet(client, channel) {
 			}
 			construcName.push(client.history[i][1][j][0]);
 		}
-		console.log((client.history[i][1]));
 		NameList.forEach(element => {
 			if (construcName.indexOf(element) == -1) {
 				client.history[i][1].push([element, 0]);

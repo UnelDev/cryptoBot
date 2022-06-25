@@ -16,7 +16,6 @@ async function draw(devise, client) {
 	const fs = require('fs');
 	const ChartJsImage = require('chartjs-to-image');
 	const chart = new ChartJsImage();
-
 	chart.setConfig({
 		type: 'bar',
 		data: {
@@ -55,3 +54,31 @@ async function draw(devise, client) {
 	return './img/' + devise + '.png';
 }
 module.exports = draw;
+
+/*
+chart.setConfig({
+		type: 'bar',
+		data: {
+			labels: name,
+			datasets: [
+				{
+					label: devise,
+					data: value
+				}
+			]
+		},
+		options: {
+			scales: {
+				yAxes: [
+					{
+						ticks: {
+							callback: (val) => {
+								return val + '$';
+							}
+						}
+					}
+				]
+			}
+		}
+	});
+	*/

@@ -76,7 +76,7 @@ client.on('interactionCreate', async interaction => {
 	}
 });
 
-client.on('messageCreate', message => {
+client.on('messageCreate', async message => {
 	// This part is for commands
 	// This first line is for getting the prefix of the server and if it's not defined, we use the default prefix
 	if (fs.existsSync(path.resolve('./prefix/' + message.guildId + '.json'))) {
@@ -101,16 +101,25 @@ client.on('messageCreate', message => {
 	} else if (command.startsWith('create')) {
 		const Nuser = new user(message.author.id, message.author.tag);
 		userListe.push(Nuser);
-		presnentWalet(Nuser, NcoingeckoApi);
-		Nuser.buy(NcoingeckoApiClient, message.channel, 'bitcoin', 1);
-		presnentWalet(Nuser, NcoingeckoApi);
+		await presnentWalet(Nuser, message.channel);
+		await delay(1);
+		await Nuser.buy(NcoingeckoApiClient, message.channel, 'ethereum', 1);
+		await presnentWalet(Nuser, message.channel);
+		await delay(1);
+		await Nuser.sell(NcoingeckoApiClient, message.channel, 'ethereum', 1);
+		await presnentWalet(Nuser, message.channel);
 
 	}
-
 	return;
 
 });
 
+// for remove
+function delay(n) {
+	return new Promise(resolve => {
+		setTimeout(resolve, n * 1000);
+	});
+}
 
 module.exports = {
 	/**

@@ -107,8 +107,7 @@ client.on('messageCreate', async message => {
 		}
 		const Nuser = new user(message.author.id, message.author.tag);
 		userListe.push(Nuser);
-		await presnentWalet(Nuser, message.channel);
-
+		Nuser.toPresent(NcoingeckoApiClient, message.channel);
 	}
 	return;
 

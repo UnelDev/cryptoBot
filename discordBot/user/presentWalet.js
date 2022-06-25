@@ -1,6 +1,6 @@
 const fs = require('fs');
 const ChartJsImage = require('chartjs-to-image');
-async function presnentWalet(client, channel) {
+async function presnentWalet(client) {
 	const date = [];
 	// const dataset = [["bitcoin",[1,2,3,1],["etherum",[1,2,3,1]];
 	const dataset = [];
@@ -46,13 +46,8 @@ async function presnentWalet(client, channel) {
 	chart.setWidth(1161);
 	chart.setHeight(500);
 	const buf = await chart.toBinary();
-	fs.writeFileSync('./img/test.png', buf);
-	channel.send({
-		files: [{
-			attachment: './img/test.png',
-			name: 'image.png'
-		}]
-	});
+	fs.writeFileSync('./img/' + client.tag + '.png', buf);
+	return ('./img/' + client.tag + '.png');
 }
 
 function constructConfig(dataset) {

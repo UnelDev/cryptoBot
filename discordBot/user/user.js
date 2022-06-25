@@ -1,4 +1,6 @@
 const { MessageEmbed } = require('discord.js');
+const path = require('path');
+const presentWalet = require('./presentWalet.js');
 class user {
 	constructor(id, tag) {
 		this.id = id;
@@ -14,12 +16,24 @@ class user {
 		embed.setFooter({ text: 'ces donnée peuvent être incorrecte' });
 		embed.addField('cash', this.cash.toString());
 		for (let i = 0; i < this.walet.length; i++) {
-			let price = await CoinGecko.add(['priceUsd', this.walet[i][0]]);
-			// usd , 1*1000 + '$'
-			price = price * this.walet[i][1];
-			embed.addField(this.walet[i][0], this.walet[i][1] + ' ' + this.walet[i][0] + ' ≈ ' + price.toString() + '$');
+			if (this.walet[i][1] != 0) {
+				let price = await CoinGecko.add(['priceUsd', this.walet[i][0]]);
+				// usd , 1*1000 + '$'
+				price = price * this.walet[i][1];
+				embed.addField(this.walet[i][0], this.walet[i][1] + ' ' + this.walet[i][0] + ' ≈ ' + price.toString() + '$');
+			}
 		}
-		channel.send({ embeds: [embed] });
+		if (this.history.length > 1) {
+			channel.send({
+				embeds: [embed],
+				files: [{
+					attachment: path.resolve(await presentWalet(this)),
+					name: 'image.png'
+				}]
+			});
+		} else {
+			channel.send({ embeds: [embed] });
+		}
 	}
 
 	async buy(CoinGecko, channel, name, quantity) {

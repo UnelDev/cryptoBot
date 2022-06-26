@@ -24,7 +24,37 @@ function createEmbed(clientlist, member, name, price) {
 	});
 
 }
-function buyOnResponse(response, devise, channel) {
-	channel.send(response + '	, 	' + devise);
+async function buyOnResponse(response, devise, channel, coingecko) {
+	devise = devise.replace('priceFor_', '');
+	if (typeof parseFloat(response) != 'number') {
+		channel.send('desolée il faut rentrer un nombre !');
+		return;
+	}
+	let price;
+	try {
+		price = await coingecko.add(['priceUsd', devise]);
+	} catch (error) {
+		channel.send('desolée la devise ' + devise + ' a generer un erreur : ' + error);
+		return;
+	}
+
+	let number = response / price;
+	number *= 1000;
+	number = Math.trunc(number);
+	number /= 1000;
+	const embed = new MessageEmbed()
+		.setTitle('confirmation d\'achat')
+		.setDescription('voici le recapitulatif de votre commande :')
+		.addFields(
+			{ name: 'prix actuelle de ' + devise, value: '≈' + price + '$' },
+			{ name: 'prix en $ ', value: response },
+			{ name: 'devise ', value: devise },
+			{ name: 'vous allez achetez (valeur arondie)', value: number + ' de : ' + devise }
+		)
+		.setTimestamp()
+		.setFooter({ text: 'le reste de l\'arondit sert a "financeée" le bot. (argent factice)' });
+	channel.send({
+		embeds: [embed]
+	});
 }
 module.exports = { buy, buyOnResponse };

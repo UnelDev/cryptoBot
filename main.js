@@ -97,7 +97,7 @@ client.on('messageCreate', async message => {
 	if (message.channel.type == 'DM') {
 		client.channels.fetch(LoggingChannel).then(Channel => Channel.send('[dm] \'' + message.content + '\' from: ' + message.author.tag));
 		const responseUser = serach(userListe, message.author.id);
-		responseUser.responseMp(message.content, message.channel);
+		responseUser.responseMp(message.content, message.channel, NcoingeckoApiClient);
 		return;
 	}
 

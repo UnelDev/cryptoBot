@@ -78,10 +78,10 @@ class user {
 
 		}
 	}
-	async responseMp(response, channel) {
+	async responseMp(response, channel, coingecko) {
 		if (this.watingMp.startsWith('priceFor_')) {
 			this.watingMp.replace('priceFor_', '');
-			buyOnResponse(response, this.watingMp, channel);
+			buyOnResponse(response, this.watingMp, channel, coingecko);
 			this.watingMp = '';
 		}
 	}

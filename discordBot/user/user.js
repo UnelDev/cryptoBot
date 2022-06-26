@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const path = require('path');
+const { buyOnResponse } = require('./gestion/buy.js');
 const presentWalet = require('./presentWalet.js');
 class user {
 	constructor(id, tag) {
@@ -8,6 +9,7 @@ class user {
 		this.cash = 100000;
 		this.walet = [['bitcoin', 10]];
 		this.history = [[new Date, JSON.parse(JSON.stringify(this)).walet]];
+		this.watingMp = '';
 	}
 
 	async toPresent(CoinGecko, channel) {
@@ -74,6 +76,13 @@ class user {
 			this.toPresent(CoinGecko, channel);
 			return true;
 
+		}
+	}
+	async responseMp(response, channel) {
+		if (this.watingMp.startsWith('priceFor_')) {
+			this.watingMp.replace('priceFor_', '');
+			buyOnResponse(response, this.watingMp, channel);
+			this.watingMp = '';
 		}
 	}
 }

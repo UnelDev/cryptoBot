@@ -11,6 +11,7 @@ const information = require('./discordBot/information.js');
 const idToName = require('./tools/convert/IdTo/idToName.js');
 const user = require('./discordBot/user/user.js');
 const verifyExist = require('./discordBot/user/gestion/verifyExist');
+const { buy } = require('./discordBot/user/gestion/buy');
 
 const userListe = new Array();
 
@@ -27,6 +28,7 @@ const client = new Client({
 
 const fs = require('fs');
 const path = require('path');
+const serach = require('./discordBot/user/gestion/search.js');
 
 
 // This variable is changed by me every time I want to change test bot
@@ -72,6 +74,10 @@ client.on('interactionCreate', async interaction => {
 			interaction.deferUpdate();
 			buttonName = buttonName.replace('visualize_', '');
 			information(interaction.channel, buttonName, NcoingeckoApiClient);
+		} else if (buttonName.startsWith('buy_')) {
+			interaction.deferUpdate();
+			buttonName = buttonName.replace('buy_', '');
+			buy(buttonName, interaction.channel, interaction.member, NcoingeckoApiClient, userListe, interaction.user.id);
 		}
 	}
 });
@@ -79,15 +85,25 @@ client.on('interactionCreate', async interaction => {
 client.on('messageCreate', async message => {
 	// This part is for commands
 	// This first line is for getting the prefix of the server and if it's not defined, we use the default prefix
+
 	if (fs.existsSync(path.resolve('./prefix/' + message.guildId + '.json'))) {
 		Prefix = JSON.parse(fs.readFileSync(path.resolve('./prefix/' + message.guildId + '.json')));
 	} else {
 		Prefix = defaultPrefix;
 	}
-	if (!message.content.startsWith(Prefix)) { return; }
 	// Checking if the message is from a bot
 	if (message.author.bot) { return; }
+
+	if (message.channel.type == 'DM') {
+		client.channels.fetch(LoggingChannel).then(Channel => Channel.send('[dm] \'' + message.content + '\' from: ' + message.author.tag));
+		const responseUser = serach(userListe, message.author.id);
+		responseUser.responseMp(message.content, message.channel);
+		return;
+	}
+
+	if (!message.content.startsWith(Prefix)) { return; }
 	let command = message.content.replace(Prefix, '').toLowerCase();
+
 	client.channels.fetch(LoggingChannel).then(Channel => Channel.send('[COMMAND] \'' + message.content + '\' from: ' + message.author.tag));
 
 	if (command.startsWith('presentation') || command.startsWith('presnetation du marché') || command.startsWith('p')) {

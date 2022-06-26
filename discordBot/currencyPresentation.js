@@ -18,13 +18,13 @@ async function currencyPresentation(channel, money, client) {
 	const row = new MessageActionRow();
 	row.addComponents(
 		new MessageButton()
-			.setCustomId('buy_' + money.name)
+			.setCustomId('buy_' + money.id)
 			.setLabel('achter ' + money.name)
 			.setStyle('PRIMARY')
 	);
 	row.addComponents(
 		new MessageButton()
-			.setCustomId('sell_' + money.name)
+			.setCustomId('sell_' + money.id)
 			.setLabel('vendre ' + money.name)
 			.setStyle('PRIMARY')
 	);

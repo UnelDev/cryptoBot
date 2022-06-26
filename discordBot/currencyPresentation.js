@@ -1,10 +1,10 @@
-const Discord = require('discord.js');
+const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const path = require('path');
 const draw = require('../tools/drawchart.js');
 async function currencyPresentation(channel, money, client) {
 	const img = draw(money.id, client);
 	const info = await client.add(['info', money.id]);
-	const embed = new Discord.MessageEmbed();
+	const embed = new MessageEmbed();
 	embed.setTitle('information sur ' + money.name + ' à ' + new Date().getHours() + ':' + new Date().getMinutes());
 	embed.setFooter({ text: 'ces donnée peuvent être incorrecte' });
 	embed.addFields(
@@ -15,12 +15,27 @@ async function currencyPresentation(channel, money, client) {
 	embed.setThumbnail(money.large);
 	embed.setImage('attachment://image.png');
 	embed.addFields(constuctFields(info));
+	const row = new MessageActionRow();
+	row.addComponents(
+		new MessageButton()
+			.setCustomId('buy_' + money.name)
+			.setLabel('achter ' + money.name)
+			.setStyle('PRIMARY')
+	);
+	row.addComponents(
+		new MessageButton()
+			.setCustomId('sell_' + money.name)
+			.setLabel('vendre ' + money.name)
+			.setStyle('PRIMARY')
+	);
+
 	channel.send({
 		embeds: [embed],
 		files: [{
 			attachment: path.resolve(await img),
 			name: 'image.png'
-		}]
+		}],
+		components: [row]
 	});
 	client.add(['info', money.id]);
 }
@@ -86,13 +101,13 @@ function calculeStateChange(change) {
 }
 
 function CalculpriceChange(PriceChange) {
-	if (PriceChange > 0 && PriceChange < 20) {
+	if (PriceChange > 0 && PriceChange < 30) {
 		return ':arrow_up_small:';
-	} if (PriceChange >= 20) {
+	} if (PriceChange >= 30) {
 		return ':arrow_double_up:';
-	} else if (PriceChange < 0 && PriceChange > 20) {
+	} else if (PriceChange < 0 && PriceChange > -30) {
 		return ':arrow_down_small:';
-	} else if (PriceChange <= 20) {
+	} else if (PriceChange <= 30) {
 		return ':arrow_double_down:';
 	} else {
 		return ':radio_button:';

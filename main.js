@@ -10,7 +10,6 @@ const marketPresntation = require('./discordBot/marketPresentation.js');
 const information = require('./discordBot/information.js');
 const idToName = require('./tools/convert/IdTo/idToName.js');
 const user = require('./discordBot/user/user.js');
-const presnentWalet = require('./discordBot/user/presentWalet.js');
 const verifyExist = require('./discordBot/user/gestion/verifyExist');
 
 const userListe = new Array();

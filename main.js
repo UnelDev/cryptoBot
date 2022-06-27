@@ -12,7 +12,8 @@ const idToName = require('./tools/convert/IdTo/idToName.js');
 const user = require('./discordBot/user/user.js');
 const verifyExist = require('./discordBot/user/gestion/verifyExist');
 const { buy } = require('./discordBot/user/gestion/buy');
-
+const serach = require('./discordBot/user/gestion/search.js');
+const { sell } = require('./discordBot/user/gestion/sell.js');
 const userListe = new Array();
 
 const client = new Client({
@@ -28,8 +29,6 @@ const client = new Client({
 
 const fs = require('fs');
 const path = require('path');
-const serach = require('./discordBot/user/gestion/search.js');
-
 
 // This variable is changed by me every time I want to change test bot
 const isPublic = false;
@@ -86,6 +85,20 @@ client.on('interactionCreate', async interaction => {
 		} else if (buttonName.startsWith('cancel')) {
 			interaction.deferUpdate();
 			interaction.channel.send('annulation bien prise en compte !');
+		} else if (buttonName.startsWith('sell_')) {
+			interaction.deferUpdate();
+			buttonName = buttonName.replace('sell_', '');
+			sell(buttonName, interaction.channel, interaction.member, NcoingeckoApiClient, userListe, interaction.user.id);
+		} else if (buttonName.startsWith('sellNumber_')) {
+			interaction.deferUpdate();
+			const arrayResponse = buttonName.split('_');
+			const byClient = serach(userListe, interaction.user.id);
+			byClient.sell(NcoingeckoApiClient, interaction.channel, arrayResponse[1], arrayResponse[2]);
+		} else if (buttonName.startsWith('sellFinaly_')) {
+			interaction.deferUpdate();
+			const arrayResponse = buttonName.split('_');
+			const byClient = serach(userListe, interaction.user.id);
+			byClient.sell(NcoingeckoApiClient, interaction.channel, arrayResponse[1], arrayResponse[2]);
 		}
 	}
 });

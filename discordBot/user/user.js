@@ -1,6 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const path = require('path');
 const { buyOnResponse } = require('./gestion/buy.js');
+const { sellOnResponse } = require('./gestion/sell.js');
 const presentWalet = require('./presentWalet.js');
 class user {
 	constructor(id, tag) {
@@ -61,6 +62,7 @@ class user {
 	}
 
 	async sell(CoinGecko, channel, name, quantity) {
+		console.log(quantity);
 		const price = await CoinGecko.add(['priceUsd', name]);
 		const total = price * quantity;
 		if (this.walet[name] < quantity) {
@@ -73,7 +75,7 @@ class user {
 				console.log('error in remove money');
 				return false;
 			}
-			this.walet[index][1] = Number(this.walet[index][1]) - quantity;
+			this.walet[index][1] = Number(this.walet[index][1]) - Number(Math.round(quantity * 1000) / 1000);
 			this.history.push([new Date, JSON.parse(JSON.stringify(this)).walet]);
 			this.toPresent(CoinGecko, channel);
 			return true;
@@ -84,6 +86,10 @@ class user {
 		if (this.watingMp.startsWith('priceFor_')) {
 			this.watingMp.replace('priceFor_', '');
 			buyOnResponse(response, this.watingMp, channel, coingecko);
+			this.watingMp = '';
+		} else if (this.watingMp.startsWith('sellNumber_')) {
+			this.watingMp = this.watingMp.replace('sellNumber_', '');
+			sellOnResponse(response, this.watingMp, channel, coingecko);
 			this.watingMp = '';
 		}
 	}

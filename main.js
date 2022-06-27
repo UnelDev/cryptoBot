@@ -1,4 +1,4 @@
-const { Client, Intents, MessageEmbed } = require('discord.js');
+const { Client, Intents } = require('discord.js');
 require('dotenv').config({ path: __dirname + '/.env' });
 
 // create new instance of crypto client

@@ -1,26 +1,28 @@
 const { MessageEmbed } = require('discord.js');
 const path = require('path');
+const { buyOnResponse } = require('./gestion/buy.js');
 const presentWalet = require('./presentWalet.js');
 class user {
 	constructor(id, tag) {
 		this.id = id;
 		this.tag = tag;
 		this.cash = 100000;
-		this.walet = [['bitcoin', 10]];
+		this.walet = [['bitcoin', '10']];
 		this.history = [[new Date, JSON.parse(JSON.stringify(this)).walet]];
+		this.watingMp = '';
 	}
 
 	async toPresent(CoinGecko, channel) {
 		const embed = new MessageEmbed();
-		embed.setTitle('presentation du compte de #' + this.tag);
+		embed.setTitle('presentation du compte de @' + this.tag);
 		embed.setFooter({ text: 'ces donnée peuvent être incorrecte' });
 		embed.addField('cash', this.cash.toString());
 		for (let i = 0; i < this.walet.length; i++) {
-			if (this.walet[i][1] != 0) {
+			if (Number(this.walet[i][1]) != 0) {
 				let price = await CoinGecko.add(['priceUsd', this.walet[i][0]]);
 				// usd , 1*1000 + '$'
-				price = price * this.walet[i][1];
-				embed.addField(this.walet[i][0], this.walet[i][1] + ' ' + this.walet[i][0] + ' ≈ ' + price.toString() + '$');
+				price = price * Number(this.walet[i][1]);
+				embed.addField(this.walet[i][0], Number(this.walet[i][1]) + ' ' + this.walet[i][0] + ' ≈ ' + price.toString() + '$');
 			}
 		}
 		if (this.history.length > 1) {
@@ -44,9 +46,11 @@ class user {
 			return false;
 		} else {
 			this.cash -= total;
+
 			const index = search(this.walet, name);
 			if (index != -1) {
-				this.walet[index][1] = this.walet[index][1] + quantity;
+				console.log(this.walet[index][1] + '+' + quantity);
+				this.walet[index][1] = Number(this.walet[index][1]) + Number(Math.round(quantity * 1000) / 1000);
 			} else {
 				this.walet.push([name, quantity]);
 			}
@@ -69,11 +73,18 @@ class user {
 				console.log('error in remove money');
 				return false;
 			}
-			this.walet[index][1] = this.walet[index][1] - quantity;
+			this.walet[index][1] = Number(this.walet[index][1]) - quantity;
 			this.history.push([new Date, JSON.parse(JSON.stringify(this)).walet]);
 			this.toPresent(CoinGecko, channel);
 			return true;
 
+		}
+	}
+	async responseMp(response, channel, coingecko) {
+		if (this.watingMp.startsWith('priceFor_')) {
+			this.watingMp.replace('priceFor_', '');
+			buyOnResponse(response, this.watingMp, channel, coingecko);
+			this.watingMp = '';
 		}
 	}
 }

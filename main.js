@@ -1,4 +1,4 @@
-const { Client, Intents } = require('discord.js');
+const { Client, Intents, MessageEmbed } = require('discord.js');
 require('dotenv').config({ path: __dirname + '/.env' });
 
 // create new instance of crypto client
@@ -29,6 +29,7 @@ const client = new Client({
 const fs = require('fs');
 const path = require('path');
 const serach = require('./discordBot/user/gestion/search.js');
+const { helpInteractionRepleay, helpMenu } = require('./discordBot/help.js');
 
 
 // This variable is changed by me every time I want to change test bot
@@ -61,9 +62,7 @@ client.on('interactionCreate', async interaction => {
 	if (interaction.isButton()) {
 		let buttonName = interaction.customId;
 		client.channels.fetch(LoggingChannel).then(Channel => Channel.send('[BUTTON] \'' + interaction.customId + '\' from: ' + interaction.user.tag));
-		if (buttonName.startsWith('help')) {
-			// helpButton(interaction, defaultPrefix);
-		} else if (buttonName.startsWith('search_')) {
+		if (buttonName.startsWith('search_')) {
 			interaction.deferUpdate();
 			buttonName = buttonName.replace('search_', '');
 			const coinName = await idToName(buttonName, NcoingeckoApiClient);
@@ -95,6 +94,10 @@ client.on('interactionCreate', async interaction => {
 			const Nuser = new user(interaction.user.id, interaction.user.tag);
 			userListe.push(Nuser);
 			Nuser.toPresent(NcoingeckoApiClient, interaction.channel);
+		} else if (buttonName.startsWith('help_')) {
+			interaction.deferUpdate();
+			buttonName = buttonName.replace('help_', '');
+			helpInteractionRepleay(buttonName, interaction.message);
 		}
 	}
 });
@@ -139,6 +142,8 @@ client.on('messageCreate', async message => {
 		const Nuser = new user(message.author.id, message.author.tag);
 		userListe.push(Nuser);
 		Nuser.toPresent(NcoingeckoApiClient, message.channel);
+	} else if (command.startsWith('help') || command.startsWith('aide')) {
+		helpMenu(message.author);
 	}
 	return;
 

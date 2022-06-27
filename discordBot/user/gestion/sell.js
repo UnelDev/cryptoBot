@@ -28,7 +28,7 @@ function createEmbed(clientlist, member, name, price) {
 
 async function sellOnResponse(response, devise, channel, coingecko) {
 	devise = devise.replace('priceFor_', '');
-	if (typeof parseFloat(response) != 'number') {
+	if (typeof response != 'number') {
 		channel.send('desolée il faut rentrer un nombre !');
 		return;
 	}

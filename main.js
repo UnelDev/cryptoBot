@@ -86,6 +86,15 @@ client.on('interactionCreate', async interaction => {
 		} else if (buttonName.startsWith('cancel')) {
 			interaction.deferUpdate();
 			interaction.channel.send('annulation bien prise en compte !');
+		} else if (buttonName.startsWith('createAcount')) {
+			interaction.deferUpdate();
+			if (verifyExist(userListe, interaction.user.id) == true) {
+				interaction.channel.send('desolée vous ne pouvez pas avoir plusieur compte');
+				return;
+			}
+			const Nuser = new user(interaction.user.id, interaction.user.tag);
+			userListe.push(Nuser);
+			Nuser.toPresent(NcoingeckoApiClient, interaction.channel);
 		}
 	}
 });
@@ -123,7 +132,6 @@ client.on('messageCreate', async message => {
 		command = command.split(' ').pop();
 		information(message.channel, command, NcoingeckoApiClient);
 	} else if (command.startsWith('create')) {
-
 		if (verifyExist(userListe, message.author.id) == true) {
 			message.channel.send('desolée vous ne pouvez pas avoir plusieur compte');
 			return;

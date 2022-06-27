@@ -4,7 +4,19 @@ const serach = require('./search');
 async function buy(id, channel, member, nCoingeko, clientlist, client) {
 	try {
 		if (!verifyExist(clientlist, client)) {
-			channel.send('vous n\'avez pas de compte !');
+			const embed = new MessageEmbed()
+				.setTitle('vous n\'avez pas de compte !');
+			const row = new MessageActionRow();
+			row.addComponents(
+				new MessageButton()
+					.setCustomId('createAcount')
+					.setLabel('crée un compte !')
+					.setStyle('PRIMARY')
+			);
+			channel.send({
+				embeds: [embed],
+				components: [row]
+			});
 			return;
 		}
 		const price = nCoingeko.add(['priceUsd', id]);

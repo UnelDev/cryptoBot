@@ -7,7 +7,7 @@ class user {
 	constructor(id, tag) {
 		this.id = id;
 		this.tag = tag;
-		this.cash = 1000;
+		this.cash = 100000;
 		this.walet = [];
 		this.history = [[new Date, JSON.parse(JSON.stringify(this)).walet]];
 		this.watingMp = '';

@@ -60,9 +60,7 @@ client.on('interactionCreate', async interaction => {
 	if (interaction.isButton()) {
 		let buttonName = interaction.customId;
 		client.channels.fetch(LoggingChannel).then(Channel => Channel.send('[BUTTON] \'' + interaction.customId + '\' from: ' + interaction.user.tag));
-		if (buttonName.startsWith('help')) {
-			// helpButton(interaction, defaultPrefix);
-		} else if (buttonName.startsWith('search_')) {
+		if (buttonName.startsWith('search_')) {
 			interaction.deferUpdate();
 			buttonName = buttonName.replace('search_', '');
 			const coinName = await idToName(buttonName, NcoingeckoApiClient);
@@ -99,6 +97,19 @@ client.on('interactionCreate', async interaction => {
 			const arrayResponse = buttonName.split('_');
 			const byClient = serach(userListe, interaction.user.id);
 			byClient.sell(NcoingeckoApiClient, interaction.channel, arrayResponse[1], arrayResponse[2]);
+		} else if (buttonName.startsWith('createAcount')) {
+			interaction.deferUpdate();
+			if (verifyExist(userListe, interaction.user.id) == true) {
+				interaction.channel.send('desolée vous ne pouvez pas avoir plusieur compte');
+				return;
+			}
+			const Nuser = new user(interaction.user.id, interaction.user.tag);
+			userListe.push(Nuser);
+			Nuser.toPresent(NcoingeckoApiClient, interaction.channel);
+		} else if (buttonName.startsWith('help_')) {
+			interaction.deferUpdate();
+			buttonName = buttonName.replace('help_', '');
+			helpInteractionRepleay(buttonName, interaction.message);
 		}
 	}
 });
@@ -136,7 +147,6 @@ client.on('messageCreate', async message => {
 		command = command.split(' ').pop();
 		information(message.channel, command, NcoingeckoApiClient);
 	} else if (command.startsWith('create')) {
-
 		if (verifyExist(userListe, message.author.id) == true) {
 			message.channel.send('desolée vous ne pouvez pas avoir plusieur compte');
 			return;
@@ -144,6 +154,8 @@ client.on('messageCreate', async message => {
 		const Nuser = new user(message.author.id, message.author.tag);
 		userListe.push(Nuser);
 		Nuser.toPresent(NcoingeckoApiClient, message.channel);
+	} else if (command.startsWith('help') || command.startsWith('aide')) {
+		helpMenu(message.author);
 	}
 	return;
 

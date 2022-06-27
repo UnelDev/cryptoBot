@@ -1,5 +1,5 @@
 const verifyExist = require('./verifyExist');
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const serach = require('./search');
 async function buy(id, channel, member, nCoingeko, clientlist, client) {
 	try {
@@ -53,8 +53,23 @@ async function buyOnResponse(response, devise, channel, coingecko) {
 		)
 		.setTimestamp()
 		.setFooter({ text: 'le reste de l\'arondit sert a "financeée" le bot. (argent factice)' });
+	const row = new MessageActionRow();
+	row.addComponents(
+		new MessageButton()
+			.setCustomId('buyFinaly_' + devise + '_' + number)
+			.setLabel('finalisée l\'achat')
+			.setStyle('SUCCESS')
+	);
+	row.addComponents(
+		new MessageButton()
+			.setCustomId('cancel')
+			.setLabel('annuler l\'achat')
+			.setStyle('DANGER')
+	);
+
 	channel.send({
-		embeds: [embed]
+		embeds: [embed],
+		components: [row]
 	});
 }
 module.exports = { buy, buyOnResponse };

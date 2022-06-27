@@ -78,6 +78,14 @@ client.on('interactionCreate', async interaction => {
 			interaction.deferUpdate();
 			buttonName = buttonName.replace('buy_', '');
 			buy(buttonName, interaction.channel, interaction.member, NcoingeckoApiClient, userListe, interaction.user.id);
+		} else if (buttonName.startsWith('buyFinaly_')) {
+			interaction.deferUpdate();
+			const arrayResponse = buttonName.split('_');
+			const byClient = serach(userListe, interaction.user.id);
+			byClient.buy(NcoingeckoApiClient, interaction.channel, arrayResponse[1], arrayResponse[2]);
+		} else if (buttonName.startsWith('cancel')) {
+			interaction.deferUpdate();
+			interaction.channel.send('annulation bien prise en compte !');
 		}
 	}
 });

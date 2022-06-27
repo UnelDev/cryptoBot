@@ -14,6 +14,7 @@ const verifyExist = require('./discordBot/user/gestion/verifyExist');
 const { buy } = require('./discordBot/user/gestion/buy');
 const serach = require('./discordBot/user/gestion/search.js');
 const { sell } = require('./discordBot/user/gestion/sell.js');
+const { helpInteractionRepleay, helpMenu } = require('./discordBot/help.js');
 const userListe = new Array();
 
 const client = new Client({

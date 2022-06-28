@@ -64,18 +64,18 @@ class user {
 	}
 
 	async sell(CoinGecko, channel, name, quantity) {
-		console.log(quantity);
+		const index = this.search(this.walet, name);
 		const price = await CoinGecko.add(['priceUsd', name]);
 		let total = quantity * price;
 		total *= 1000;
 		total = Math.trunc(total);
 		total /= 1000;
-		if (this.walet[name] < quantity) {
+		if (this.walet[index][1] < quantity) {
 			channel.send('vous n\'avez pas ' + quantity + ' ' + name);
 			return false;
 		} else {
 			this.cash += total;
-			const index = this.search(this.walet, name);
+
 			if (index == -1) {
 				console.log('error in remove money');
 				return false;

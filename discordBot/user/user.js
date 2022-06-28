@@ -3,14 +3,16 @@ const path = require('path');
 const { buyOnResponse } = require('./gestion/buy.js');
 const { sellOnResponse } = require('./gestion/sell.js');
 const presentWalet = require('./presentWalet.js');
+const saveUser = require('./save.js');
 class user {
-	constructor(id, tag) {
+	constructor(id = '', tag = '', cash = 1000, walet = [], history = [], watingMp = '', isRestore = false) {
 		this.id = id;
 		this.tag = tag;
-		this.cash = 1000;
-		this.walet = [];
-		this.history = [];
-		this.watingMp = '';
+		this.cash = cash;
+		this.walet = walet;
+		this.history = history;
+		this.watingMp = watingMp;
+		if (!isRestore) { saveUser(this); }
 	}
 
 	async toPresent(CoinGecko, channel) {
@@ -48,7 +50,7 @@ class user {
 		} else {
 			this.cash -= total;
 
-			const index = search(this.walet, name);
+			const index = this.search(this.walet, name);
 			if (index != -1) {
 				this.walet[index][1] = Number(this.walet[index][1]) + Number(Math.round(quantity * 1000) / 1000);
 			} else {
@@ -56,6 +58,7 @@ class user {
 			}
 			this.history.push([new Date, JSON.parse(JSON.stringify(this)).walet]);
 			this.toPresent(CoinGecko, channel);
+			saveUser(this);
 			return true;
 		}
 	}
@@ -72,7 +75,7 @@ class user {
 			return false;
 		} else {
 			this.cash += total;
-			const index = search(this.walet, name);
+			const index = this.search(this.walet, name);
 			if (index == -1) {
 				console.log('error in remove money');
 				return false;
@@ -80,6 +83,7 @@ class user {
 			this.walet[index][1] = Number(this.walet[index][1]) - Number(Math.round(quantity * 1000) / 1000);
 			this.history.push([new Date, JSON.parse(JSON.stringify(this)).walet]);
 			this.toPresent(CoinGecko, channel);
+			saveUser(this);
 			return true;
 
 		}
@@ -94,18 +98,18 @@ class user {
 			sellOnResponse(response, this.watingMp, channel, coingecko);
 			this.watingMp = '';
 		}
+		saveUser(this);
 	}
-}
-
-function search(array, comparing) {
-	let result = -1;
-	for (let i = 0, len = array.length; i < len; i++) {
-		if (array[i][0] === comparing) {
-			result = i;
-			break;
+	search(array, comparing) {
+		let result = -1;
+		for (let i = 0, len = array.length; i < len; i++) {
+			if (array[i][0] === comparing) {
+				result = i;
+				break;
+			}
 		}
+		return result;
 	}
-	return result;
 }
 module.exports = user;
 

@@ -1,6 +1,6 @@
 const verifyExist = require('./verifyExist');
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
-const serach = require('./search');
+const { serachid } = require('./search');
 async function buy(id, channel, member, nCoingeko, clientlist, client) {
 	try {
 		if (!verifyExist(clientlist, client)) {
@@ -26,7 +26,7 @@ async function buy(id, channel, member, nCoingeko, clientlist, client) {
 	}
 }
 function createEmbed(clientlist, member, name, price) {
-	const client = serach(clientlist, member.id);
+	const client = serachid(clientlist, member.id);
 	client.watingMp = 'priceFor_' + name;
 	const embed = new MessageEmbed()
 		.setTitle('initiation d\'achat')

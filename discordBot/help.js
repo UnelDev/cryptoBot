@@ -83,6 +83,7 @@ function command(editable) {
 		.addField('info {paramètre (id)}', 'permet d\'optenire des information sur le parametre lest information peuve etre : le nom, une courbe de son evolution sur 24h, son id (utiliser dans les command), son symbole (eur ou BTC) par exemple, et ses diverante evolution de prix a plusieur echelle de temps. apres ca il vous sera proposée dans acheter ou d\'en revendre')
 		.addField('search {paramètre}', 'permet de rechercher le parametre parmis toute les crypto et action disponible ! il vous sera proposer de voir les info sur les 10 premier resultat')
 		.addField('create', 'permet de crée un compte dans le bot, ce compte vous permetera de d\'acheter et de revendre des crypto')
+		.addField('presentation ou p', 'presente l\'etat du marchée avec plusieur crypto tel que: bitcoin, ethereum, binancecoin, iShares MSCI World ETF Tokenized Stock Defichain')
 		.addField('help', 'afiche cette aide');
 	const row = new MessageActionRow();
 	row.addComponents(

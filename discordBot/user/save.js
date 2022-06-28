@@ -30,20 +30,27 @@ async function saveUser(SaveUser) {
 			}
 		});
 	});
-	const logger = fs.createWriteStream('./discordBot/user/save/index.json', {
-		flags: 'a'
-	});
+	const listUser = listId();
+	if (listUser.indexOf(SaveUser.id) === -1) {
+		const logger = fs.createWriteStream('./discordBot/user/save/index.json', {
+			flags: 'a'
+		});
+		logger.write(SaveUser.id + '-_-');
+	}
 
-	logger.write(SaveUser.id + '-_-');
 }
 
-function restore() {
-	const user = require('./user');
+function listId() {
 	let index = fs.readFileSync('./discordBot/user/save/index.json',
 		{ encoding: 'utf8', flag: 'r' });
 	index = index.split('-_-');
 	index.pop();
-	const lisId = index;
+	return index;
+}
+
+function restore() {
+	const user = require('./user');
+	const lisId = listId();
 	console.log(lisId);
 	const userListe = [];
 	lisId.forEach(element => {

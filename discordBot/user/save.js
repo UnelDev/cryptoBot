@@ -14,21 +14,15 @@ async function saveUser(SaveUser) {
 		console.log('saveUser -> name is undefine');
 		return;
 	}
-	fs.access(filePath, err => {
-		if (!err) {
-			('This file already exists');
+	fs.writeFile(filePath, str, err => {
+		if (err) {
+			if (err.code == 'EPERM') {
+				console.log('saveUser -> Unsufficient permissions');
+			} else {
+				console.log('saveUser -> Impossible to create this file ' + err);
+			}
 			return;
 		}
-		fs.writeFile(filePath, str, err => {
-			if (err) {
-				if (err.code == 'EPERM') {
-					console.log('saveUser -> Unsufficient permissions');
-				} else {
-					console.log('saveUser -> Impossible to create this file ' + err);
-				}
-				return;
-			}
-		});
 	});
 	const listUser = listId();
 	if (listUser.indexOf(SaveUser.id) === -1) {
@@ -37,7 +31,6 @@ async function saveUser(SaveUser) {
 		});
 		logger.write(SaveUser.id + '-_-');
 	}
-
 }
 
 function listId() {
@@ -51,7 +44,6 @@ function listId() {
 function restore() {
 	const user = require('./user');
 	const lisId = listId();
-	console.log(lisId);
 	const userListe = [];
 	lisId.forEach(element => {
 		const data = fs.readFileSync('./discordBot/user/save/' + element + '.json',
@@ -60,7 +52,7 @@ function restore() {
 		const Nuser = new user(tempUser.id, tempUser.tag, tempUser.cash, tempUser.walet, tempUser.history, tempUser.watinMp, true);
 		userListe.push(Nuser);
 	});
-	console.log(userListe);
+	return userListe;
 
 }
-module.exports = saveUser;
+module.exports = { saveUser, restore };

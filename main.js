@@ -18,7 +18,10 @@ const { helpInteractionRepleay, helpMenu } = require('./discordBot/help.js');
 const fs = require('fs');
 const path = require('path');
 const { presentUser } = require('./discordBot/user/presentUser');
-const userListe = new Array();
+const { restore } = require('./discordBot/user/save.js');
+
+// resore userListe whith restor
+const userListe = restore();
 
 const client = new Client({
 	intents: [
@@ -51,7 +54,6 @@ const LoggingChannel = process.env.LOGGING_CHANNEL;
 // The default prefix is !
 const defaultPrefix = '!';
 let Prefix = defaultPrefix;
-
 
 client.once('ready', () => {
 	console.log('Connected as ' + client.user.tag);

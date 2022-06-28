@@ -3,7 +3,7 @@ const path = require('path');
 const { buyOnResponse } = require('./gestion/buy.js');
 const { sellOnResponse } = require('./gestion/sell.js');
 const presentWalet = require('./presentWalet.js');
-const saveUser = require('./save.js');
+const { saveUser } = require('./save.js');
 class user {
 	constructor(id = '', tag = '', cash = 1000, walet = [], history = [], watingMp = '', isRestore = false) {
 		this.id = id;

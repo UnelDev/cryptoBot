@@ -15,6 +15,7 @@ async function currencyPresentation(channel, money, client) {
 	embed.setThumbnail(money.large);
 	embed.setImage('attachment://image.png');
 	embed.addFields(constuctFields(info));
+	embed.setTimestamp();
 	const row = new MessageActionRow();
 	row.addComponents(
 		new MessageButton()

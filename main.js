@@ -12,9 +12,12 @@ const idToName = require('./tools/convert/IdTo/idToName.js');
 const user = require('./discordBot/user/user.js');
 const verifyExist = require('./discordBot/user/gestion/verifyExist');
 const { buy } = require('./discordBot/user/gestion/buy');
-const serach = require('./discordBot/user/gestion/search.js');
+const { serachid } = require('./discordBot/user/gestion/search.js');
 const { sell } = require('./discordBot/user/gestion/sell.js');
 const { helpInteractionRepleay, helpMenu } = require('./discordBot/help.js');
+const fs = require('fs');
+const path = require('path');
+const { presentUser } = require('./discordBot/user/presentUser');
 const userListe = new Array();
 
 const client = new Client({
@@ -28,8 +31,6 @@ const client = new Client({
 	]
 });
 
-const fs = require('fs');
-const path = require('path');
 
 // This variable is changed by me every time I want to change test bot
 const isPublic = false;
@@ -79,7 +80,7 @@ client.on('interactionCreate', async interaction => {
 		} else if (buttonName.startsWith('buyFinaly_')) {
 			interaction.deferUpdate();
 			const arrayResponse = buttonName.split('_');
-			const byClient = serach(userListe, interaction.user.id);
+			const byClient = serachid(userListe, interaction.user.id);
 			byClient.buy(NcoingeckoApiClient, interaction.channel, arrayResponse[1], arrayResponse[2]);
 		} else if (buttonName.startsWith('cancel')) {
 			interaction.deferUpdate();
@@ -91,12 +92,12 @@ client.on('interactionCreate', async interaction => {
 		} else if (buttonName.startsWith('sellNumber_')) {
 			interaction.deferUpdate();
 			const arrayResponse = buttonName.split('_');
-			const byClient = serach(userListe, interaction.user.id);
+			const byClient = serachid(userListe, interaction.user.id);
 			byClient.sell(NcoingeckoApiClient, interaction.channel, arrayResponse[1], arrayResponse[2]);
 		} else if (buttonName.startsWith('sellFinaly_')) {
 			interaction.deferUpdate();
 			const arrayResponse = buttonName.split('_');
-			const byClient = serach(userListe, interaction.user.id);
+			const byClient = serachid(userListe, interaction.user.id);
 			byClient.sell(NcoingeckoApiClient, interaction.channel, arrayResponse[1], arrayResponse[2]);
 		} else if (buttonName.startsWith('createAcount')) {
 			interaction.deferUpdate();
@@ -129,7 +130,7 @@ client.on('messageCreate', async message => {
 
 	if (message.channel.type == 'DM') {
 		client.channels.fetch(LoggingChannel).then(Channel => Channel.send('[dm] \'' + message.content + '\' from: ' + message.author.tag));
-		const responseUser = serach(userListe, message.author.id);
+		const responseUser = serachid(userListe, message.author.id);
 		responseUser.responseMp(message.content, message.channel, NcoingeckoApiClient);
 		return;
 	}
@@ -157,11 +158,12 @@ client.on('messageCreate', async message => {
 		Nuser.toPresent(NcoingeckoApiClient, message.channel);
 	} else if (command.startsWith('help') || command.startsWith('aide')) {
 		helpMenu(message.author);
+	} else if (command.startsWith('trader') || command.startsWith('user') || command.startsWith('walet')) {
+		presentUser(userListe, message, NcoingeckoApiClient, Prefix);
 	}
 	return;
 
 });
-
 module.exports = {
 	/**
 	  *

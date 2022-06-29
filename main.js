@@ -36,7 +36,7 @@ const client = new Client({
 
 
 // This variable is changed by me every time I want to change test bot
-const isPublic = true;
+const isPublic = false;
 
 let token;
 

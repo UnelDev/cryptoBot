@@ -17,6 +17,12 @@ function helpMenu(channel) {
 			.setLabel('commande')
 			.setStyle('PRIMARY')
 	);
+	row.addComponents(
+		new MessageButton()
+			.setCustomId('help_tips')
+			.setLabel('tips')
+			.setStyle('PRIMARY')
+	);
 	channel.send({
 		embeds: [embed],
 		components: [row]
@@ -39,6 +45,12 @@ function helpMenuEdit(editable) {
 			.setLabel('commande')
 			.setStyle('PRIMARY')
 	);
+	row.addComponents(
+		new MessageButton()
+			.setCustomId('help_tips')
+			.setLabel('tips')
+			.setStyle('PRIMARY')
+	);
 	editable.edit({
 		embeds: [embed],
 		components: [row]
@@ -52,6 +64,8 @@ function helpInteractionRepleay(message, editable) {
 		legal(editable);
 	} else if (message == 'cmd') {
 		command(editable);
+	} else if (message == 'tips') {
+		tips(editable);
 	}
 
 }
@@ -103,6 +117,17 @@ function tips(editable) {
 	const embed = new MessageEmbed;
 	embed.setTitle('quelque tips !')
 		.setDescription('je vais vous aprendre ici quelque tips sur les crypto est sur moi PCT')
-		.addField('courbe', 'l\'or ce que vous faite la commande p ou prensentation une courbe de la monai s\'afiche, elle est calculer sur 24h. soi vous voulez en voir plus allez sur google ou sur des site de crypto tel que coinmarketcap ou d\'autre.');
+		.addField('courbe', 'lors ce que vous faite la commande p ou prensentation une courbe de la monnaie s\'afiche, elle est calculer sur 24h. si vous voulez en voir plus allez sur google ou sur des site de crypto tel que coinmarketcap ou d\'autre.');
+	const row = new MessageActionRow();
+	row.addComponents(
+		new MessageButton()
+			.setCustomId('help_')
+			.setLabel('menu d\'aide')
+			.setStyle('PRIMARY')
+	);
+	editable.edit({
+		embeds: [embed],
+		components: [row]
+	});
 }
 module.exports = { helpMenu, helpInteractionRepleay };

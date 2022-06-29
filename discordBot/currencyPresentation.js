@@ -2,6 +2,7 @@ const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const path = require('path');
 const draw = require('../tools/drawChart.js');
 async function currencyPresentation(channel, money, client) {
+	let msg = channel.send('generation en cours... https://tenor.com/view/mr-bean-waiting-still-waiting-gif-13052487');
 	const img = draw(money.id, client);
 	const info = await client.add(['info', money.id]);
 	const embed = new MessageEmbed();
@@ -29,8 +30,9 @@ async function currencyPresentation(channel, money, client) {
 			.setLabel('vendre ' + money.name)
 			.setStyle('PRIMARY')
 	);
-
-	channel.send({
+	msg = await msg;
+	msg.edit({
+		content: ' ',
 		embeds: [embed],
 		files: [{
 			attachment: path.resolve(await img),

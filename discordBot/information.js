@@ -6,6 +6,7 @@ async function information(channel, find, client) {
 	if (typeof result[0] != 'undefined' && result[0].name.toLowerCase() === find.toLowerCase()) {
 		currencyPresentation(channel, result[0], client);
 	} else {
+		let msg = channel.send('generation en cours... https://tenor.com/view/mr-bean-waiting-still-waiting-gif-13052487');
 		const row = new MessageActionRow();
 		const row2 = new MessageActionRow();
 		const Embed = new MessageEmbed()
@@ -31,9 +32,19 @@ async function information(channel, find, client) {
 			}
 		}
 		if (result.length > 5) {
-			channel.send({ embeds: [Embed], components: [row, row2] });
+			msg = await msg;
+			msg.edit({
+				content: ' ',
+				embeds: [Embed],
+				components: [row, row2]
+			});
 		} else {
-			channel.send({ embeds: [Embed], components: [row] });
+			msg = await msg;
+			msg.edit({
+				content: ' ',
+				embeds: [Embed],
+				components: [row]
+			});
 		}
 	}
 

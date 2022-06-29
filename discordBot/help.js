@@ -79,7 +79,7 @@ function legal(editable) {
 function command(editable) {
 	const embed = new MessageEmbed;
 	embed.setTitle('aide sur les commande')
-		.setDescription('voici une desccription des diferante commande')
+		.setDescription('voici une desccription des diferante commande toute les commande doive etre precédée du prefix')
 		.addField('info {paramètre (id)}', 'permet d\'optenire des information sur le parametre lest information peuve etre : le nom, une courbe de son evolution sur 24h, son id (utiliser dans les command), son symbole (eur ou BTC) par exemple, et ses diverante evolution de prix a plusieur echelle de temps. apres ca il vous sera proposée dans acheter ou d\'en revendre')
 		.addField('search {paramètre}', 'permet de rechercher le parametre parmis toute les crypto et action disponible ! il vous sera proposer de voir les info sur les 10 premier resultat')
 		.addField('create', 'permet de crée un compte dans le bot, ce compte vous permetera de d\'acheter et de revendre des crypto')
@@ -96,5 +96,12 @@ function command(editable) {
 		embeds: [embed],
 		components: [row]
 	});
+}
+
+function tips(editable) {
+	const embed = new MessageEmbed;
+	embed.setTitle('quelque tips !')
+		.setDescription('je vais vous aprendre ici quelque tips sur les crypto est sur moi PCT')
+		.addField('courbe', 'l\'or ce que vous faite la commande p ou prensentation une courbe de la monai s\'afiche, elle est calculer sur 24h. soi vous voulez en voir plus allez sur google ou sur des site de crypto tel que coinmarketcap ou d\'autre.');
 }
 module.exports = { helpMenu, helpInteractionRepleay };

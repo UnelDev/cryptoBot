@@ -22,17 +22,21 @@ async function presnentWalet(client) {
 	}
 
 	for (let i = 0; i < client.history.length; i++) {
-
-		date.push(client.history[i][0].getHours() + ':' + client.history[i][0].getMinutes());
-		for (let y = 0; y < client.history[i][1].length; y++) {
-			const index = search(dataset, client.history[i][1][y][0]);
-			if (index == -1) {
-				// dataset = [["bitcoin", [10]];
-				dataset.push([client.history[i][1][y][0], [client.history[i][1][y][1]]]);
-			} else {
-				dataset[index][1].push(client.history[i][1][y][1]);
+		try {
+			date.push(client.history[i][0].getHours() + ':' + client.history[i][0].getMinutes());
+			for (let y = 0; y < client.history[i][1].length; y++) {
+				const index = search(dataset, client.history[i][1][y][0]);
+				if (index == -1) {
+					// dataset = [["bitcoin", [10]];
+					dataset.push([client.history[i][1][y][0], [client.history[i][1][y][1]]]);
+				} else {
+					dataset[index][1].push(client.history[i][1][y][1]);
+				}
 			}
+		} catch (error) {
+			console.log('error in present Walet i =' + i + 'client.history = ' + client.history);
 		}
+
 	}
 
 	const chart = new ChartJsImage();

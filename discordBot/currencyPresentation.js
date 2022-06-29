@@ -1,6 +1,6 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const path = require('path');
-const draw = require('../tools/drawchart.js');
+const draw = require('../tools/drawChart.js');
 async function currencyPresentation(channel, money, client) {
 	const img = draw(money.id, client);
 	const info = await client.add(['info', money.id]);

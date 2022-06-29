@@ -8,7 +8,7 @@ const NcoingeckoApiClient = new NcoingeckoApi();
 // include all discord Bot commands
 const marketPresntation = require('./discordBot/marketPresentation.js');
 const information = require('./discordBot/information.js');
-const idToName = require('./tools/convert/IdTo/idToName.js');
+const idToName = require('./tools/convert/idTo/idToName.js');
 const user = require('./discordBot/user/user.js');
 const verifyExist = require('./discordBot/user/gestion/verifyExist');
 const { buy } = require('./discordBot/user/gestion/buy');
@@ -36,7 +36,7 @@ const client = new Client({
 
 
 // This variable is changed by me every time I want to change test bot
-const isPublic = false;
+const isPublic = true;
 
 let token;
 
@@ -52,7 +52,7 @@ const LoggingChannel = process.env.LOGGING_CHANNEL;
 
 
 // The default prefix is !
-const defaultPrefix = '!';
+const defaultPrefix = '§';
 let Prefix = defaultPrefix;
 
 client.once('ready', () => {

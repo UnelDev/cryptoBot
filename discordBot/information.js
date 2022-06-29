@@ -1,6 +1,6 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const currencyPresentation = require('./currencyPresentation.js');
-const search = require('../tools/search');
+const search = require('../tools/search.js');
 async function information(channel, find, client) {
 	const result = await search(find, client);
 	if (typeof result[0] != 'undefined' && result[0].name.toLowerCase() === find.toLowerCase()) {

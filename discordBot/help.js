@@ -84,6 +84,7 @@ function command(editable) {
 		.addField('search {paramètre}', 'permet de rechercher le parametre parmis toute les crypto et action disponible ! il vous sera proposer de voir les info sur les 10 premier resultat')
 		.addField('create', 'permet de crée un compte dans le bot, ce compte vous permetera de d\'acheter et de revendre des crypto')
 		.addField('presentation ou p', 'presente l\'etat du marchée avec plusieur crypto tel que: bitcoin, ethereum, binancecoin, iShares MSCI World ETF Tokenized Stock Defichain')
+		.addField('walet', 'afice les information sur votre walet, peut aussi si cella est pertinant tracée une courbe')
 		.addField('help', 'afiche cette aide');
 	const row = new MessageActionRow();
 	row.addComponents(

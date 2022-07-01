@@ -20,6 +20,7 @@ const path = require('path');
 const { presentUser } = require('./discordBot/user/presentUser');
 const { restore } = require('./discordBot/user/save.js');
 const { moreTime, moreTimeReplay } = require('./discordBot/moreTime.js');
+const ping = require('./tools/ping.js');
 
 // resore userListe whith restor
 const userListe = restore();
@@ -37,7 +38,7 @@ const client = new Client({
 
 
 // This variable is changed by me every time I want to change test bot
-const isPublic = true;
+const isPublic = false;
 
 let token;
 
@@ -151,7 +152,7 @@ client.on('messageCreate', async message => {
 
 	client.channels.fetch(LoggingChannel).then(Channel => Channel.send('[COMMAND] \'' + message.content + '\' from: ' + message.author.tag));
 
-	if (command.startsWith('presentation') || command.startsWith('presnetation du marché') || command.startsWith('p')) {
+	if (command.startsWith('presentation') || command.startsWith('presnetation du marché') || command.startsWith('p') && command != 'ping') {
 		marketPresntation(message, NcoingeckoApiClient);
 	} else if (command.startsWith('information') || command.startsWith('info') || command.startsWith('search')) {
 		command = command.replace('information', '');
@@ -171,6 +172,8 @@ client.on('messageCreate', async message => {
 		helpMenu(message.author);
 	} else if (command.startsWith('trader') || command.startsWith('user') || command.startsWith('walet')) {
 		presentUser(userListe, message, NcoingeckoApiClient, Prefix);
+	} else if (command.startsWith('ping')) {
+		ping(message.channel, NcoingeckoApiClient, new Date());
 	}
 	return;
 

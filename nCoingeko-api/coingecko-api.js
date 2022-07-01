@@ -41,6 +41,10 @@ class NcoingeckoApi {
 			this.runer.push(this.fetchMarketChartRange(args[1], args[2], this.runer.length - 1));
 			const test = await this.runer[this.runer.length - 1];
 			return test;
+		} else if (args[0] === 'ping') {
+			this.runer.push(this.ping(this.runer.length - 1, new Date()));
+			const test = await this.runer[this.runer.length - 1];
+			return test;
 		} else {
 			return 'error in args[0]';
 		}
@@ -124,6 +128,12 @@ class NcoingeckoApi {
 		return res;
 	}
 
+	async ping(index, date) {
+		await this.runer[index - 1];
+		const client = new CoinGecko();
+		await client.ping();
+		return (new Date() - date);
+	}
 }
 module.exports = NcoingeckoApi;
 /*

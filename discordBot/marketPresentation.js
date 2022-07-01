@@ -1,5 +1,5 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
-const APIMarketPResentation = require(require('path').resolve('./tools/marketPresentation.js'));
+const APIMarketPResentation = require('../tools/marketPresentation.js');
 async function marketPresentation(message, client) {
 	const marketPresentationResult = await APIMarketPResentation(['bitcoin', 'ethereum', 'binancecoin', 'ishares-msci-world-etf-tokenized-stock-defichain'], client);
 	const listeOfPrice = [];

@@ -1,5 +1,6 @@
 const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
 const fs = require('fs');
+const path = require('path');
 function anotherTime(devise, nBDay, coingecko) {
 	// the function for generate chart for many timelaps
 	return run(nBDay, coingecko, devise);
@@ -69,12 +70,12 @@ async function run(nBDay, coingecko, devise) {
 
 	const base64Data = base64Image.replace(/^data:image\/png;base64,/, '');
 
-
-	fs.writeFile('./img/' + devise + '_' + nBDay + '.png', base64Data, 'base64', err => {
+	const pathfile = path.resolve('./img/' + devise + '_' + nBDay + '.png')
+	fs.writeFile(pathfile, base64Data, 'base64', err => {
 		if (err) {
 			console.log(err);
 		}
 	});
-	return ('./img/' + devise + '_' + nBDay + '.png');
+	return (pathfile);
 }
 module.exports = anotherTime;

@@ -37,7 +37,7 @@ const client = new Client({
 
 
 // This variable is changed by me every time I want to change test bot
-const isPublic = false;
+const isPublic = true;
 
 let token;
 
@@ -53,7 +53,7 @@ const LoggingChannel = process.env.LOGGING_CHANNEL;
 
 
 // The default prefix is !
-const defaultPrefix = '§';
+const defaultPrefix = '.';
 let Prefix = defaultPrefix;
 client.once('ready', () => {
 	console.log('Connected as ' + client.user.tag);

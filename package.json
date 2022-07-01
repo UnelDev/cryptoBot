@@ -9,6 +9,7 @@
     "coingecko-api": "^1.0.10",
     "discord.js": "^13.8.1",
     "dotenv": "^16.0.1",
+    "eslint": "^8.18.0",
     "nodemon": "^2.0.18"
   },
   "scripts": {

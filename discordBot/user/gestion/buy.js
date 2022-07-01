@@ -30,7 +30,7 @@ function createEmbed(clientlist, member, name, price) {
 	client.watingMp = 'priceFor_' + name;
 	const embed = new MessageEmbed()
 		.setTitle('initiation d\'achat')
-		.setDescription('vous voulez acheter du ' + name + ' cella vous coutera ' + price + ' $ unitée \n combien en voulez vous ?\n repondez uniquement le prix en $ que vous voulez optenire');
+		.setDescription('vous voulez acheter du ' + name + ' cella vous coutera ' + price + ' $ unitée \n combien en voulez vous ?\n repondez uniquement le prix en $ que vous voulez obtenir');
 	member.send({
 		embeds: [embed]
 	});

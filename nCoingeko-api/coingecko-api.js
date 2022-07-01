@@ -37,6 +37,10 @@ class NcoingeckoApi {
 			this.runer.push(this.info(args[1], this.runer.length - 1));
 			const test = await this.runer[this.runer.length - 1];
 			return test;
+		} else if (args[0] === 'fetchMarketChartRange') {
+			this.runer.push(this.fetchMarketChartRange(args[1], args[2], this.runer.length - 1));
+			const test = await this.runer[this.runer.length - 1];
+			return test;
 		} else {
 			return 'error in args[0]';
 		}
@@ -75,7 +79,17 @@ class NcoingeckoApi {
 			return data.data.prices;
 		}
 	}
+	async fetchMarketChartRange(devise, range, index) {
+		// no cache because date change everytime
+		await this.runer[index - 1];
+		const client = new CoinGecko();
+		const data = await client.coins.fetchMarketChartRange(devise, {
+			from: range[0],
+			to: range[1]
+		});
+		return data.data.prices;
 
+	}
 	async search(find, index) {
 		await this.runer[index - 1];
 		const axios = require('axios');

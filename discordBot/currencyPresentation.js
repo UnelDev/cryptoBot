@@ -30,6 +30,12 @@ async function currencyPresentation(channel, money, client) {
 			.setLabel('vendre ' + money.name)
 			.setStyle('PRIMARY')
 	);
+	row.addComponents(
+		new MessageButton()
+			.setCustomId('moreTime_' + money.id)
+			.setLabel('graphique autre periode')
+			.setStyle('PRIMARY')
+	);
 	msg = await msg;
 	msg.edit({
 		content: ' ',

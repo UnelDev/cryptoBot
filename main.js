@@ -19,6 +19,7 @@ const fs = require('fs');
 const path = require('path');
 const { presentUser } = require('./discordBot/user/presentUser');
 const { restore } = require('./discordBot/user/save.js');
+const { moreTime, moreTimeReplay } = require('./discordBot/moreTime.js');
 
 // resore userListe whith restor
 const userListe = restore();
@@ -54,7 +55,6 @@ const LoggingChannel = process.env.LOGGING_CHANNEL;
 // The default prefix is !
 const defaultPrefix = '§';
 let Prefix = defaultPrefix;
-
 client.once('ready', () => {
 	console.log('Connected as ' + client.user.tag);
 });
@@ -114,6 +114,15 @@ client.on('interactionCreate', async interaction => {
 			interaction.deferUpdate();
 			buttonName = buttonName.replace('help_', '');
 			helpInteractionRepleay(buttonName, interaction.message);
+		} else if (buttonName.startsWith('moreTime_')) {
+			interaction.deferUpdate();
+			buttonName = buttonName.replace('moreTime_', '');
+			moreTime(interaction.channel, buttonName);
+		} else if (buttonName.startsWith('moreInformationChart_')) {
+			interaction.deferUpdate();
+			const response = buttonName.split('_');
+			moreTimeReplay(interaction.channel, response[1], response[2], NcoingeckoApiClient);
+
 		}
 	}
 });

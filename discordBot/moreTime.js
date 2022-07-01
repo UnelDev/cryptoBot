@@ -117,6 +117,7 @@ async function moreTimeReplay(channel, devise, time, coingecko) {
 	embed.setTitle('information sur ' + devise + text)
 		.setDescription('voici un graphique de l\'evolution des prix de ' + devise + text)
 		.setImage('attachment://image.png')
+		.setFooter({ text: 'ces donnée peuvent être incorrecte' })
 		.setTimestamp();
 	msg = await msg;
 	msg.edit({

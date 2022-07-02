@@ -1,5 +1,5 @@
 const { MessageActionRow, MessageButton } = require('discord.js');
-const { serachTag } = require('./gestion/search.js');
+const { serachTag, searchIndexToId } = require('./gestion/search.js');
 
 function presentUser(userListe, message, coingecko, Prefix) {
 	let text = message.content.replace(Prefix, '');
@@ -8,7 +8,9 @@ function presentUser(userListe, message, coingecko, Prefix) {
 	text = text.replace('walet', '');
 	text = text.replace(' ', '');
 	text = text.replace('@', '');
-	let index;
+	text = text.replace('<', '');
+	text = text.replace('>', '');
+	let index = -1;
 	if (text == '') {
 		index = serachTag(userListe, message.author.tag);
 		if (index == -1) {
@@ -26,12 +28,20 @@ function presentUser(userListe, message, coingecko, Prefix) {
 			return;
 		}
 	} else {
-		index = serachTag(userListe, text);
+		console.log(text);
+		console.log(userListe);
+		// if user write @wumpus the message contain id of wumpus
+		index = searchIndexToId(userListe, text);
 		if (index == -1) {
-			message.channel.send('client non trouvée !');
-			return;
+			// but if user write @wumpus#0001 the messgage contain tag of wumpus
+			index = serachTag(userListe, text);
+			if (index == -1) {
+				message.channel.send('client non trouvée parmi les id et les tag connu !');
+				return;
+			}
 		}
 	}
+	console.log(index);
 	userListe[index].toPresent(coingecko, message.channel);
 }
 exports.presentUser = presentUser;

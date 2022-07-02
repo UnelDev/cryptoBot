@@ -28,8 +28,6 @@ function presentUser(userListe, message, coingecko, Prefix) {
 			return;
 		}
 	} else {
-		console.log(text);
-		console.log(userListe);
 		// if user write @wumpus the message contain id of wumpus
 		index = searchIndexToId(userListe, text);
 		if (index == -1) {
@@ -41,7 +39,6 @@ function presentUser(userListe, message, coingecko, Prefix) {
 			}
 		}
 	}
-	console.log(index);
 	userListe[index].toPresent(coingecko, message.channel);
 }
 exports.presentUser = presentUser;

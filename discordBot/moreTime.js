@@ -119,6 +119,25 @@ async function moreTimeReplay(channel, devise, time, coingecko) {
 		.setImage('attachment://image.png')
 		.setFooter({ text: 'ces donnée peuvent être incorrecte' })
 		.setTimestamp();
+	const row = new MessageActionRow();
+	row.addComponents(
+		new MessageButton()
+			.setCustomId('buy_' + devise)
+			.setLabel('achter ' + devise)
+			.setStyle('PRIMARY')
+	);
+	row.addComponents(
+		new MessageButton()
+			.setCustomId('sell_' + devise)
+			.setLabel('vendre ' + devise)
+			.setStyle('PRIMARY')
+	);
+	row.addComponents(
+		new MessageButton()
+			.setCustomId('moreTime_' + devise)
+			.setLabel('graphique autre periode')
+			.setStyle('PRIMARY')
+	);
 	msg = await msg;
 	msg.edit({
 		content: ' ',
@@ -126,7 +145,8 @@ async function moreTimeReplay(channel, devise, time, coingecko) {
 		files: [{
 			attachment: path.resolve(await img),
 			name: 'image.png'
-		}]
+		}],
+		components: [row]
 	});
 }
 

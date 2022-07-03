@@ -16,6 +16,7 @@ async function currencyPresentation(channel, money, client) {
 	embed.setThumbnail(money.large);
 	embed.setImage('attachment://image.png');
 	embed.addFields(constuctFields(info));
+	constructDescrition(info);
 	embed.setTimestamp();
 	const row = new MessageActionRow();
 	row.addComponents(
@@ -121,5 +122,27 @@ function CalculpriceChange(PriceChange) {
 	} else {
 		return ':radio_button:';
 	}
+}
+
+function constructDescrition(info) {
+	let text = '';
+	if (info.description.fr != '') {
+		text = info.description.fr;
+	} else if (info.description.en != '') {
+		text = info.description.en;
+	}
+	text.replace('\'\\r\\n\'', '<br>');
+	text = text.split('+');
+	for (let i = 0; i < text.length; i++) {
+		if (text[i].startsWith('\'')) {
+			text[i].shift();
+		}
+	}
+	text = text.join('+');
+	text.replace('\\r\\n\' + ', ' < br >');
+	console.log(text);
+
+
+	let html = '';
 }
 module.exports = currencyPresentation;

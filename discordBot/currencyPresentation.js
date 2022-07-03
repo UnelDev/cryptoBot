@@ -17,8 +17,7 @@ async function currencyPresentation(channel, money, client, isDev) {
 	);
 	embed.setThumbnail(money.large);
 	embed.setImage('attachment://image.png');
-	embed.addFields(constuctFields(info));
-	constructDescrition(info, isDev);
+	embed.addFields(constuctFields(info, isDev));
 	embed.setTimestamp();
 	const row = new MessageActionRow();
 	row.addComponents(
@@ -52,7 +51,7 @@ async function currencyPresentation(channel, money, client, isDev) {
 	client.add(['info', money.id]);
 }
 
-function constuctFields(info) {
+function constuctFields(info, isDev) {
 	const fields = [];
 	if (info.market_data.current_price.usd) {
 		const sate = CalculpriceChange(info.market_data.price_change_percentage_24h);
@@ -99,6 +98,7 @@ function constuctFields(info) {
 	if (info.links.announcement_url[0] != '') {
 		link += 'lien d\'annonce : ' + info.links.announcement_url[0];
 	}
+	link += 'description : ' + constructDescrition(info, isDev);
 	if (link != '') {
 		fields.push({ name: 'lien', value: link });
 	}
@@ -129,26 +129,39 @@ function CalculpriceChange(PriceChange) {
 function constructDescrition(info, isDev) {
 	let pathOfFile;
 	let pathOftemplate;
+	let nameUrl = info.name;
+	if (nameUrl.includes(' ')) {
+		nameUrl = info.name.replaceAll(' ', '-');
+	}
+	let link;
 	if (isDev) {
 		//						   pi home /
-		pathOfFile = path.resolve('../../../var/www/html/presentationOfCrypto/' + info.name + '.html');
+		pathOfFile = path.resolve('../../../var/www/html/presentationOfCrypto/' + nameUrl + '.html');
 		pathOftemplate = path.resolve('../../../var/www/html/presentationOfCrypto/presentationOfCrypto.html');
+		link = 'http://bot.anantasystem.com/presentationOfCrypto/' + nameUrl + '.html';
 	} else {
-		pathOfFile = path.resolve('./site/' + info.name + '.html');
+		pathOfFile = path.resolve('./site/' + nameUrl + '.html');
 		pathOftemplate = path.resolve('./site/presentationOfCrypto.html');
+		link = 'http://127.0.0.1:5500/site/' + nameUrl + '.html';
 	}
 
 	if (existsSync(pathOfFile)) {
-		return;
+		return link;
 	}
 	let text = '';
 	let adversment = '';
 	if (info.description.fr != '') {
 		text = info.description.fr;
+		console.log(1);
 	} else if (info.description.en != '') {
 		text = info.description.en;
+		console.log(2);
 		adversment = 'desolée mais ' + info.name + ' n\'a pas de description en francais !';
+	} else {
+		console.log(3);
+		adversment = 'desolée mais il n\'y a pas de description disponible pour ' + info.name;
 	}
+	console.log(info);
 	text.replace('\'\\r\\n\'', '<br>');
 	text = text.split('+');
 	for (let i = 0; i < text.length; i++) {
@@ -170,6 +183,7 @@ function constructDescrition(info, isDev) {
 	file = file.replace('$avertment$', adversment);
 
 	fs.writeFileSync(pathOfFile, file);
+	return link;
 
 }
 module.exports = currencyPresentation;

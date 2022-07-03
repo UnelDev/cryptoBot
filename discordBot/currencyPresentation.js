@@ -96,7 +96,7 @@ function constuctFields(info, isDev) {
 		link += 'blockchain : ' + info.links.blockchain_site[0] + '\n';
 	}
 	if (info.links.announcement_url[0] != '') {
-		link += 'lien d\'annonce : ' + info.links.announcement_url[0];
+		link += 'lien d\'annonce : ' + info.links.announcement_url[0] + '\n';
 	}
 	link += 'description : ' + constructDescrition(info, isDev);
 	if (link != '') {

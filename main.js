@@ -70,12 +70,12 @@ client.on('interactionCreate', async interaction => {
 			buttonName = buttonName.replace('search_', '');
 			const coinName = await idToName(buttonName, NcoingeckoApiClient);
 			// coin name is a array
-			information(interaction.channel, coinName[0], NcoingeckoApiClient);
+			information(interaction.channel, coinName[0], NcoingeckoApiClient, isPublic);
 
 		} else if (buttonName.startsWith('visualize_')) {
 			interaction.deferUpdate();
 			buttonName = buttonName.replace('visualize_', '');
-			information(interaction.channel, buttonName, NcoingeckoApiClient);
+			information(interaction.channel, buttonName, NcoingeckoApiClient, isPublic);
 		} else if (buttonName.startsWith('buy_')) {
 			interaction.deferUpdate();
 			buttonName = buttonName.replace('buy_', '');
@@ -159,7 +159,7 @@ client.on('messageCreate', async message => {
 		command = command.replace('info', '');
 		command = command.replace('search', '');
 		command = command.split(' ').pop();
-		information(message.channel, command, NcoingeckoApiClient);
+		information(message.channel, command, NcoingeckoApiClient, isPublic);
 	} else if (command.startsWith('create')) {
 		if (verifyExist(userListe, message.author.id) == true) {
 			message.channel.send('desolée vous ne pouvez pas avoir plusieur compte');

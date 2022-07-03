@@ -1,7 +1,9 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const path = require('path');
 const draw = require('../tools/drawChart.js');
-async function currencyPresentation(channel, money, client) {
+const existsSync = require('node:fs').existsSync;
+const fs = require('fs');
+async function currencyPresentation(channel, money, client, isDev) {
 	let msg = channel.send('generation en cours... https://tenor.com/view/mr-bean-waiting-still-waiting-gif-13052487');
 	const img = draw(money.id, client);
 	const info = await client.add(['info', money.id]);
@@ -16,7 +18,7 @@ async function currencyPresentation(channel, money, client) {
 	embed.setThumbnail(money.large);
 	embed.setImage('attachment://image.png');
 	embed.addFields(constuctFields(info));
-	constructDescrition(info);
+	constructDescrition(info, isDev);
 	embed.setTimestamp();
 	const row = new MessageActionRow();
 	row.addComponents(
@@ -124,12 +126,28 @@ function CalculpriceChange(PriceChange) {
 	}
 }
 
-function constructDescrition(info) {
+function constructDescrition(info, isDev) {
+	let pathOfFile;
+	let pathOftemplate;
+	if (isDev) {
+		//						   pi home /
+		pathOfFile = path.resolve('../../../var/www/html/presentationOfCrypto/' + info.name + '.html');
+		pathOftemplate = path.resolve('../../../var/www/html/presentationOfCrypto/presentationOfCrypto.html');
+	} else {
+		pathOfFile = path.resolve('./site/' + info.name + '.html');
+		pathOftemplate = path.resolve('./site/presentationOfCrypto.html');
+	}
+
+	if (existsSync(pathOfFile)) {
+		return;
+	}
 	let text = '';
+	let adversment = '';
 	if (info.description.fr != '') {
 		text = info.description.fr;
 	} else if (info.description.en != '') {
 		text = info.description.en;
+		adversment = 'desolée mais ' + info.name + ' n\'a pas de description en francais !';
 	}
 	text.replace('\'\\r\\n\'', '<br>');
 	text = text.split('+');
@@ -140,9 +158,18 @@ function constructDescrition(info) {
 	}
 	text = text.join('+');
 	text.replace('\\r\\n\' + ', ' < br >');
-	console.log(text);
 
+	let file = fs.readFileSync(pathOftemplate,
+		{ encoding: 'utf8', flag: 'r' });
 
-	let html = '';
+	const name = info.name;
+	file = file.replace('$name1$', name);
+	file = file.replace('$name2$', name);
+	file = file.replace('$name3$', name);
+	file = file.replace('$descriptionOfCrypto$', text);
+	file = file.replace('$avertment$', adversment);
+
+	fs.writeFileSync(pathOfFile, file);
+
 }
 module.exports = currencyPresentation;

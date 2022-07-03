@@ -41,7 +41,7 @@
         margin-left: auto;
         margin-right: auto;
         margin-top: 5px;
-        width: max-content;
+        width: 80vw;
         height: max-content;
     }
 
@@ -63,7 +63,7 @@
         font-weight: 900;
         background-color: #F5F5F5;
         border-radius: 3px;
-        width: 740px;
+        width: 80vw;
         height: max-content;
         margin: 0px auto 10px auto;
         padding-left: 5px;
@@ -72,11 +72,12 @@
     }
 
     footer {
+        font-family: "aleo";
         background: #2f2f2f;
         width: 100%;
-        padding-top: 50px;
+        padding-top: 5vh;
         position: fixed;
-        height: 50px;
+        height: 5vh;
         bottom: 0px;
         left: 0px;
         right: 0px;
@@ -84,7 +85,8 @@
     }
 
     div.footerName {
-        margin-right: 50px;
+        font-family: "aleo";
+        margin-right: 5vw;
         color: #F5F5F5;
         font-size: 20px;
         margin-top: -10px;
@@ -93,7 +95,8 @@
     }
 
     div.footerGitHub {
-        margin-right: 50px;
+        font-family: "aleo";
+        margin-right: 5vw;
         color: #F5F5F5;
         font-size: 20px;
         margin-top: -25px;

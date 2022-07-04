@@ -7,6 +7,15 @@ function serachid(userListe, id) {
 	}
 	return exist;
 }
+function searchIndexToId(userListe, id) {
+	let exist = -1;
+	for (let i = 0; i < userListe.length; i++) {
+		if (userListe[i].id == id) {
+			exist = i;
+		}
+	}
+	return exist;
+}
 function serachTag(userListe, tag) {
 	let exist = -1;
 	for (let i = 0; i < userListe.length; i++) {
@@ -16,4 +25,4 @@ function serachTag(userListe, tag) {
 	}
 	return exist;
 }
-module.exports = { serachid, serachTag };
+module.exports = { serachid, serachTag, searchIndexToId };

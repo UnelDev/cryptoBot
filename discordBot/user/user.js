@@ -1,4 +1,3 @@
-const chartWalet = require('./chartWalet.js');
 const { buyOnResponse } = require('./gestion/buy.js');
 const { sellOnResponse } = require('./gestion/sell.js');
 const toPresent = require('./gestion/topresent.js');
@@ -15,10 +14,7 @@ class user {
 	}
 
 	async toPresent(CoinGecko, channel) {
-		// toPresent(CoinGecko, channel, this);
-		if (this.history.length > 1) {
-			chartWalet(this, CoinGecko);
-		}
+		toPresent(CoinGecko, channel, this);
 	}
 
 	async buy(CoinGecko, channel, name, quantity) {

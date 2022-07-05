@@ -13,7 +13,7 @@ async function chartWalet(user, coingecko) {
 	});
 
 	// devise  = [ 'monero', 'tezos' ]
-	await run(timeStart, coingecko, devise);
+	return (await run(timeStart, coingecko, devise));
 }
 
 async function create(timeStart, coingecko, devise) {

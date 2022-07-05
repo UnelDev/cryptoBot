@@ -1,6 +1,6 @@
 const path = require('path');
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
-const presnentWalet = require('../presentWalet');
+const chartWalet = require('../chartWalet');
 async function toPresent(CoinGecko, channel, user) {
 	const embed = new MessageEmbed();
 	embed.setTitle('presentation du compte de @' + user.tag);
@@ -20,10 +20,12 @@ async function toPresent(CoinGecko, channel, user) {
 	embed.addField('total ', ' ≈ ' + total.toString() + '$');
 
 	if (user.history.length > 1) {
+		const pathOfImg = chartWalet(user, CoinGecko);
+		embed.setImage('attachment://image.png');
 		channel.send({
 			embeds: [embed],
 			files: [{
-				attachment: path.resolve(await presnentWalet(user)),
+				attachment: path.resolve(await pathOfImg),
 				name: 'image.png'
 			}],
 			components: CreateButon(user)

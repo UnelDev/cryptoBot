@@ -1,7 +1,9 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const path = require('path');
 const draw = require('../tools/drawChart.js');
-async function currencyPresentation(channel, money, client) {
+const existsSync = require('node:fs').existsSync;
+const fs = require('fs');
+async function currencyPresentation(channel, money, client, isDev) {
 	let msg = channel.send('generation en cours... https://tenor.com/view/mr-bean-waiting-still-waiting-gif-13052487');
 	const img = draw(money.id, client);
 	const info = await client.add(['info', money.id]);
@@ -15,7 +17,7 @@ async function currencyPresentation(channel, money, client) {
 	);
 	embed.setThumbnail(money.large);
 	embed.setImage('attachment://image.png');
-	embed.addFields(constuctFields(info));
+	embed.addFields(constuctFields(info, isDev));
 	embed.setTimestamp();
 	const row = new MessageActionRow();
 	row.addComponents(
@@ -49,7 +51,7 @@ async function currencyPresentation(channel, money, client) {
 	client.add(['info', money.id]);
 }
 
-function constuctFields(info) {
+function constuctFields(info, isDev) {
 	const fields = [];
 	if (info.market_data.current_price.usd) {
 		const sate = CalculpriceChange(info.market_data.price_change_percentage_24h);
@@ -94,8 +96,9 @@ function constuctFields(info) {
 		link += 'blockchain : ' + info.links.blockchain_site[0] + '\n';
 	}
 	if (info.links.announcement_url[0] != '') {
-		link += 'lien d\'annonce : ' + info.links.announcement_url[0];
+		link += 'lien d\'annonce : ' + info.links.announcement_url[0] + '\n';
 	}
+	link += 'description : ' + constructDescrition(info, isDev);
 	if (link != '') {
 		fields.push({ name: 'lien', value: link });
 	}
@@ -121,5 +124,66 @@ function CalculpriceChange(PriceChange) {
 	} else {
 		return ':radio_button:';
 	}
+}
+
+function constructDescrition(info, isDev) {
+	let pathOfFile;
+	let pathOftemplate;
+	let nameUrl = info.name;
+	if (nameUrl.includes(' ')) {
+		nameUrl = info.name.replaceAll(' ', '-');
+	}
+	let link;
+	if (isDev) {
+		//						   pi home /
+		pathOfFile = path.resolve('../../../var/www/html/presentationOfCrypto/' + nameUrl + '.html');
+		pathOftemplate = path.resolve('../../../var/www/html/PCT/presentationOfCrypto.html');
+		link = 'http://bot.anantasystem.com/PCT/presentationOfCrypto/' + nameUrl + '.html';
+	} else {
+		pathOfFile = path.resolve('./site/' + nameUrl + '.html');
+		pathOftemplate = path.resolve('./site/presentationOfCrypto.html');
+		link = 'http://127.0.0.1:5500/site/' + nameUrl + '.html';
+	}
+
+	if (existsSync(pathOfFile)) {
+		return link;
+	}
+	let text = '';
+	let adversment = '';
+	if (info.description.fr != '') {
+		text = info.description.fr;
+		console.log(1);
+	} else if (info.description.en != '') {
+		text = info.description.en;
+		console.log(2);
+		adversment = 'desolée mais ' + info.name + ' n\'a pas de description en francais !';
+	} else {
+		console.log(3);
+		adversment = 'desolée mais il n\'y a pas de description disponible pour ' + info.name;
+	}
+	console.log(info);
+	text.replace('\'\\r\\n\'', '<br>');
+	text = text.split('+');
+	for (let i = 0; i < text.length; i++) {
+		if (text[i].startsWith('\'')) {
+			text[i].shift();
+		}
+	}
+	text = text.join('+');
+	text.replace('\\r\\n\' + ', ' < br >');
+
+	let file = fs.readFileSync(pathOftemplate,
+		{ encoding: 'utf8', flag: 'r' });
+
+	const name = info.name;
+	file = file.replace('$name1$', name);
+	file = file.replace('$name2$', name);
+	file = file.replace('$name3$', name);
+	file = file.replace('$descriptionOfCrypto$', text);
+	file = file.replace('$avertment$', adversment);
+
+	fs.writeFileSync(pathOfFile, file);
+	return link;
+
 }
 module.exports = currencyPresentation;

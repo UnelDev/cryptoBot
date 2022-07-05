@@ -1,10 +1,10 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const currencyPresentation = require('./currencyPresentation.js');
 const search = require('../tools/search.js');
-async function information(channel, find, client) {
+async function information(channel, find, client, isDev) {
 	const result = await search(find, client);
 	if (typeof result[0] != 'undefined' && result[0].name.toLowerCase() === find.toLowerCase()) {
-		currencyPresentation(channel, result[0], client);
+		currencyPresentation(channel, result[0], client, isDev);
 	} else {
 		let msg = channel.send('generation en cours... https://tenor.com/view/mr-bean-waiting-still-waiting-gif-13052487');
 		const row = new MessageActionRow();

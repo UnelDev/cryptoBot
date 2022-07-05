@@ -1,8 +1,6 @@
-const { MessageEmbed } = require('discord.js');
-const path = require('path');
 const { buyOnResponse } = require('./gestion/buy.js');
 const { sellOnResponse } = require('./gestion/sell.js');
-const presentWalet = require('./presentWalet.js');
+const toPresent = require('./gestion/topresent.js');
 const { saveUser } = require('./save.js');
 class user {
 	constructor(id = '', tag = '', cash = 1000, walet = [], history = [], watingMp = '', isRestore = false) {
@@ -16,29 +14,7 @@ class user {
 	}
 
 	async toPresent(CoinGecko, channel) {
-		const embed = new MessageEmbed();
-		embed.setTitle('presentation du compte de @' + this.tag);
-		embed.setFooter({ text: 'ces donnée peuvent être incorrecte' });
-		embed.addField('cash', this.cash.toString());
-		for (let i = 0; i < this.walet.length; i++) {
-			if (Number(this.walet[i][1]) != 0) {
-				let price = await CoinGecko.add(['priceUsd', this.walet[i][0]]);
-				// usd , 1*1000 + '$'
-				price = price * Number(this.walet[i][1]);
-				embed.addField(this.walet[i][0], Number(this.walet[i][1]) + ' ' + this.walet[i][0] + ' ≈ ' + price.toString() + '$');
-			}
-		}
-		if (this.history.length > 1) {
-			channel.send({
-				embeds: [embed],
-				files: [{
-					attachment: path.resolve(await presentWalet(this)),
-					name: 'image.png'
-				}]
-			});
-		} else {
-			channel.send({ embeds: [embed] });
-		}
+		toPresent(CoinGecko, channel, this);
 	}
 
 	async buy(CoinGecko, channel, name, quantity) {

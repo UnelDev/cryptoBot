@@ -137,8 +137,8 @@ function constructDescrition(info, isDev) {
 	if (isDev) {
 		//						   pi home /
 		pathOfFile = path.resolve('../../../var/www/html/presentationOfCrypto/' + nameUrl + '.html');
-		pathOftemplate = path.resolve('../../../var/www/html/presentationOfCrypto/presentationOfCrypto.html');
-		link = 'http://bot.anantasystem.com/presentationOfCrypto/' + nameUrl + '.html';
+		pathOftemplate = path.resolve('../../../var/www/html/PCT/presentationOfCrypto.html');
+		link = 'http://bot.anantasystem.com/PCT/presentationOfCrypto/' + nameUrl + '.html';
 	} else {
 		pathOfFile = path.resolve('./site/' + nameUrl + '.html');
 		pathOftemplate = path.resolve('./site/presentationOfCrypto.html');

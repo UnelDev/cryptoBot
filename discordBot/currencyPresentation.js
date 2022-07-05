@@ -136,7 +136,7 @@ function constructDescrition(info, isDev) {
 	let link;
 	if (isDev) {
 		//						   pi home /
-		pathOfFile = path.resolve('../../../var/www/html/presentationOfCrypto/' + nameUrl + '.html');
+		pathOfFile = path.resolve('../../../var/www/html/PCT/presentationOfCrypto/' + nameUrl + '.html');
 		pathOftemplate = path.resolve('../../../var/www/html/PCT/presentationOfCrypto.html');
 		link = 'http://bot.anantasystem.com/PCT/presentationOfCrypto/' + nameUrl + '.html';
 	} else {
@@ -152,16 +152,12 @@ function constructDescrition(info, isDev) {
 	let adversment = '';
 	if (info.description.fr != '') {
 		text = info.description.fr;
-		console.log(1);
 	} else if (info.description.en != '') {
 		text = info.description.en;
-		console.log(2);
 		adversment = 'desolée mais ' + info.name + ' n\'a pas de description en francais !';
 	} else {
-		console.log(3);
 		adversment = 'desolée mais il n\'y a pas de description disponible pour ' + info.name;
 	}
-	console.log(info);
 	text.replace('\'\\r\\n\'', '<br>');
 	text = text.split('+');
 	for (let i = 0; i < text.length; i++) {
@@ -186,4 +182,5 @@ function constructDescrition(info, isDev) {
 	return link;
 
 }
+
 module.exports = currencyPresentation;

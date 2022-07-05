@@ -60,13 +60,10 @@ function CreateButon(user) {
 		nbBouton++;
 	}
 	if (nbBouton < 5) {
-		console.log(1);
 		return [buttons];
 	} else if (nbBouton < 10) {
-		console.log(2);
 		return [buttons, buttons0];
 	} else if (nbBouton < 15) {
-		console.log(3);
 		return [buttons, buttons0, buttons1];
 	} else {
 		return [];

@@ -38,7 +38,7 @@ async function create(nBDay, coingecko, devise) {
 		data: {
 			labels: name,
 			datasets: [{
-				label: 'bitcoin',
+				label: devise,
 				data: value,
 				fill: false,
 				backgroundColor: ['rgba(54, 162, 235, 0.2)'],
@@ -70,7 +70,7 @@ async function run(nBDay, coingecko, devise) {
 
 	const base64Data = base64Image.replace(/^data:image\/png;base64,/, '');
 
-	const pathfile = path.resolve('./img/' + devise + '_' + nBDay + '.png')
+	const pathfile = path.resolve('./img/' + devise + '_' + nBDay + '.png');
 	fs.writeFile(pathfile, base64Data, 'base64', err => {
 		if (err) {
 			console.log(err);

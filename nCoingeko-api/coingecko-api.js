@@ -71,7 +71,7 @@ class NcoingeckoApi {
 	async getMarketChart(devise, index) {
 		// creation de la clef devise pour le cache temps d'expiration 4 heures
 		const key = 'fetchMarketChart_' + devise;
-		if (typeof this.cache[key] != 'undefined' && this.cache[key]['date'] != 'undefined' && new Date().getTime() - this.cache[key]['date'].getTime() <= 14400000) {
+		if (typeof this.cache[key] != 'undefined' && this.cache[key]['date'] != 'undefined' && new Date().getTime() - this.cache[key]['date'].getTime() <= 60000) {
 			return this.cache[key]['data'];
 		} else {
 			await this.runer[index - 1];

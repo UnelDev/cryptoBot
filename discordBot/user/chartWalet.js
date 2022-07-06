@@ -13,7 +13,7 @@ async function chartWalet(user, coingecko) {
 	});
 
 	// devise  = [ 'monero', 'tezos' ]
-	return (await run(timeStart, coingecko, devise));
+	return (await run(timeStart, coingecko, LastHistory[0]));
 }
 
 async function create(timeStart, coingecko, devise) {
@@ -25,7 +25,12 @@ async function create(timeStart, coingecko, devise) {
 
 	const listOfMarket = [];
 	let sleep = devise.map(async element => {
-		listOfMarket.push(await coingecko.add(['fetchMarketChartRange', element, [firstTime, lastTime]]));
+		const allPrices = await coingecko.add(['fetchMarketChartRange', element[0], [firstTime, lastTime]]);
+		for (let i = 0; i < allPrices.length; i++) {
+			console.log(allPrices[i][1] * Number(element[1]));
+			allPrices[i][1] *= Number(element[1]);
+		}
+		listOfMarket.push(allPrices);
 	});
 	await Promise.all(sleep);
 	// listOfMarket = [time,price],[ 1654513322653, 194.52588451732944 ]
@@ -90,7 +95,7 @@ async function run(timeStart, coingecko, devise) {
 
 	const base64Data = base64Image.replace(/^data:image\/png;base64,/, '');
 
-	const pathfile = path.resolve('./img/' + devise[0] + '_' + timeStart + '.png');
+	const pathfile = path.resolve('./img/' + devise[0][0] + '_' + timeStart + '.png');
 	fs.writeFile(pathfile, base64Data, 'base64', err => {
 		if (err) {
 			console.log(err);

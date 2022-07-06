@@ -4,6 +4,9 @@ require('dotenv').config({ path: __dirname + '/.env' });
 // create new instance of crypto client
 const NcoingeckoApi = require('./nCoingeko-api/coingecko-api.js');
 const NcoingeckoApiClient = new NcoingeckoApi();
+// create new instance of bank
+const PrototypeBank = require('./discordBot/bank/bank.js');
+const bank = new PrototypeBank();
 
 // include all discord Bot commands
 const marketPresntation = require('./discordBot/marketPresentation.js');

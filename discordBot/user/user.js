@@ -18,14 +18,14 @@ class user {
 		toPresent(CoinGecko, channel, this, dateStart);
 	}
 
-	async buy(CoinGecko, channel, name, quantity) {
-		const price = await CoinGecko.add(['priceUsd', name]);
-		const total = price * quantity;
-		if (this.cash < total) {
-			channel.send('vous n\'avez pas ' + total + '$');
+	async buy(CoinGecko, channel, name, quantity, price, taxe, bank) {
+		if (this.cash < price) {
+			channel.send('vous n\'avez pas ' + price + '$');
 			return false;
 		} else {
-			this.cash -= total;
+			this.cash -= price;
+			bank.cash = bank.cash + taxe;
+			console.log(bank.cash);
 
 			const index = this.search(this.walet, name);
 			if (index != -1) {

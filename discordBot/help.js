@@ -117,7 +117,7 @@ function tips(editable) {
 	const embed = new MessageEmbed;
 	embed.setTitle('quelque tips !')
 		.setDescription('je vais vous aprendre ici quelque tips sur les crypto est sur moi PCT')
-		.addField('courbe', 'lors ce que vous faite la commande p ou prensentation une courbe de la monnaie s\'afiche, elle est calculer sur 24h. si vous voulez en voir plus allez sur google ou sur des site de crypto tel que coinmarketcap ou d\'autre.');
+		.addField('courbe', 'lors ce que vous faite la commande p ou prensentation une courbe de la monnaie s\'afiche, elle est calculer sur 24h. si vous voulez en voir plus vous pouvez cliquer sur graphique autre periode');
 	const row = new MessageActionRow();
 	row.addComponents(
 		new MessageButton()

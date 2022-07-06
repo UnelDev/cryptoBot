@@ -4,6 +4,9 @@ require('dotenv').config({ path: __dirname + '/.env' });
 // create new instance of crypto client
 const NcoingeckoApi = require('./nCoingeko-api/coingecko-api.js');
 const NcoingeckoApiClient = new NcoingeckoApi();
+// create new instance of bank
+const PrototypeBank = require('./discordBot/bank/bank.js');
+const bank = new PrototypeBank();
 
 // include all discord Bot commands
 const marketPresntation = require('./discordBot/marketPresentation.js');
@@ -85,7 +88,7 @@ client.on('interactionCreate', async interaction => {
 			interaction.deferUpdate();
 			const arrayResponse = buttonName.split('_');
 			const byClient = serachid(userListe, interaction.user.id);
-			byClient.buy(NcoingeckoApiClient, interaction.channel, arrayResponse[1], arrayResponse[2]);
+			byClient.buy(NcoingeckoApiClient, interaction.channel, arrayResponse[1], arrayResponse[2], arrayResponse[3], arrayResponse[4], bank);
 		} else if (buttonName.startsWith('cancel')) {
 			interaction.deferUpdate();
 			interaction.channel.send('annulation bien prise en compte !');

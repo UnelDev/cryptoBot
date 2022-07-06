@@ -1,7 +1,7 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const currencyPresentation = require('./currencyPresentation.js');
 const search = require('../tools/search.js');
-async function information(channel, find, client, isDev) {
+async function information(channel, find, client, isDev, dateStart) {
 	const result = await search(find, client);
 	if (typeof result[0] != 'undefined' && result[0].name.toLowerCase() === find.toLowerCase()) {
 		currencyPresentation(channel, result[0], client, isDev);
@@ -11,7 +11,7 @@ async function information(channel, find, client, isDev) {
 		const row2 = new MessageActionRow();
 		const Embed = new MessageEmbed()
 			.setTitle('resultat de la recherche')
-			.setFooter({ text: 'seulement 10 resultat on été aficher' });
+			.setFooter({ text: 'seulement 10 resultat on été aficher • ' + (new Date() - dateStart).toString() + 'ms' });
 		for (let i = 0; i < result.length; i++) {
 			const Element = result[i];
 			Embed.addField(Element.name, Element.symbol);

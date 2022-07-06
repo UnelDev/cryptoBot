@@ -32,7 +32,7 @@ class user {
 			} else {
 				this.walet.push([name, quantity]);
 			}
-			this.history.push([new Date, JSON.parse(JSON.stringify(this)).walet]);
+			this.history.push([new Date(), JSON.parse(JSON.stringify(this)).walet]);
 			this.toPresent(CoinGecko, channel, new Date());
 			saveUser(this);
 			return true;
@@ -46,7 +46,7 @@ class user {
 		total *= 1000;
 		total = Math.trunc(total);
 		total /= 1000;
-		if (this.walet[index][1] < quantity) {
+		if (Number(this.walet[index][1]) < quantity) {
 			channel.send('vous n\'avez pas ' + quantity + ' ' + name);
 			return false;
 		} else {
@@ -56,8 +56,8 @@ class user {
 				console.log('error in remove money');
 				return false;
 			}
-			this.walet[index][1] = Number(this.walet[index][1]) - Number(Math.round(quantity * 1000) / 1000);
-			this.history.push([new Date, JSON.parse(JSON.stringify(this)).walet]);
+			this.walet[index][1] = Number(Number(this.walet[index][1])) - Number(Math.round(quantity * 1000) / 1000);
+			this.history.push([new Date(), JSON.parse(JSON.stringify(this)).walet]);
 			this.toPresent(CoinGecko, channel, new Date());
 			saveUser(this);
 			return true;

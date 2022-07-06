@@ -88,7 +88,7 @@ client.on('interactionCreate', async interaction => {
 			interaction.deferUpdate();
 			const arrayResponse = buttonName.split('_');
 			const byClient = serachid(userListe, interaction.user.id);
-			byClient.buy(NcoingeckoApiClient, interaction.channel, arrayResponse[1], arrayResponse[2], arrayResponse[3]);
+			byClient.buy(NcoingeckoApiClient, interaction.channel, arrayResponse[1], arrayResponse[2], arrayResponse[3], arrayResponse[4], bank);
 		} else if (buttonName.startsWith('cancel')) {
 			interaction.deferUpdate();
 			interaction.channel.send('annulation bien prise en compte !');

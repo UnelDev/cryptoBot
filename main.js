@@ -42,6 +42,7 @@ const client = new Client({
 // This variable is changed by me every time I want to change test bot
 // if (IS_DEV === 'true') return true; else return false;
 const isPublic = (process.env.IS_DEV === 'true');
+process.isPublic = isPublic;
 let token;
 
 // Tihs is a minimal system to help me test the bot, just switching between dev token and public token
@@ -56,6 +57,7 @@ if (isPublic) {
 const defaultPrefix = '.';
 let Prefix = defaultPrefix;
 client.once('ready', () => {
+	process.client = client;
 	log('Connected as ' + client.user.tag, client);
 });
 

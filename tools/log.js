@@ -1,11 +1,9 @@
 const fs = require('fs');
-let Client = '';
-async function logs(message, client = '') {
+async function logs(message) {
 	// Regularly in the program, I will log actions in the channel which has the identifier in this variable.
-	if (client != '') {
-		Client = client;
-	}
-	if (client != '') {
+	const time = new Date();
+	message = time.getDate() + '/' + time.getMonth() + '/' + time.getFullYear() + ' ' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds() + ':' + time.getMilliseconds() + '	' + message;
+	if (typeof process.client != 'undefined' && process.isPublic) {
 		sendToServer(message);
 	}
 	const dir = './logs';
@@ -24,6 +22,6 @@ async function logs(message, client = '') {
 }
 async function sendToServer(message) {
 	const LoggingChannel = process.env.LOGGING_CHANNEL;
-	Client.channels.fetch(LoggingChannel).then(Channel => Channel.send(message));
+	process.client.channels.fetch(LoggingChannel).then(Channel => Channel.send(message));
 }
 module.exports = logs;

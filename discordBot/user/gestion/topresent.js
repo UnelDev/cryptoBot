@@ -21,12 +21,20 @@ async function toPresent(CoinGecko, channel, user, dateStart) {
 			total += price;
 		}
 	}
-	embed.addField('total ', ' ≈ ' + total.toString() + '$');
+	embed.addField('total crypto ', ' ≈ ' + total.toString() + '$');
+	embed.addField('total', ' ≈ ' + (user.cash + total).toString() + '$');
 	embed.setTimestamp();
 	msg = await msg;
 	embed.setFooter({ text: 'ces donnée peuvent être incorrecte • ' + (new Date() - dateStart).toString() + 'ms' });
 	if (user.history.length > 1) {
-		const pathOfImg = chartWalet(user, CoinGecko);
+		let pathOfImg;
+		try {
+			pathOfImg = chartWalet(user, CoinGecko);
+		} catch (error) {
+			pathOfImg = 'topresent.js';
+			console.log('error in topresent.js:35');
+		}
+
 		embed.setImage('attachment://image.png');
 		msg.edit({
 			content: ' ',

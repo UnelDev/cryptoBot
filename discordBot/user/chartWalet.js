@@ -3,7 +3,8 @@ const path = require('path');
 const fs = require('fs');
 async function chartWalet(user, coingecko) {
 	// create chart to last transaction
-	const LastHistory = user.history[user.history.length - 1];
+	console.log(user.history[user.history.length - 1]);
+	const LastHistory = JSON.parse(JSON.stringify(user.history[user.history.length - 1]));
 	// LastHistory = ["2022-07-05T13:53:33.113Z",[["monero",1.7],["tezos","104"]]],["2022-07-05T13:54:20.400Z",[["monero",1.8],["tezos","104.1"]]]]
 	const timeStart = Date.parse(LastHistory.shift());
 	// LastHistory = [["monero",1.7],["tezos","104"]]],["2022-07-05T13:54:20.400Z",[["monero",1.8],["tezos","104.1"]]]

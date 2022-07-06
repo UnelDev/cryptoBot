@@ -1,25 +1,26 @@
 const fs = require('fs');
 const path = require('path');
+const log = require('../../tools/log');
 async function saveUser(SaveUser) {
 	let str;
 	try {
 		str = JSON.stringify(SaveUser);
 	} catch (error) {
-		console.log('save user ' + SaveUser.tag + 'is imposible because ' + error);
+		log('save user ' + SaveUser.tag + 'is imposible because ' + error);
 	}
 
 
 	const filePath = path.resolve('./discordBot/user/save/' + SaveUser.id + '.json');
 	if (typeof filePath == 'undefined') {
-		console.log('saveUser -> name is undefine');
+		log('saveUser -> name is undefine');
 		return;
 	}
 	fs.writeFile(filePath, str, err => {
 		if (err) {
 			if (err.code == 'EPERM') {
-				console.log('saveUser -> Unsufficient permissions');
+				log('saveUser -> Unsufficient permissions');
 			} else {
-				console.log('saveUser -> Impossible to create this file ' + err);
+				log('saveUser -> Impossible to create this file ' + err);
 			}
 			return;
 		}

@@ -1,9 +1,9 @@
 const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
 const path = require('path');
 const fs = require('fs');
+const log = require('../../tools/log.js');
 async function chartWalet(user, coingecko) {
 	// create chart to last transaction
-	console.log(user.history[user.history.length - 1]);
 	const LastHistory = JSON.parse(JSON.stringify(user.history[user.history.length - 1]));
 	// LastHistory = ["2022-07-05T13:53:33.113Z",[["monero",1.7],["tezos","104"]]],["2022-07-05T13:54:20.400Z",[["monero",1.8],["tezos","104.1"]]]]
 	const timeStart = Date.parse(LastHistory.shift());
@@ -98,7 +98,7 @@ async function run(timeStart, coingecko, devise) {
 	const pathfile = path.resolve('./img/' + devise[0][0] + '_' + timeStart + '.png');
 	fs.writeFile(pathfile, base64Data, 'base64', err => {
 		if (err) {
-			console.log(err);
+			log(err);
 		}
 	});
 	return (pathfile);

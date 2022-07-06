@@ -136,21 +136,3 @@ class NcoingeckoApi {
 	}
 }
 module.exports = NcoingeckoApi;
-/*
-[coinList: [value: [], date: Date]]
-const key = 'fetchMarketChart_' + devise;
-		if (typeof this.cache[key] != 'undefined' && this.cache[key]['date'] != 'undefined' && new Date().getTime() - this.cache[key]['date'].getTime() <= 14400000) {
-			return this.cache[key]['data'];
-		} else {
-			const axios = require('axios');
-
-			axios
-				.get('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=1')
-				.then(res => {
-					console.log(`statusCode: ${res.status}`);
-					console.log(res.data.prices);
-				})
-				.catch(error => {
-					console.error(error);
-				});
-*/

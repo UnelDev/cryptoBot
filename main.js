@@ -21,6 +21,8 @@ const { presentUser } = require('./discordBot/user/presentUser');
 const { restore } = require('./discordBot/user/save.js');
 const { moreTime, moreTimeReplay } = require('./discordBot/moreTime.js');
 const ping = require('./tools/ping.js');
+// Regularly in the program, I will log actions in the channel which has the identifier in this variable.
+const log = require('./tools/log.js');
 
 // resore userListe whith restor
 const userListe = restore();
@@ -49,22 +51,19 @@ if (isPublic) {
 	token = process.env.DEV_TOKEN;
 }
 
-// Regularly in the program, I will log actions in the channel which has the identifier in this variable.
-const LoggingChannel = process.env.LOGGING_CHANNEL;
-
 
 // The default prefix is !
 const defaultPrefix = '.';
 let Prefix = defaultPrefix;
 client.once('ready', () => {
-	console.log('Connected as ' + client.user.tag);
+	log('Connected as ' + client.user.tag, client);
 });
 
 client.on('interactionCreate', async interaction => {
 	// This part is for buttons interactions
 	if (interaction.isButton()) {
 		let buttonName = interaction.customId;
-		client.channels.fetch(LoggingChannel).then(Channel => Channel.send('[BUTTON] \'' + interaction.customId + '\' from: ' + interaction.user.tag));
+		log('[BUTTON] \'' + interaction.customId + '\' from: ' + interaction.user.tag);
 		if (buttonName.startsWith('search_')) {
 			interaction.deferUpdate();
 			buttonName = buttonName.replace('search_', '');
@@ -141,7 +140,7 @@ client.on('messageCreate', async message => {
 	if (message.author.bot) { return; }
 
 	if (message.channel.type == 'DM') {
-		client.channels.fetch(LoggingChannel).then(Channel => Channel.send('[dm] \'' + message.content + '\' from: ' + message.author.tag));
+		log('[dm] \'' + message.content + '\' from: ' + message.author.tag);
 		const responseUser = serachid(userListe, message.author.id);
 		responseUser.responseMp(message.content, message.channel, NcoingeckoApiClient);
 		return;
@@ -149,8 +148,7 @@ client.on('messageCreate', async message => {
 
 	if (!message.content.startsWith(Prefix)) { return; }
 	let command = message.content.replace(Prefix, '').toLowerCase();
-
-	client.channels.fetch(LoggingChannel).then(Channel => Channel.send('[COMMAND] \'' + message.content + '\' from: ' + message.author.tag));
+	log('[COMMAND] \'' + message.content + '\' from: ' + message.author.tag);
 
 	if (command.startsWith('presentation') || command.startsWith('presnetation du marché') || command.startsWith('p') && command != 'ping') {
 		marketPresntation(message, NcoingeckoApiClient);

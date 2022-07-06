@@ -1,6 +1,7 @@
 const path = require('path');
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const chartWalet = require('../chartWalet');
+const log = require('../../../tools/log');
 async function toPresent(CoinGecko, channel, user, dateStart) {
 	let msg = channel.send('generation en cours... https://tenor.com/view/mr-bean-waiting-still-waiting-gif-13052487');
 	if (user.walet.length < 1) {
@@ -32,7 +33,7 @@ async function toPresent(CoinGecko, channel, user, dateStart) {
 			pathOfImg = chartWalet(user, CoinGecko);
 		} catch (error) {
 			pathOfImg = 'topresent.js';
-			console.log('error in topresent.js:35');
+			log('error in topresent.js:35');
 		}
 
 		embed.setImage('attachment://image.png');

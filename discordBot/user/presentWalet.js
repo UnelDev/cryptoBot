@@ -1,5 +1,6 @@
 const fs = require('fs');
 const ChartJsImage = require('chartjs-to-image');
+const log = require('./tools/log.js');
 async function presnentWalet(client) {
 	const date = [];
 	// const dataset = [["bitcoin",[1,2,3,1],["etherum",[1,2,3,1]];
@@ -34,7 +35,7 @@ async function presnentWalet(client) {
 				}
 			}
 		} catch (error) {
-			console.log('error in present Walet i =' + i + 'client.history = ' + client.history);
+			log('error in present Walet i =' + i + 'client.history = ' + client.history);
 		}
 
 	}

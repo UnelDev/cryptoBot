@@ -2,6 +2,7 @@ const path = require('path');
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const chartWalet = require('../chartWalet');
 async function toPresent(CoinGecko, channel, user, dateStart) {
+	let msg = channel.send('generation en cours... https://tenor.com/view/mr-bean-waiting-still-waiting-gif-13052487');
 	if (user.walet.length < 1) {
 		channel.send('vous avez ' + user.cash + ' de cash est c\'est tout, bonne chance :money_mouth:');
 		return;
@@ -22,11 +23,13 @@ async function toPresent(CoinGecko, channel, user, dateStart) {
 	}
 	embed.addField('total ', ' ≈ ' + total.toString() + '$');
 	embed.setTimestamp();
+	msg = await msg;
 	embed.setFooter({ text: 'ces donnée peuvent être incorrecte • ' + (new Date() - dateStart).toString() + 'ms' });
 	if (user.history.length > 1) {
 		const pathOfImg = chartWalet(user, CoinGecko);
 		embed.setImage('attachment://image.png');
-		channel.send({
+		msg.edit({
+			content: ' ',
 			embeds: [embed],
 			files: [{
 				attachment: path.resolve(await pathOfImg),
@@ -35,7 +38,7 @@ async function toPresent(CoinGecko, channel, user, dateStart) {
 			components: CreateButon(user)
 		});
 	} else {
-		channel.send({ embeds: [embed], components: CreateButon(user) });
+		msg.edit({ embeds: [embed], components: CreateButon(user) });
 	}
 }
 

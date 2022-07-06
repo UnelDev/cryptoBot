@@ -39,6 +39,6 @@ function presentUser(userListe, message, coingecko, Prefix) {
 			}
 		}
 	}
-	userListe[index].toPresent(coingecko, message.channel);
+	userListe[index].toPresent(coingecko, message.channel, new Date());
 }
 exports.presentUser = presentUser;

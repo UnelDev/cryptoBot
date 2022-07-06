@@ -110,7 +110,7 @@ client.on('interactionCreate', async interaction => {
 			}
 			const Nuser = new user(interaction.user.id, interaction.user.tag);
 			userListe.push(Nuser);
-			Nuser.toPresent(NcoingeckoApiClient, interaction.channel);
+			Nuser.toPresent(NcoingeckoApiClient, interaction.channel, new Date());
 		} else if (buttonName.startsWith('help_')) {
 			interaction.deferUpdate();
 			buttonName = buttonName.replace('help_', '');
@@ -167,7 +167,7 @@ client.on('messageCreate', async message => {
 		}
 		const Nuser = new user(message.author.id, message.author.tag);
 		userListe.push(Nuser);
-		Nuser.toPresent(NcoingeckoApiClient, message.channel);
+		Nuser.toPresent(NcoingeckoApiClient, message.channel, new Date());
 	} else if (command.startsWith('help') || command.startsWith('aide')) {
 		helpMenu(message.author);
 	} else if (command.startsWith('trader') || command.startsWith('user') || command.startsWith('walet')) {

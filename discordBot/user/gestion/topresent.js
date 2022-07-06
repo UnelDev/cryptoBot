@@ -1,10 +1,14 @@
 const path = require('path');
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const chartWalet = require('../chartWalet');
-async function toPresent(CoinGecko, channel, user) {
+async function toPresent(CoinGecko, channel, user, dateStart) {
+	if (user.walet.length < 1) {
+		channel.send('vous avez ' + user.cash + ' de cash est c\'est tout, bonne chance :money_mouth:');
+		return;
+	}
 	const embed = new MessageEmbed();
 	embed.setTitle('presentation du compte de @' + user.tag);
-	embed.setFooter({ text: 'ces donnée peuvent être incorrecte' });
+
 	embed.addField('cash', user.cash.toString());
 	let total = 0;
 	for (let i = 0; i < user.walet.length; i++) {
@@ -16,9 +20,9 @@ async function toPresent(CoinGecko, channel, user) {
 			total += price;
 		}
 	}
-
 	embed.addField('total ', ' ≈ ' + total.toString() + '$');
-
+	embed.setTimestamp();
+	embed.setFooter({ text: 'ces donnée peuvent être incorrecte • ' + (new Date() - dateStart).toString() + 'ms' });
 	if (user.history.length > 1) {
 		const pathOfImg = chartWalet(user, CoinGecko);
 		embed.setImage('attachment://image.png');

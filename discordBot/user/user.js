@@ -13,8 +13,8 @@ class user {
 		if (!isRestore) { saveUser(this); }
 	}
 
-	async toPresent(CoinGecko, channel) {
-		toPresent(CoinGecko, channel, this);
+	async toPresent(CoinGecko, channel, dateStart) {
+		toPresent(CoinGecko, channel, this, dateStart);
 	}
 
 	async buy(CoinGecko, channel, name, quantity) {
@@ -33,7 +33,7 @@ class user {
 				this.walet.push([name, quantity]);
 			}
 			this.history.push([new Date, JSON.parse(JSON.stringify(this)).walet]);
-			this.toPresent(CoinGecko, channel);
+			this.toPresent(CoinGecko, channel, new Date());
 			saveUser(this);
 			return true;
 		}
@@ -58,7 +58,7 @@ class user {
 			}
 			this.walet[index][1] = Number(this.walet[index][1]) - Number(Math.round(quantity * 1000) / 1000);
 			this.history.push([new Date, JSON.parse(JSON.stringify(this)).walet]);
-			this.toPresent(CoinGecko, channel);
+			this.toPresent(CoinGecko, channel, new Date());
 			saveUser(this);
 			return true;
 

@@ -27,7 +27,6 @@ async function create(timeStart, coingecko, devise) {
 	let sleep = devise.map(async element => {
 		const allPrices = await coingecko.add(['fetchMarketChartRange', element[0], [firstTime, lastTime]]);
 		for (let i = 0; i < allPrices.length; i++) {
-			console.log(allPrices[i][1] * Number(element[1]));
 			allPrices[i][1] *= Number(element[1]);
 		}
 		listOfMarket.push(allPrices);

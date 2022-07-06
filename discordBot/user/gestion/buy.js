@@ -51,7 +51,7 @@ async function buyOnResponse(response, devise, channel, coingecko) {
 		channel.send('desolée la devise ' + devise + ' a generer un erreur : ' + error + 'contacter @unel#1527');
 		return;
 	}
-	const taxe = ((2.5 / 100) * response)
+	const taxe = ((2.5 / 100) * response);
 
 	let number = (response - taxe) / price;
 	number *= 1000;
@@ -63,17 +63,17 @@ async function buyOnResponse(response, devise, channel, coingecko) {
 		.setDescription('voici le recapitulatif de votre commande :')
 		.addFields(
 			{ name: 'prix actuelle de ' + devise, value: '≈' + price + '$' },
-			{ name: 'taxe actuelle ', value: '2.5% ≈ ' + taxe + '$' },
+			{ name: 'taxe actuelle ', value: '2.5% = ' + taxe + '$' },
 			{ name: 'prix en $ ', value: response },
 			{ name: 'devise ', value: devise },
 			{ name: 'vous allez achetez (valeur arondie)', value: number + ' de : ' + devise }
 		)
 		.setTimestamp()
-		.setFooter({ text: 'le reste de l\'arondit sert a "financeée" le bot. (argent factice)' });
+		.setFooter({ text: 'les taxe revienne au bot' });
 	const row = new MessageActionRow();
 	row.addComponents(
 		new MessageButton()
-			.setCustomId('buyFinaly_' + devise + '_' + number)
+			.setCustomId('buyFinaly_' + devise + '_' + number + '_' + price + '_' + taxe)
 			.setLabel('finalisée l\'achat')
 			.setStyle('SUCCESS')
 	);

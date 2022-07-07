@@ -1,4 +1,5 @@
 const CoinGecko = require('coingecko-api');
+const logs = require('../tools/log');
 
 class NcoingeckoApi {
 	// classe permetant de faire un plusieur appel à l'API CoinGecko sans dépasser le nombre de requête autorisé par l'API (1 a la fois)
@@ -45,6 +46,8 @@ class NcoingeckoApi {
 			this.runer.push(this.ping(this.runer.length - 1, new Date()));
 			const test = await this.runer[this.runer.length - 1];
 			return test;
+		} else if (args[0] === 'exchangesTickers') {
+
 		} else {
 			return 'error in args[0]';
 		}
@@ -123,6 +126,7 @@ class NcoingeckoApi {
 		}).then(response => {
 			res = response.data;
 		}).catch(err => {
+			logs('error in coin coingecko:info' + err);
 			res = ['error ' + err];
 		});
 		return res;
@@ -133,6 +137,24 @@ class NcoingeckoApi {
 		const client = new CoinGecko();
 		await client.ping();
 		return (new Date() - date);
+	}
+
+	async exchangesTickers(index, coinId, echangeId) {
+		await this.runer[index - 1];
+		const axios = require('axios');
+		let res = [];
+		await axios.get('https://api.coingecko.com/api/v3/exchanges/' + echangeId + '/tickers?coin_ids=' + coinId, {
+			headers: {
+				Accept: 'accept',
+				Authorization: 'authorize'
+			}
+		}).then(response => {
+			res = response.data;
+		}).catch(err => {
+			logs('error in coin coingecko:exchangesTickers' + err);
+			res = ['error ' + err];
+		});
+		return res;
 	}
 }
 module.exports = NcoingeckoApi;

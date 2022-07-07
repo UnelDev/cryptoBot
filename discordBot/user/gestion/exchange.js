@@ -18,7 +18,7 @@ async function exchange(devise, coingecko, channel) {
 	});
 }
 
-function CreateButon(targetList) {
+function CreateButon(targetList, devise) {
 	// create bututon in 5 per 5
 
 	let buttons = new MessageActionRow();
@@ -28,18 +28,18 @@ function CreateButon(targetList) {
 	for (let i = 0; i < targetList.length; i++) {
 		if (nbBouton < 5) {
 			buttons = buttons.addComponents(new MessageButton()
-				.setCustomId('search_' + targetList[i])
+				.setCustomId('change_' + devise + '_' + targetList[i])
 				.setLabel('echanger contre ' + targetList[i])
 				.setStyle('PRIMARY'));
 		} else if (nbBouton < 10) {
 			buttons0 = buttons0.addComponents(new MessageButton()
-				.setCustomId('search_' + targetList[i])
-				.setLabel('voir ' + targetList[i])
+				.setCustomId('change_' + devise + '_' + targetList[i])
+				.setLabel('echanger contre ' + targetList[i])
 				.setStyle('PRIMARY'));
 		} else if (nbBouton < 15) {
 			buttons1 = buttons1.addComponents(new MessageButton()
-				.setCustomId('search_' + targetList[i])
-				.setLabel('voir ' + targetList[i])
+				.setCustomId('change_' + devise + '_' + targetList[i])
+				.setLabel('echanger contre ' + targetList[i])
 				.setStyle('PRIMARY'));
 		}
 		nbBouton++;
@@ -54,4 +54,8 @@ function CreateButon(targetList) {
 		return [];
 	}
 }
-module.exports = exchange;
+
+function exchangeResponse(devise, target, channel, coingecko) {
+
+}
+module.exports = { exchange, exchangeResponse };

@@ -178,7 +178,7 @@ client.on('messageCreate', async message => {
 		presentUser(userListe, message, NcoingeckoApiClient, Prefix);
 	} else if (command.startsWith('ping')) {
 		ping(message.channel, NcoingeckoApiClient, new Date());
-		exchange('bitcoin', NcoingeckoApiClient);
+		exchange('bitcoin', NcoingeckoApiClient, message.channel);
 	}
 	return;
 

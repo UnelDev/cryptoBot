@@ -3,6 +3,7 @@ const path = require('path');
 const draw = require('../tools/drawChart.js');
 const existsSync = require('node:fs').existsSync;
 const fs = require('fs');
+const log = require('../tools/log.js');
 async function currencyPresentation(channel, money, client, isDev, dateStart) {
 	let msg = channel.send('generation en cours... https://tenor.com/view/mr-bean-waiting-still-waiting-gif-13052487');
 	const img = draw(money.id, client);
@@ -17,7 +18,13 @@ async function currencyPresentation(channel, money, client, isDev, dateStart) {
 	);
 	embed.setThumbnail(money.large);
 	embed.setImage('attachment://image.png');
-	embed.addFields(constuctFields(info, isDev));
+	try {
+		embed.addFields(constuctFields(info, isDev));
+	} catch (error) {
+		log('error in currencyPresentation:23' + error);
+		embed.addField('error ocured', '\u200B');
+	}
+
 	embed.setTimestamp();
 	const row = new MessageActionRow();
 	row.addComponents(

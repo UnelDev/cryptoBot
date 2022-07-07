@@ -11,17 +11,9 @@ class NcoingeckoApi {
 	async add(args) {
 		if (args[0] === 'coinList') {
 			// diferant to 10 minutes in milliseconds
-			const key = 'coinList';
-			if (typeof this.cache[key] != 'undefined' && this.cache[key]['date'] != 'undefined' && new Date().getTime() - this.cache[key]['date'].getTime() <= 60000) {
-				return this.cache[key]['data'];
-			} else {
-				const CoinGeckoClient = new CoinGecko();
-				const data = await CoinGeckoClient.coins.list();
-				this.cache['coinList'] = [];
-				this.cache['coinList']['date'] = new Date();
-				this.cache['coinList']['data'] = data.data;
-				return data.data;
-			}
+			this.runer.push(this.coinList(this.runer.length - 1));
+			const test = await this.runer[this.runer.length - 1];
+			return test;
 		} else if (args[0] === 'priceUsd') {
 			this.runer.push(this.getPriceUsd(args[1], this.runer.length - 1));
 			const test = await this.runer[this.runer.length - 1];
@@ -54,7 +46,25 @@ class NcoingeckoApi {
 			return 'error in args[0]';
 		}
 	}
-
+	async coinList(index) {
+		const key = 'coinList';
+		if (typeof this.cache[key] != 'undefined' && this.cache[key]['date'] != 'undefined' && new Date().getTime() - this.cache[key]['date'].getTime() <= 60000) {
+			return this.cache[key]['data'];
+		} else {
+			try {
+				await this.runer[index - 1];
+				const CoinGeckoClient = new CoinGecko();
+				const data = await CoinGeckoClient.coins.list();
+				this.cache[key] = [];
+				this.cache[key]['date'] = new Date();
+				this.cache[key]['data'] = data.data;
+				return data.data;
+			} catch (error) {
+				console.log('error : ' + error);
+				throw error;
+			}
+		}
+	}
 	async getPriceUsd(devise, index) {
 		// creation de la clef devise pour le cache temps d'expiration 1 minute
 		const key = 'priceEur_' + devise;

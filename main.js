@@ -26,6 +26,7 @@ const { moreTime, moreTimeReplay } = require('./discordBot/moreTime.js');
 const ping = require('./tools/ping.js');
 // Regularly in the program, I will log actions in the channel which has the identifier in this variable.
 const log = require('./tools/log.js');
+const exchange = require('./discordBot/user/gestion/exchange.js');
 
 // resore userListe whith restor
 const userListe = restore();
@@ -177,6 +178,7 @@ client.on('messageCreate', async message => {
 		presentUser(userListe, message, NcoingeckoApiClient, Prefix);
 	} else if (command.startsWith('ping')) {
 		ping(message.channel, NcoingeckoApiClient, new Date());
+		exchange('bitcoin', NcoingeckoApiClient);
 	}
 	return;
 

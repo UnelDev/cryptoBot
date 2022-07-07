@@ -47,7 +47,9 @@ class NcoingeckoApi {
 			const test = await this.runer[this.runer.length - 1];
 			return test;
 		} else if (args[0] === 'exchangesTickers') {
-
+			this.runer.push(this.exchangesTickers(this.runer.length, args[1], args[2]));
+			const test = await this.runer[this.runer.length - 1];
+			return test;
 		} else {
 			return 'error in args[0]';
 		}

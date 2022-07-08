@@ -40,7 +40,7 @@ function createEmbed(clientlist, member, name, price) {
 }
 async function buyOnResponse(response, devise, channel, coingecko) {
 	devise = devise.replace('priceFor_', '');
-	if (isNaN(parseInt(response))) {
+	if (isNaN(Number(response))) {
 		channel.send('desolée il faut rentrer un nombre !');
 		return;
 	}

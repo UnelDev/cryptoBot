@@ -132,7 +132,12 @@ client.on('interactionCreate', async interaction => {
 		} else if (buttonName.startsWith('change_')) {
 			interaction.deferUpdate();
 			const response = buttonName.split('_');
-			exchangeResponse(response[1], response[2], response[3], interaction.channel, NcoingeckoApiClient, new Date, userListe);
+			exchangeResponse(response[1], response[2], response[3], interaction.user, NcoingeckoApiClient, new Date, userListe);
+		} else if (buttonName.startsWith('changeFinaly_')) {
+			interaction.deferUpdate();
+			const Muser = serachid(userListe, interaction.user.id);
+			const response = buttonName.split('_');
+			Muser.change(response[1], response[2], response[3], response[4], response[5], interaction.channel, NcoingeckoApiClient, bank);
 		}
 	}
 });

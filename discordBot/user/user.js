@@ -1,5 +1,6 @@
 const log = require('../../tools/log.js');
 const { buyOnResponse } = require('./gestion/buy.js');
+const { exchangeResponseMP } = require('./gestion/exchange.js');
 const { sellOnResponse } = require('./gestion/sell.js');
 const toPresent = require('./gestion/topresent.js');
 const { saveUser } = require('./save.js');
@@ -65,6 +66,26 @@ class user {
 
 		}
 	}
+	async change(devise, target, number, rate, spread, channel, coingecko, bank) {
+		number = Number(number);
+		// rate = rate to change devise in target
+		let index = this.search(this.walet, devise);
+		if (this.walet[index][1] < number) {
+			channel.send('vous n\'avez pas ' + number + ' ' + devise);
+			return;
+		}
+		this.walet[index][1] = Number(this.walet[index][1]) - number;
+		index = this.search(this.walet, target);
+		const priceFinaly = (number * rate) - (spread * rate);
+		if (index != -1) {
+			this.walet[index][1] = Number(this.walet[index][1]) + priceFinaly;
+		} else {
+			this.walet.push([target, priceFinaly]);
+		}
+		bank.cash = bank.cash + spread * number;
+		saveUser(this);
+		toPresent(coingecko, channel, this, new Date);
+	}
 	async responseMp(response, channel, coingecko) {
 		if (this.watingMp.startsWith('priceFor_')) {
 			this.watingMp.replace('priceFor_', '');
@@ -74,6 +95,11 @@ class user {
 			this.watingMp = this.watingMp.replace('sellNumber_', '');
 			sellOnResponse(response, this.watingMp, channel, coingecko);
 			this.watingMp = '';
+		} else if (this.watingMp.startsWith('exchange_')) {
+			const array = this.watingMp.split('_');
+			exchangeResponseMP(array[1], array[2], array[3], channel, response, coingecko);
+			this.watingMp = '';
+
 		}
 		saveUser(this);
 	}

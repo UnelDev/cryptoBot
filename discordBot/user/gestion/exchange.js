@@ -72,13 +72,47 @@ async function exchangeResponse(devise, target, spread, member, coingecko, dateS
 	embed.addField('conbien voulez vous en echanger (nombre de ' + devise + ') ?', '\u200B');
 	embed.setFooter({ text: 'ces donnée peuvent être incorrecte • ' + (new Date() - dateStart).toString() + 'ms' });
 	const client = serachid(clientlist, member.id);
-	client.watingMp = 'exchange_' + devise + '_' + target + '_' + rate;
+	client.watingMp = 'exchange_' + devise + '_' + target + '_' + spread;
 	member.send({
 		embeds: [embed]
 	});
 }
 
-async function exchangeResponseMP(devise, target, rate) {
-
+async function exchangeResponseMP(devise, target, spread, channel, number, coingecko) {
+	if (isNaN(Number(number))) {
+		channel.send('desolée il faut rentrer un nombre !');
+		return;
+	}
+	const price = coingecko.add(['priceUsd', devise]);
+	const priceTarget = coingecko.add(['priceUsd', target]);
+	const embed = new MessageEmbed()
+		.setTitle('confirmation d\'achat')
+		.setDescription('voici le recapitulatif de votre commande : ' + devise + ' -> ' + target)
+		.addField('prix de base', (await price).toString())
+		.addField('spread', spread.toString() + '%')
+		.addField('prix de votre money', ((await price) + (spread / 100 * await price)).toString() + '$')
+		.addField('prix de la money a échanger ', (await priceTarget).toString() + '$');
+	const rate = (((await price) + (spread / 100 * await price)) / await priceTarget);
+	embed.addField('taux d\'echange', '1 ' + devise + ' = ' + rate.toString() + ' ' + target)
+		.addField('votre trasaction', number + ' ' + devise + '=' + rate * number + ' ' + target)
+		.setTimestamp()
+		.setFooter({ text: 'ces donée peuvent etre incorect' });
+	const row = new MessageActionRow();
+	row.addComponents(
+		new MessageButton()
+			.setCustomId('changeFinaly_' + devise + '_' + target + '_' + number + '_' + rate * number + '_' + spread)
+			.setLabel('finalisée l\'echange')
+			.setStyle('SUCCESS')
+	);
+	row.addComponents(
+		new MessageButton()
+			.setCustomId('cancel')
+			.setLabel('annuler l\'echange')
+			.setStyle('DANGER')
+	);
+	channel.send({
+		embeds: [embed],
+		components: [row]
+	});
 }
-module.exports = { exchange, exchangeResponse };
+module.exports = { exchange, exchangeResponse, exchangeResponseMP };

@@ -154,9 +154,9 @@ function constructDescrition(info, isDev) {
 		pathOftemplate = path.resolve('../../../var/www/html/PCT/presentationOfCrypto.html');
 		link = 'http://bot.anantasystem.com/PCT/presentationOfCrypto/' + nameUrl + '.html';
 	} else {
-		pathOfFile = path.resolve('./site/' + nameUrl + '.html');
+		pathOfFile = path.resolve('./site/generate/' + nameUrl + '.html');
 		pathOftemplate = path.resolve('./site/presentationOfCrypto.html');
-		link = 'http://127.0.0.1:5500/site/' + nameUrl + '.html';
+		link = 'http://127.0.0.1:5500/site/generate/' + nameUrl + '.html';
 	}
 
 	if (existsSync(pathOfFile)) {

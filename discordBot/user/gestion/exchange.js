@@ -1,5 +1,6 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
-async function exchange(devise, coingecko, channel) {
+const { serachid } = require('./search');
+async function exchange(devise, coingecko, channel, dateStart) {
 	const embed = new MessageEmbed();
 	embed.setTimestamp();
 	embed.setTitle('vous voulez echanger du ' + devise);
@@ -7,14 +8,15 @@ async function exchange(devise, coingecko, channel) {
 	const tickersList = await coingecko.add(['exchangesTickers', devise, 'binance']);
 	const sleep = tickersList.tickers.map(async element => {
 		if (typeof element.target_coin_id != 'undefined') {
-			targetList.push(element.target_coin_id);
+			targetList.push([element.target_coin_id, element.bid_ask_spread_percentage]);
 		}
 	});
 	await Promise.all(sleep);
 	embed.setDescription('il n\'est pas possible d\'echanger du ' + devise + ' contre nimporte quelle autre devise\nvoici la liste des ' + targetList.length + ' crypto contre lesquelle vous pouvez echager vos ' + devise + '\n cliquer sur celui contre lequelle vous voulez echanger');
+	embed.setFooter({ text: 'ces donnée peuvent être incorrecte • ' + (new Date() - dateStart).toString() + 'ms' });
 	channel.send({
 		embeds: [embed],
-		components: CreateButon(targetList)
+		components: CreateButon(targetList, devise)
 	});
 }
 
@@ -28,18 +30,18 @@ function CreateButon(targetList, devise) {
 	for (let i = 0; i < targetList.length; i++) {
 		if (nbBouton < 5) {
 			buttons = buttons.addComponents(new MessageButton()
-				.setCustomId('change_' + devise + '_' + targetList[i])
-				.setLabel('echanger contre ' + targetList[i])
+				.setCustomId('change_' + devise + '_' + targetList[i][0] + '_' + targetList[i][1])
+				.setLabel('echanger contre ' + targetList[i][0])
 				.setStyle('PRIMARY'));
 		} else if (nbBouton < 10) {
 			buttons0 = buttons0.addComponents(new MessageButton()
-				.setCustomId('change_' + devise + '_' + targetList[i])
-				.setLabel('echanger contre ' + targetList[i])
+				.setCustomId('change_' + devise + '_' + targetList[i][0] + '_' + targetList[i][1])
+				.setLabel('echanger contre ' + targetList[i][0])
 				.setStyle('PRIMARY'));
 		} else if (nbBouton < 15) {
 			buttons1 = buttons1.addComponents(new MessageButton()
-				.setCustomId('change_' + devise + '_' + targetList[i])
-				.setLabel('echanger contre ' + targetList[i])
+				.setCustomId('change_' + devise + '_' + targetList[i][0] + '_' + targetList[i][1])
+				.setLabel('echanger contre ' + targetList[i][0])
 				.setStyle('PRIMARY'));
 		}
 		nbBouton++;
@@ -55,7 +57,28 @@ function CreateButon(targetList, devise) {
 	}
 }
 
-function exchangeResponse(devise, target, channel, coingecko) {
+async function exchangeResponse(devise, target, spread, member, coingecko, dateStart, clientlist) {
+	console.log(target);
+	const embed = new MessageEmbed();
+	const price = coingecko.add(['priceUsd', devise]);
+	const priceTarget = coingecko.add(['priceUsd', target]);
+	embed.setTimestamp();
+	embed.setTitle('initiation de commande : ' + devise + ' -> ' + target);
+	embed.addField('prix de base', (await price).toString());
+	embed.addField('spread', spread.toString() + '%');
+	embed.addField('prix de votre money', ((await price) + (spread / 100 * await price)).toString() + '$');
+	embed.addField('prix de la money a échanger ', (await priceTarget).toString() + '$');
+	embed.addField('taux d\'echange', '1 ' + devise + ' = ' + (((await price) + (spread / 100 * await price)) / await priceTarget).toString() + ' ' + target);
+	embed.addField('conbien voulez vous en echanger (nombre de ' + devise + ') ?', '\u200B');
+	embed.setFooter({ text: 'ces donnée peuvent être incorrecte • ' + (new Date() - dateStart).toString() + 'ms' });
+	const client = serachid(clientlist, member.id);
+	client.watingMp = 'exchange_' + devise + '_' + target + '_' + rate;
+	member.send({
+		embeds: [embed]
+	});
+}
+
+async function exchangeResponseMP(devise, target, rate) {
 
 }
 module.exports = { exchange, exchangeResponse };

@@ -5,7 +5,8 @@ const log = require('../../../tools/log');
 async function toPresent(CoinGecko, channel, user, dateStart) {
 	let msg = channel.send('generation en cours... https://tenor.com/view/mr-bean-waiting-still-waiting-gif-13052487');
 	if (user.walet.length < 1) {
-		channel.send('vous avez ' + user.cash + ' de cash est c\'est tout, bonne chance :money_mouth:');
+		msg = await msg;
+		msg.edit('vous avez ' + user.cash + ' de cash est c\'est tout, bonne chance :money_mouth:');
 		return;
 	}
 	const embed = new MessageEmbed();

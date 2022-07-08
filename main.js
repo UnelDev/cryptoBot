@@ -141,7 +141,7 @@ client.on('interactionCreate', async interaction => {
 		} else if (buttonName.startsWith('change_')) {
 			interaction.deferUpdate();
 			buttonName = buttonName.replace('change_', '');
-			exchange(buttonName, NcoingeckoApiClient, interaction.channel, new Date);
+			exchange(buttonName, NcoingeckoApiClient, interaction.message, new Date);
 		}
 	}
 });

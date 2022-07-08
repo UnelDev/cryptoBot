@@ -14,7 +14,7 @@ async function exchange(devise, coingecko, channel, dateStart) {
 	await Promise.all(sleep);
 	embed.setDescription('il n\'est pas possible d\'echanger du ' + devise + ' contre nimporte quelle autre devise\nvoici la liste des ' + targetList.length + ' crypto contre lesquelle vous pouvez echager vos ' + devise + '\n cliquer sur celui contre lequelle vous voulez echanger');
 	embed.setFooter({ text: 'ces donnée peuvent être incorrecte • ' + (new Date() - dateStart).toString() + 'ms' });
-	channel.send({
+	channel.edit({
 		embeds: [embed],
 		components: CreateButon(targetList, devise)
 	});

@@ -41,6 +41,12 @@ async function currencyPresentation(channel, money, client, isDev, dateStart) {
 	);
 	row.addComponents(
 		new MessageButton()
+			.setCustomId('change_' + money.id)
+			.setLabel('echanger contre une paire')
+			.setStyle('PRIMARY')
+	);
+	row.addComponents(
+		new MessageButton()
 			.setCustomId('moreTime_' + money.id)
 			.setLabel('graphique autre periode')
 			.setStyle('PRIMARY')

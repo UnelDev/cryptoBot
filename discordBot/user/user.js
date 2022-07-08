@@ -25,8 +25,7 @@ class user {
 			return false;
 		} else {
 			this.cash -= price;
-			bank.cash = bank.cash + taxe;
-			console.log(bank.cash);
+			bank.add(taxe);
 
 			const index = this.search(this.walet, name);
 			if (index != -1) {
@@ -82,7 +81,7 @@ class user {
 		} else {
 			this.walet.push([target, priceFinaly]);
 		}
-		bank.cash = bank.cash + spread * number;
+		bank.add(spread * number);
 		saveUser(this);
 		toPresent(coingecko, channel, this, new Date);
 	}

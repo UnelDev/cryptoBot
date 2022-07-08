@@ -30,17 +30,17 @@ function CreateButon(targetList, devise) {
 	for (let i = 0; i < targetList.length; i++) {
 		if (nbBouton < 5) {
 			buttons = buttons.addComponents(new MessageButton()
-				.setCustomId('change_' + devise + '_' + targetList[i][0] + '_' + targetList[i][1])
+				.setCustomId('changeTo_' + devise + '_' + targetList[i][0] + '_' + targetList[i][1])
 				.setLabel('echanger contre ' + targetList[i][0])
 				.setStyle('PRIMARY'));
 		} else if (nbBouton < 10) {
 			buttons0 = buttons0.addComponents(new MessageButton()
-				.setCustomId('change_' + devise + '_' + targetList[i][0] + '_' + targetList[i][1])
+				.setCustomId('changeTo_' + devise + '_' + targetList[i][0] + '_' + targetList[i][1])
 				.setLabel('echanger contre ' + targetList[i][0])
 				.setStyle('PRIMARY'));
 		} else if (nbBouton < 15) {
 			buttons1 = buttons1.addComponents(new MessageButton()
-				.setCustomId('change_' + devise + '_' + targetList[i][0] + '_' + targetList[i][1])
+				.setCustomId('changeTo_' + devise + '_' + targetList[i][0] + '_' + targetList[i][1])
 				.setLabel('echanger contre ' + targetList[i][0])
 				.setStyle('PRIMARY'));
 		}

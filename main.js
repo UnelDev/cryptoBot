@@ -26,6 +26,8 @@ const { moreTime, moreTimeReplay } = require('./discordBot/moreTime.js');
 const ping = require('./tools/ping.js');
 // Regularly in the program, I will log actions in the channel which has the identifier in this variable.
 const log = require('./tools/log.js');
+const { exchange, exchangeResponse } = require('./discordBot/user/gestion/exchange.js');
+const presentBank = require('./discordBot/bank/present.js');
 
 // resore userListe whith restor
 const userListe = restore();
@@ -128,6 +130,19 @@ client.on('interactionCreate', async interaction => {
 			const response = buttonName.split('_');
 			moreTimeReplay(interaction.channel, response[1], response[2], NcoingeckoApiClient);
 
+		} else if (buttonName.startsWith('changeTo_')) {
+			interaction.deferUpdate();
+			const response = buttonName.split('_');
+			exchangeResponse(response[1], response[2], response[3], interaction.user, NcoingeckoApiClient, new Date, userListe);
+		} else if (buttonName.startsWith('changeFinaly_')) {
+			interaction.deferUpdate();
+			const Muser = serachid(userListe, interaction.user.id);
+			const response = buttonName.split('_');
+			Muser.change(response[1], response[2], response[3], response[4], response[5], interaction.channel, NcoingeckoApiClient, bank);
+		} else if (buttonName.startsWith('change_')) {
+			interaction.deferUpdate();
+			buttonName = buttonName.replace('change_', '');
+			exchange(buttonName, NcoingeckoApiClient, interaction.message, new Date);
 		}
 	}
 });
@@ -177,6 +192,8 @@ client.on('messageCreate', async message => {
 		presentUser(userListe, message, NcoingeckoApiClient, Prefix);
 	} else if (command.startsWith('ping')) {
 		ping(message.channel, NcoingeckoApiClient, new Date());
+	} else if (command.startsWith('bank')) {
+		presentBank(message.channel, bank, new Date);
 	}
 	return;
 

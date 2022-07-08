@@ -1,4 +1,5 @@
 const CoinGecko = require('coingecko-api');
+const logs = require('../tools/log');
 
 class NcoingeckoApi {
 	// classe permetant de faire un plusieur appel à l'API CoinGecko sans dépasser le nombre de requête autorisé par l'API (1 a la fois)
@@ -10,17 +11,9 @@ class NcoingeckoApi {
 	async add(args) {
 		if (args[0] === 'coinList') {
 			// diferant to 10 minutes in milliseconds
-			const key = 'coinList';
-			if (typeof this.cache[key] != 'undefined' && this.cache[key]['date'] != 'undefined' && new Date().getTime() - this.cache[key]['date'].getTime() <= 60000) {
-				return this.cache[key]['data'];
-			} else {
-				const CoinGeckoClient = new CoinGecko();
-				const data = await CoinGeckoClient.coins.list();
-				this.cache['coinList'] = [];
-				this.cache['coinList']['date'] = new Date();
-				this.cache['coinList']['data'] = data.data;
-				return data.data;
-			}
+			this.runer.push(this.coinList(this.runer.length - 1));
+			const test = await this.runer[this.runer.length - 1];
+			return test;
 		} else if (args[0] === 'priceUsd') {
 			this.runer.push(this.getPriceUsd(args[1], this.runer.length - 1));
 			const test = await this.runer[this.runer.length - 1];
@@ -45,11 +38,33 @@ class NcoingeckoApi {
 			this.runer.push(this.ping(this.runer.length - 1, new Date()));
 			const test = await this.runer[this.runer.length - 1];
 			return test;
+		} else if (args[0] === 'exchangesTickers') {
+			this.runer.push(this.exchangesTickers(this.runer.length, args[1], args[2]));
+			const test = await this.runer[this.runer.length - 1];
+			return test;
 		} else {
 			return 'error in args[0]';
 		}
 	}
-
+	async coinList(index) {
+		const key = 'coinList';
+		if (typeof this.cache[key] != 'undefined' && this.cache[key]['date'] != 'undefined' && new Date().getTime() - this.cache[key]['date'].getTime() <= 60000) {
+			return this.cache[key]['data'];
+		} else {
+			try {
+				await this.runer[index - 1];
+				const CoinGeckoClient = new CoinGecko();
+				const data = await CoinGeckoClient.coins.list();
+				this.cache[key] = [];
+				this.cache[key]['date'] = new Date();
+				this.cache[key]['data'] = data.data;
+				return data.data;
+			} catch (error) {
+				console.log('error : ' + error);
+				throw error;
+			}
+		}
+	}
 	async getPriceUsd(devise, index) {
 		// creation de la clef devise pour le cache temps d'expiration 1 minute
 		const key = 'priceEur_' + devise;
@@ -123,6 +138,7 @@ class NcoingeckoApi {
 		}).then(response => {
 			res = response.data;
 		}).catch(err => {
+			logs('error in coin coingecko:info' + err);
 			res = ['error ' + err];
 		});
 		return res;
@@ -133,6 +149,24 @@ class NcoingeckoApi {
 		const client = new CoinGecko();
 		await client.ping();
 		return (new Date() - date);
+	}
+
+	async exchangesTickers(index, coinId, echangeId) {
+		await this.runer[index - 1];
+		const axios = require('axios');
+		let res = [];
+		await axios.get('https://api.coingecko.com/api/v3/exchanges/' + echangeId + '/tickers?coin_ids=' + coinId, {
+			headers: {
+				Accept: 'accept',
+				Authorization: 'authorize'
+			}
+		}).then(response => {
+			res = response.data;
+		}).catch(err => {
+			logs('error in coin coingecko:exchangesTickers' + err);
+			res = ['error ' + err];
+		});
+		return res;
 	}
 }
 module.exports = NcoingeckoApi;

@@ -192,7 +192,7 @@ client.on('messageCreate', async message => {
 		presentUser(userListe, message, NcoingeckoApiClient, Prefix);
 	} else if (command.startsWith('ping')) {
 		ping(message.channel, NcoingeckoApiClient, new Date());
-	} else if (command.startsWith('bank')) {
+	} else if (command.startsWith('bank') || command.startsWith('banque')) {
 		presentBank(message.channel, bank, new Date);
 	}
 	return;

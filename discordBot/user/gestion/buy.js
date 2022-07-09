@@ -53,10 +53,7 @@ async function buyOnResponse(response, devise, channel, coingecko) {
 	}
 	const taxe = ((2.5 / 100) * response);
 
-	let number = (response - taxe) / price;
-	number *= 1000;
-	number = Math.trunc(number);
-	number /= 1000;
+	const number = (response - taxe) / price;
 
 	const embed = new MessageEmbed()
 		.setTitle('confirmation d\'achat')
@@ -66,7 +63,7 @@ async function buyOnResponse(response, devise, channel, coingecko) {
 			{ name: 'taxe actuelle ', value: '2.5% = ' + taxe + '$' },
 			{ name: 'prix en $ ', value: response },
 			{ name: 'devise ', value: devise },
-			{ name: 'vous allez achetez (valeur arondie)', value: number + ' de : ' + devise }
+			{ name: 'vous allez achetez ', value: number + ' de : ' + devise }
 		)
 		.setTimestamp()
 		.setFooter({ text: 'les taxe revienne au bot' });

@@ -52,10 +52,7 @@ async function sellOnResponse(response, devise, channel, coingecko) {
 		return;
 	}
 
-	let number = response * price;
-	number *= 1000;
-	number = Math.trunc(number);
-	number /= 1000;
+	const number = response * price;
 	const embed = new MessageEmbed()
 		.setTitle('confirmation de vente')
 		.setDescription('voici le recapitulatif de votre commande :')
@@ -63,10 +60,10 @@ async function sellOnResponse(response, devise, channel, coingecko) {
 			{ name: 'prix actuelle de ' + devise, value: '≈' + price + '$' },
 			{ name: 'vou voulez en vendre ', value: response },
 			{ name: 'devise ', value: devise },
-			{ name: 'cella vous raporteras (valeur arondie)', value: number + ' $' }
+			{ name: 'cella vous raporteras', value: number + ' $' }
 		)
 		.setTimestamp()
-		.setFooter({ text: 'le reste de l\'arondit sert a "financeée" le bot. (argent factice)' });
+		.setFooter({ text: 'argent factice' });
 	const row = new MessageActionRow();
 	row.addComponents(
 		new MessageButton()

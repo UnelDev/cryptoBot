@@ -23,6 +23,12 @@ function helpMenu(channel) {
 			.setLabel('tips')
 			.setStyle('PRIMARY')
 	);
+	row.addComponents(
+		new MessageButton()
+			.setCustomId('help_taxes')
+			.setLabel('taxes')
+			.setStyle('PRIMARY')
+	);
 	channel.send({
 		embeds: [embed],
 		components: [row]
@@ -51,6 +57,12 @@ function helpMenuEdit(editable) {
 			.setLabel('tips')
 			.setStyle('PRIMARY')
 	);
+	row.addComponents(
+		new MessageButton()
+			.setCustomId('help_taxes')
+			.setLabel('taxes')
+			.setStyle('PRIMARY')
+	);
 	editable.edit({
 		embeds: [embed],
 		components: [row]
@@ -66,6 +78,8 @@ function helpInteractionRepleay(message, editable) {
 		command(editable);
 	} else if (message == 'tips') {
 		tips(editable);
+	} else if (message == 'taxes') {
+		taxes(editable);
 	}
 
 }
@@ -118,6 +132,25 @@ function tips(editable) {
 	embed.setTitle('quelque tips !')
 		.setDescription('je vais vous aprendre ici quelque tips sur les crypto est sur moi PCT')
 		.addField('courbe', 'lors ce que vous faite la commande p ou prensentation une courbe de la monnaie s\'afiche, elle est calculer sur 24h. si vous voulez en voir plus vous pouvez cliquer sur graphique autre periode');
+	const row = new MessageActionRow();
+	row.addComponents(
+		new MessageButton()
+			.setCustomId('help_')
+			.setLabel('menu d\'aide')
+			.setStyle('PRIMARY')
+	);
+	editable.edit({
+		embeds: [embed],
+		components: [row]
+	});
+}
+
+function taxes(editable) {
+	const embed = new MessageEmbed;
+	embed.setTitle('Aide sur les taxe')
+		.setDescription('Comme dans la vrais vie chaque virement est soumis à une taxe. Dans pct il y a donc plusieurs type de taxe')
+		.addField('Taxe d\'achat ', '2% elle s\'applique lors ce que vous cliquer sur un bouton acheter.')
+		.addField('Taxe d\'échange ou spread', 'n\'est jamais dévoilé dans la vrais vie. C\'est le fait de gonfler artificiellement le prix d\'une monnaie. Dans PCT il est affiché et il s\'applique que lors des échanges');
 	const row = new MessageActionRow();
 	row.addComponents(
 		new MessageButton()

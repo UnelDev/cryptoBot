@@ -4,10 +4,10 @@ require('dotenv').config({ path: __dirname + '/.env' });
 // create new instance of crypto client
 const NcoingeckoApi = require('./nCoingeko-api/coingecko-api.js');
 const NcoingeckoApiClient = new NcoingeckoApi();
-// create new instance of bank
-const PrototypeBank = require('./discordBot/bank/bank.js');
-const bank = new PrototypeBank();
 
+// create new instance of bank
+const { restoreBank } = require('./discordBot/bank/saveBank.js');
+const bank = restoreBank();
 // include all discord Bot commands
 const marketPresntation = require('./discordBot/marketPresentation.js');
 const information = require('./discordBot/information.js');
@@ -162,7 +162,7 @@ client.on('messageCreate', async message => {
 	if (message.channel.type == 'DM') {
 		log('[dm] \'' + message.content + '\' from: ' + message.author.tag);
 		const responseUser = serachid(userListe, message.author.id);
-		responseUser.responseMp(message.content, message.channel, NcoingeckoApiClient, bank);
+		responseUser.responseMp(message.content, message.channel, NcoingeckoApiClient);
 		return;
 	}
 
@@ -192,7 +192,7 @@ client.on('messageCreate', async message => {
 		presentUser(userListe, message, NcoingeckoApiClient, Prefix);
 	} else if (command.startsWith('ping')) {
 		ping(message.channel, NcoingeckoApiClient, new Date());
-	} else if (command.startsWith('bank')) {
+	} else if (command.startsWith('bank') || command.startsWith('banque')) {
 		presentBank(message.channel, bank, new Date);
 	}
 	return;

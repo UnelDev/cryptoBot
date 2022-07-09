@@ -48,7 +48,7 @@ async function toPresent(CoinGecko, channel, user, dateStart) {
 			components: CreateButon(user)
 		});
 	} else {
-		msg.edit({ content: ' ', embeds: [embed], components: CreateButon(user) });
+		msg.edit({ embeds: [embed], components: CreateButon(user) });
 	}
 }
 

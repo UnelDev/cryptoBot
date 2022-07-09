@@ -20,19 +20,16 @@ class user {
 	}
 
 	async buy(CoinGecko, channel, name, quantity, price, taxe, bank) {
-		if (quantity <= 0 || price <= 0) {
-			channel.send('abuse ! je vais meme pas expliquer');
-		}
-		if (this.cash < quantity * price) {
-			channel.send('vous n\'avez pas ' + quantity * price + '$');
+		if (this.cash < price) {
+			channel.send('vous n\'avez pas ' + price + '$');
 			return false;
 		} else {
-			this.cash -= quantity * price - taxe;
+			this.cash -= price;
 			bank.add(taxe);
 
 			const index = this.search(this.walet, name);
 			if (index != -1) {
-				this.walet[index][1] = Number(this.walet[index][1]) + Number(quantity);
+				this.walet[index][1] = Number(this.walet[index][1]) + Number(Math.round(quantity * 1000) / 1000);
 			} else {
 				this.walet.push([name, quantity]);
 			}
@@ -46,7 +43,10 @@ class user {
 	async sell(CoinGecko, channel, name, quantity) {
 		const index = this.search(this.walet, name);
 		const price = await CoinGecko.add(['priceUsd', name]);
-		const total = quantity * price;
+		let total = quantity * price;
+		total *= 1000;
+		total = Math.trunc(total);
+		total /= 1000;
 		if (Number(this.walet[index][1]) < quantity) {
 			channel.send('vous n\'avez pas ' + quantity + ' ' + name);
 			return false;
@@ -57,7 +57,7 @@ class user {
 				log('error in remove money');
 				return false;
 			}
-			this.walet[index][1] = Number(Number(this.walet[index][1])) - Number(quantity);
+			this.walet[index][1] = Number(Number(this.walet[index][1])) - Number(Math.round(quantity * 1000) / 1000);
 			this.history.push([new Date(), JSON.parse(JSON.stringify(this)).walet]);
 			this.toPresent(CoinGecko, channel, new Date());
 			saveUser(this);
@@ -85,10 +85,10 @@ class user {
 		saveUser(this);
 		toPresent(coingecko, channel, this, new Date);
 	}
-	async responseMp(response, channel, coingecko, bank) {
+	async responseMp(response, channel, coingecko) {
 		if (this.watingMp.startsWith('priceFor_')) {
 			this.watingMp.replace('priceFor_', '');
-			buyOnResponse(response, this.watingMp, channel, coingecko, bank.taxes);
+			buyOnResponse(response, this.watingMp, channel, coingecko);
 			this.watingMp = '';
 		} else if (this.watingMp.startsWith('sellNumber_')) {
 			this.watingMp = this.watingMp.replace('sellNumber_', '');

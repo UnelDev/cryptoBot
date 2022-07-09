@@ -20,16 +20,19 @@ class user {
 	}
 
 	async buy(CoinGecko, channel, name, quantity, price, taxe, bank) {
-		if (this.cash < price) {
-			channel.send('vous n\'avez pas ' + price + '$');
+		if (quantity <= 0 || price <= 0) {
+			channel.send('abuse ! je vais meme pas expliquer');
+		}
+		if (this.cash < quantity * price) {
+			channel.send('vous n\'avez pas ' + quantity * price + '$');
 			return false;
 		} else {
-			this.cash -= price;
+			this.cash -= quantity * price - taxe;
 			bank.add(taxe);
 
 			const index = this.search(this.walet, name);
 			if (index != -1) {
-				this.walet[index][1] = Number(this.walet[index][1]) + Number(quantity * 1000);
+				this.walet[index][1] = Number(this.walet[index][1]) + Number(quantity);
 			} else {
 				this.walet.push([name, quantity]);
 			}
@@ -82,10 +85,10 @@ class user {
 		saveUser(this);
 		toPresent(coingecko, channel, this, new Date);
 	}
-	async responseMp(response, channel, coingecko) {
+	async responseMp(response, channel, coingecko, bank) {
 		if (this.watingMp.startsWith('priceFor_')) {
 			this.watingMp.replace('priceFor_', '');
-			buyOnResponse(response, this.watingMp, channel, coingecko);
+			buyOnResponse(response, this.watingMp, channel, coingecko, bank.taxes);
 			this.watingMp = '';
 		} else if (this.watingMp.startsWith('sellNumber_')) {
 			this.watingMp = this.watingMp.replace('sellNumber_', '');

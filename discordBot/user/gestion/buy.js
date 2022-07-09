@@ -38,7 +38,7 @@ function createEmbed(clientlist, member, name, price) {
 	});
 
 }
-async function buyOnResponse(response, devise, channel, coingecko) {
+async function buyOnResponse(response, devise, channel, coingecko, bankTaxe) {
 	devise = devise.replace('priceFor_', '');
 	if (isNaN(Number(response))) {
 		channel.send('desolée il faut rentrer un nombre !');
@@ -51,7 +51,7 @@ async function buyOnResponse(response, devise, channel, coingecko) {
 		channel.send('desolée la devise ' + devise + ' a generer un erreur : ' + error + 'contacter @unel#1527');
 		return;
 	}
-	const taxe = ((2.5 / 100) * response);
+	const taxe = ((bankTaxe / 100) * response);
 
 	const number = (response - taxe) / price;
 
@@ -60,7 +60,7 @@ async function buyOnResponse(response, devise, channel, coingecko) {
 		.setDescription('voici le recapitulatif de votre commande :')
 		.addFields(
 			{ name: 'prix actuelle de ' + devise, value: '≈' + price + '$' },
-			{ name: 'taxe actuelle ', value: '2.5% = ' + taxe + '$' },
+			{ name: 'taxe actuelle ', value: bankTaxe + ' = ' + taxe + '$' },
 			{ name: 'prix en $ ', value: response },
 			{ name: 'devise ', value: devise },
 			{ name: 'vous allez achetez ', value: number + ' de : ' + devise }

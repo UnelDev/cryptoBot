@@ -162,7 +162,7 @@ client.on('messageCreate', async message => {
 	if (message.channel.type == 'DM') {
 		log('[dm] \'' + message.content + '\' from: ' + message.author.tag);
 		const responseUser = serachid(userListe, message.author.id);
-		responseUser.responseMp(message.content, message.channel, NcoingeckoApiClient);
+		responseUser.responseMp(message.content, message.channel, NcoingeckoApiClient, bank);
 		return;
 	}
 

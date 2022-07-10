@@ -28,7 +28,7 @@ const ping = require('./tools/ping.js');
 const log = require('./tools/log.js');
 const { exchange, exchangeResponse } = require('./discordBot/user/gestion/exchange.js');
 const presentBank = require('./discordBot/bank/present.js');
-const limitSell = require('./discordBot/bank/limitSell.js');
+const { interfaceLimitSell } = require('./discordBot/bank/limitSell.js');
 
 // resore userListe whith restor
 const userListe = restore();
@@ -195,7 +195,8 @@ client.on('messageCreate', async message => {
 		ping(message.channel, NcoingeckoApiClient, new Date(), message.createdTimestamp, client.ws.ping);
 	} else if (command.startsWith('bank') || command.startsWith('banque')) {
 		presentBank(message.channel, bank, new Date);
-		limitSell(NcoingeckoApiClient, userListe, client);
+		// limitSell(NcoingeckoApiClient, userListe, client);
+		interfaceLimitSell(message.channel, serachid(userListe, message.author.id));
 	}
 	return;
 

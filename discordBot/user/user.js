@@ -5,13 +5,14 @@ const { sellOnResponse } = require('./gestion/sell.js');
 const toPresent = require('./gestion/topresent.js');
 const { saveUser } = require('./save.js');
 class user {
-	constructor(id = '', tag = '', cash = 1000, walet = [], history = [], watingMp = '', isRestore = false) {
+	constructor(id = '', tag = '', cash = 1000, walet = [], history = [], watingMp = '', limitSell = [], isRestore = false) {
 		this.id = id;
 		this.tag = tag;
 		this.cash = cash;
 		this.walet = walet;
 		this.history = history;
 		this.watingMp = watingMp;
+		this.limitSell = limitSell;
 		if (!isRestore) { saveUser(this); }
 	}
 

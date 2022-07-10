@@ -28,9 +28,12 @@ const ping = require('./tools/ping.js');
 const log = require('./tools/log.js');
 const { exchange, exchangeResponse } = require('./discordBot/user/gestion/exchange.js');
 const presentBank = require('./discordBot/bank/present.js');
+const limitSell = require('./discordBot/bank/limitSell.js');
 
 // resore userListe whith restor
 const userListe = restore();
+
+limitSell(NcoingeckoApiClient, userListe);
 
 const client = new Client({
 	intents: [
@@ -142,7 +145,7 @@ client.on('interactionCreate', async interaction => {
 		} else if (buttonName.startsWith('change_')) {
 			interaction.deferUpdate();
 			buttonName = buttonName.replace('change_', '');
-			exchange(buttonName, NcoingeckoApiClient, interaction.message, new Date);
+			exchange(buttonName, NcoingeckoApiClient, interaction.user, new Date);
 		}
 	}
 });

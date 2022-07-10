@@ -5,19 +5,21 @@ async function logs(message) {
 	message = time.getDate() + '/' + time.getMonth() + '/' + time.getFullYear() + ' ' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds() + ':' + time.getMilliseconds() + '	' + message;
 	if (typeof process.client != 'undefined' && process.isPublic) {
 		sendToServer(message);
-	}
-	const dir = './logs';
 
-	if (!fs.existsSync(dir)) {
-		fs.mkdirSync(dir);
-	}
+		const dir = './logs';
 
-	fs.appendFile('./logs/logs.log', message + ' \n', (err) => {
-		if (err) {
-			console.log(err);
-			throw err;
+		if (!fs.existsSync(dir)) {
+			fs.mkdirSync(dir);
 		}
-	});
+
+		fs.appendFile('./logs/logs.log', message + ' \n', (err) => {
+			if (err) {
+				console.log(err);
+				throw err;
+			}
+		});
+	}
+
 	console.log(message);
 }
 async function sendToServer(message) {

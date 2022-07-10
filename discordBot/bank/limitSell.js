@@ -54,14 +54,46 @@ function sell(name, user, coingecko, clientDiscord) {
 	user.sellAll(name, coingecko, clientDiscord);
 }
 
-async function interfaceLimitSell(channel, user) {
+async function interfaceLimitSell(channel, user, dateStart) {
 	const embed = new MessageEmbed();
-	embed.setTitle('choisir des limitSell')
+	embed.setTitle('choisir des limitation')
 		.setDescription('ici vous allez pouvoir selectionnée des prix a partir des quelle vos crypto seront vendus automatiquement !')
-		.setFooter({ text: 'ces action demmande beaucoup de resource a etre calculée, n\'en abusée pas !' })
-		.addField('sell stop', 'permet de configurer une limite a laquelle sera vendus vos crypto si leur prix sont **inferieur** a cette limite')
-		.addField('sell limit', 'permet de configurer une limite a laquelle sera vendus vos crypto si leur prix sont **superieur** a cette limite');
-	channel.send({ embeds: [embed], components: CreateButon(user) });
+		.setFooter({ text: 'ces action demmande beaucoup de resource a etre calculée, n\'en abusée pas ! • ' + (new Date() - dateStart).toString() + 'ms' });
+	channel.send({
+		embeds: [embed],
+		components: CreateButon(user)
+	});
+}
+
+async function onResponseLimit(devise, user, channel, dateStart) {
+	if (user.search(user.walet, devise) == -1) {
+		channel.send('vous ne posedez pas/plus de ' + devise);
+	}
+	const embed = new MessageEmbed();
+	embed.setTitle('choisir des limitation')
+		.setDescription('ici vous allez pouvoir selectionnée des prix a partir des quelle vos ' + devise + ' seront vendus automatiquement !')
+		.setFooter({ text: 'ces action demmande beaucoup de resource a etre calculée, n\'en abusée pas ! • ' + (new Date() - dateStart).toString() + 'ms' })
+		.addField('sell stop', 'permet de configurer une limite a laquelle sera vendus vos  ' + devise + '  si leur prix est **inferieur** a cette limite')
+		.addField('sell limit', 'permet de configurer une limite a laquelle sera vendus vos  ' + devise + '  si leur prix est **superieur** a cette limite');
+	const row = new MessageActionRow()
+		.addComponents(new MessageButton()
+			.setCustomId('stopSell_' + devise)
+			.setLabel('configurer un stop sell')
+			.setStyle('PRIMARY'))
+		.addComponents(new MessageButton()
+			.setCustomId('limitSell_' + devise)
+			.setLabel('configurer un limit sell')
+			.setStyle('PRIMARY'))
+		.addComponents(
+			new MessageButton()
+				.setCustomId('cancel')
+				.setLabel('annuler l\'achat')
+				.setStyle('DANGER')
+		);
+	channel.send({
+		embeds: [embed],
+		components: [row]
+	});
 }
 
 function CreateButon(user) {
@@ -101,4 +133,4 @@ function CreateButon(user) {
 		return [];
 	}
 }
-module.exports = { sellStop, sellLimit, interfaceLimitSell };
+module.exports = { sellStop, sellLimit, interfaceLimitSell, onResponseLimit };

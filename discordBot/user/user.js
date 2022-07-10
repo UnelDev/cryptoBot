@@ -98,6 +98,7 @@ class user {
 		}
 
 	}
+
 	async change(devise, target, number, rate, spread, channel, coingecko, bank) {
 		number = Number(number);
 		// rate = rate to change devise in target
@@ -118,6 +119,7 @@ class user {
 		saveUser(this);
 		toPresent(coingecko, channel, this, new Date);
 	}
+
 	async responseMp(response, channel, coingecko) {
 		if (this.watingMp.startsWith('priceFor_')) {
 			this.watingMp.replace('priceFor_', '');
@@ -135,6 +137,7 @@ class user {
 		}
 		saveUser(this);
 	}
+
 	search(array, comparing) {
 		let result = -1;
 		for (let i = 0, len = array.length; i < len; i++) {

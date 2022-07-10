@@ -28,7 +28,7 @@ const ping = require('./tools/ping.js');
 const log = require('./tools/log.js');
 const { exchange, exchangeResponse } = require('./discordBot/user/gestion/exchange.js');
 const presentBank = require('./discordBot/bank/present.js');
-const { interfaceLimitSell } = require('./discordBot/bank/limitSell.js');
+const { interfaceLimitSell, onResponseLimit } = require('./discordBot/bank/limitSell.js');
 
 // resore userListe whith restor
 const userListe = restore();
@@ -134,7 +134,7 @@ client.on('interactionCreate', async interaction => {
 		} else if (buttonName.startsWith('changeTo_')) {
 			interaction.deferUpdate();
 			const response = buttonName.split('_');
-			exchangeResponse(response[1], response[2], response[3], interaction.user, NcoingeckoApiClient, new Date, userListe);
+			exchangeResponse(response[1], response[2], response[3], interaction.user, NcoingeckoApiClient, new Date(), userListe);
 		} else if (buttonName.startsWith('changeFinaly_')) {
 			interaction.deferUpdate();
 			const Muser = serachid(userListe, interaction.user.id);
@@ -143,9 +143,12 @@ client.on('interactionCreate', async interaction => {
 		} else if (buttonName.startsWith('change_')) {
 			interaction.deferUpdate();
 			buttonName = buttonName.replace('change_', '');
-			exchange(buttonName, NcoingeckoApiClient, interaction.user, new Date);
+			exchange(buttonName, NcoingeckoApiClient, interaction.user, new Date());
 		} else if (buttonName.startsWith('limit_')) {
-
+			interaction.deferUpdate();
+			buttonName = buttonName.replace('limit_', '');
+			const Muser = serachid(userListe, interaction.user.id);
+			onResponseLimit(buttonName, Muser, interaction.channel, new Date());
 		}
 	}
 });
@@ -198,8 +201,8 @@ client.on('messageCreate', async message => {
 	} else if (command.startsWith('bank') || command.startsWith('banque')) {
 		presentBank(message.channel, bank, new Date);
 	} else if (command.startsWith('limit sell') || command.startsWith('limitSell') || command.startsWith('sell limit') || command.startsWith('sellLimit') || command.startsWith('stop limit') || command.startsWith('stopLimit') || command.startsWith('limit')) {
-		interfaceLimitSell(message.author, serachid(userListe, message.author.id));
-		message.channel.send('l\'aide vous a été envoyer en mp');
+		interfaceLimitSell(message.author, serachid(userListe, message.author.id), new Date());
+		message.channel.send('l\'outil de limitation vous a été envoyer en mp');
 	}
 });
 module.exports = {

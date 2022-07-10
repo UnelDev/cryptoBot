@@ -28,5 +28,8 @@ async function limitSell(coingecko, userListe) {
 	});
 }
 
+function sell(index, user) {
+	user.sell()
+}
 
 module.exports = limitSell;

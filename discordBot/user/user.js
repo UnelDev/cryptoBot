@@ -66,6 +66,17 @@ class user {
 
 		}
 	}
+
+	async sellAll(name, CoinGecko) {
+		const index = this.search(this.walet, name);
+		const price = await CoinGecko.add(['priceUsd', name]);
+		const total = this.walet[index][1] * price;
+		this.cash += total;
+		this.walet[index][1] = 0;
+		this.history.push([new Date(), JSON.parse(JSON.stringify(this)).walet]);
+		saveUser(this);
+	}
+
 	async change(devise, target, number, rate, spread, channel, coingecko, bank) {
 		number = Number(number);
 		// rate = rate to change devise in target

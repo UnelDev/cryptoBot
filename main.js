@@ -144,6 +144,8 @@ client.on('interactionCreate', async interaction => {
 			interaction.deferUpdate();
 			buttonName = buttonName.replace('change_', '');
 			exchange(buttonName, NcoingeckoApiClient, interaction.user, new Date);
+		} else if (buttonName.startsWith('limit_')) {
+
 		}
 	}
 });
@@ -195,11 +197,10 @@ client.on('messageCreate', async message => {
 		ping(message.channel, NcoingeckoApiClient, new Date(), message.createdTimestamp, client.ws.ping);
 	} else if (command.startsWith('bank') || command.startsWith('banque')) {
 		presentBank(message.channel, bank, new Date);
-		// limitSell(NcoingeckoApiClient, userListe, client);
-		interfaceLimitSell(message.channel, serachid(userListe, message.author.id));
+	} else if (command.startsWith('limit sell') || command.startsWith('limitSell') || command.startsWith('sell limit') || command.startsWith('sellLimit') || command.startsWith('stop limit') || command.startsWith('stopLimit') || command.startsWith('limit')) {
+		interfaceLimitSell(message.author, serachid(userListe, message.author.id));
+		message.channel.send('l\'aide vous a été envoyer en mp');
 	}
-	return;
-
 });
 module.exports = {
 	/**

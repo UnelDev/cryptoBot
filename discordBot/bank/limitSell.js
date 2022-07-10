@@ -1,4 +1,4 @@
-async function limitSell(coingecko, userListe) {
+async function limitSell(coingecko, userListe, clientDiscord) {
 	const listDeviseWatch = [];
 	const listDevisePrice = new Map();
 	let sleep = userListe.map(user => {
@@ -19,17 +19,15 @@ async function limitSell(coingecko, userListe) {
 		if (user.limitSell != []) {
 			user.limitSell.forEach(element => {
 				if (listDevisePrice.get(element[0]) <= element[1]) {
-					console.log('sell : ' + listDevisePrice.get(element[0]) + '<=' + element[1]);
-				} else {
-					console.log('no sell: ' + listDevisePrice.get(element[0]) + '>' + element[1]);
+					sell(element[0], user, coingecko, clientDiscord);
 				}
 			});
 		}
 	});
 }
 
-function sell(index, user) {
-	user.sell()
+function sell(name, user, coingecko, clientDiscord) {
+	user.sellAll(name, coingecko, clientDiscord);
 }
 
 module.exports = limitSell;

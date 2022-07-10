@@ -33,7 +33,6 @@ const limitSell = require('./discordBot/bank/limitSell.js');
 // resore userListe whith restor
 const userListe = restore();
 
-limitSell(NcoingeckoApiClient, userListe);
 
 const client = new Client({
 	intents: [
@@ -45,7 +44,6 @@ const client = new Client({
 		'CHANNEL'
 	]
 });
-
 
 // This variable is changed by me every time I want to change test bot
 // if (IS_DEV === 'true') return true; else return false;
@@ -197,6 +195,7 @@ client.on('messageCreate', async message => {
 		ping(message.channel, NcoingeckoApiClient, new Date(), message.createdTimestamp, client.ws.ping);
 	} else if (command.startsWith('bank') || command.startsWith('banque')) {
 		presentBank(message.channel, bank, new Date);
+		limitSell(NcoingeckoApiClient, userListe, client);
 	}
 	return;
 

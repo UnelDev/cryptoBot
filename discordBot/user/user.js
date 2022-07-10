@@ -1,3 +1,4 @@
+const logs = require('../../tools/log.js');
 const log = require('../../tools/log.js');
 const { buyOnResponse } = require('./gestion/buy.js');
 const { exchangeResponseMP } = require('./gestion/exchange.js');
@@ -67,16 +68,36 @@ class user {
 		}
 	}
 
-	async sellAll(name, CoinGecko) {
+	async sellAll(name, CoinGecko, clientDiscord) {
 		const index = this.search(this.walet, name);
+		if (index == -1) {
+			this.sendMP('vous avez configurer un limitSell sur le ' + name + ' il s\'est activier mais vous n\'avis actuellement pas de ' + name, clientDiscord);
+			return;
+		}
 		const price = await CoinGecko.add(['priceUsd', name]);
 		const total = this.walet[index][1] * price;
 		this.cash += total;
 		this.walet[index][1] = 0;
 		this.history.push([new Date(), JSON.parse(JSON.stringify(this)).walet]);
 		saveUser(this);
+		this.sendMP('un limitSell s\'est activée: ' + name + ' tout vos ' + name + ' on donc été vendu', clientDiscord);
+		try {
+			this.toPresent(CoinGecko, clientDiscord.users.cache.get(this.id), new Date);
+			logs('sending toPresent to ' + user.tag);
+		} catch (error) {
+			logs('faling (cache error) sending toPresent to ' + user.tag);
+		}
 	}
 
+	async sendMP(message, clientDiscord) {
+		try {
+			clientDiscord.users.cache.get(this.id).send(message);
+			logs('sending mP to ' + user.tag + ' ' + message);
+		} catch (error) {
+			logs('faling (cache error) sending mP to ' + user.tag + ' ' + message);
+		}
+
+	}
 	async change(devise, target, number, rate, spread, channel, coingecko, bank) {
 		number = Number(number);
 		// rate = rate to change devise in target

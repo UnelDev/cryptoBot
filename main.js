@@ -191,7 +191,7 @@ client.on('messageCreate', async message => {
 	} else if (command.startsWith('trader') || command.startsWith('user') || command.startsWith('walet')) {
 		presentUser(userListe, message, NcoingeckoApiClient, Prefix);
 	} else if (command.startsWith('ping')) {
-		ping(message.channel, NcoingeckoApiClient, new Date());
+		ping(message.channel, NcoingeckoApiClient, new Date(), message.createdTimestamp, client.ws.ping);
 	} else if (command.startsWith('bank') || command.startsWith('banque')) {
 		presentBank(message.channel, bank, new Date);
 	}

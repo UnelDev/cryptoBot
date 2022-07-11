@@ -1,54 +1,4 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
-async function sellStop(coingecko, userListe, clientDiscord) {
-	const listDeviseWatch = [];
-	const listDevisePrice = new Map();
-	let sleep = userListe.map(user => {
-		if (user.limitSell != []) {
-			user.limitSell.forEach(element => {
-				listDeviseWatch.push(element[0]);
-			});
-		}
-	});
-	await Promise.all(sleep);
-	sleep = listDeviseWatch.map(async Element => {
-		listDevisePrice.set(Element, await coingecko.add(['priceUsd -f', Element]));
-	});
-	await Promise.all(sleep);
-	sleep = userListe.map(user => {
-		if (user.limitSell != []) {
-			user.limitSell.forEach(element => {
-				if (listDevisePrice.get(element[0]) <= element[1]) {
-					sell(element[0], user, coingecko, clientDiscord);
-				}
-			});
-		}
-	});
-}
-async function sellLimit(coingecko, userListe, clientDiscord) {
-	const listDeviseWatch = [];
-	const listDevisePrice = new Map();
-	let sleep = userListe.map(user => {
-		if (user.limitSell != []) {
-			user.limitSell.forEach(element => {
-				listDeviseWatch.push(element[0]);
-			});
-		}
-	});
-	await Promise.all(sleep);
-	sleep = listDeviseWatch.map(async Element => {
-		listDevisePrice.set(Element, await coingecko.add(['priceUsd -f', Element]));
-	});
-	await Promise.all(sleep);
-	sleep = userListe.map(user => {
-		if (user.limitSell != []) {
-			user.limitSell.forEach(element => {
-				if (listDevisePrice.get(element[0]) >= element[1]) {
-					sell(element[0], user, coingecko, clientDiscord);
-				}
-			});
-		}
-	});
-}
 
 function sell(name, user, coingecko, clientDiscord) {
 	user.sellAll(name, coingecko, clientDiscord);
@@ -68,11 +18,12 @@ async function interfaceLimitSell(channel, user, dateStart) {
 async function onResponseLimit(devise, coingecko, user, channel, dateStart) {
 	if (user.search(user.walet, devise) == -1) {
 		channel.send('vous ne posedez pas/plus de ' + devise);
+		return;
 	}
-	const price = coingecko.add(['priceUsd ', devise]);
+	const price = coingecko.add(['priceUsd', devise]);
 	const embed = new MessageEmbed();
 	embed.setTitle('choisir des limitation')
-		.setDescription('ici vous allez pouvoir selectionnée des prix a partir des quelle vos ' + devise + ' seront vendus automatiquement ! le prix actuelle et 1' + devise + '=' + await price)
+		.setDescription('ici vous allez pouvoir selectionnée des prix a partir des quelle vos ' + devise + ' seront vendus automatiquement ! le prix actuelle et 1' + devise + '=' + await price + '$')
 		.setFooter({ text: 'ces action demmande beaucoup de resource a etre calculée, n\'en abusée pas ! • ' + (new Date() - dateStart).toString() + 'ms' })
 		.addField('sell stop', 'permet de configurer une limite a laquelle sera vendus vos  ' + devise + '  si leur prix est **inferieur** a cette limite')
 		.addField('sell limit', 'permet de configurer une limite a laquelle sera vendus vos  ' + devise + '  si leur prix est **superieur** a cette limite');
@@ -91,6 +42,28 @@ async function onResponseLimit(devise, coingecko, user, channel, dateStart) {
 				.setLabel('annuler l\'achat')
 				.setStyle('DANGER')
 		);
+	channel.send({
+		embeds: [embed],
+		components: [row]
+	});
+}
+
+async function onResponseStopSell(devise, user, channel) {
+	if (user.search(user.walet, devise) == -1) {
+		channel.send('vous ne posedez pas/plus de ' + devise);
+		return;
+	}
+	const embed = new MessageEmbed()
+		.setTitle('vous allez definir un stop sell sur ' + devise)
+		.setDescription('veiller rentrer une limite en $ a partir de laquelle tout vos ' + devise + 'seron vendu');
+	const row = new MessageActionRow()
+		.addComponents(
+			new MessageButton()
+				.setCustomId('cancel')
+				.setLabel('annuler l\'achat')
+				.setStyle('DANGER')
+		);
+	user.watingMp = 'stopSell_' + devise;
 	channel.send({
 		embeds: [embed],
 		components: [row]
@@ -134,4 +107,57 @@ function CreateButon(user) {
 		return [];
 	}
 }
-module.exports = { sellStop, sellLimit, interfaceLimitSell, onResponseLimit };
+
+// auto verif
+async function sellStop(coingecko, userListe, clientDiscord) {
+	const listDeviseWatch = [];
+	const listDevisePrice = new Map();
+	let sleep = userListe.map(user => {
+		if (user.limitSell != []) {
+			user.limitSell.forEach(element => {
+				listDeviseWatch.push(element[0]);
+			});
+		}
+	});
+	await Promise.all(sleep);
+	sleep = listDeviseWatch.map(async Element => {
+		listDevisePrice.set(Element, await coingecko.add(['priceUsd -f', Element]));
+	});
+	await Promise.all(sleep);
+	sleep = userListe.map(user => {
+		if (user.limitSell != []) {
+			user.limitSell.forEach(element => {
+				if (listDevisePrice.get(element[0]) <= element[1]) {
+					sell(element[0], user, coingecko, clientDiscord);
+				}
+			});
+		}
+	});
+}
+
+async function sellLimit(coingecko, userListe, clientDiscord) {
+	const listDeviseWatch = [];
+	const listDevisePrice = new Map();
+	let sleep = userListe.map(user => {
+		if (user.limitSell != []) {
+			user.limitSell.forEach(element => {
+				listDeviseWatch.push(element[0]);
+			});
+		}
+	});
+	await Promise.all(sleep);
+	sleep = listDeviseWatch.map(async Element => {
+		listDevisePrice.set(Element, await coingecko.add(['priceUsd -f', Element]));
+	});
+	await Promise.all(sleep);
+	sleep = userListe.map(user => {
+		if (user.limitSell != []) {
+			user.limitSell.forEach(element => {
+				if (listDevisePrice.get(element[0]) >= element[1]) {
+					sell(element[0], user, coingecko, clientDiscord);
+				}
+			});
+		}
+	});
+}
+module.exports = { sellStop, sellLimit, interfaceLimitSell, onResponseLimit, onResponseStopSell };

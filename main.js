@@ -28,7 +28,7 @@ const ping = require('./tools/ping.js');
 const log = require('./tools/log.js');
 const { exchange, exchangeResponse } = require('./discordBot/user/gestion/exchange.js');
 const presentBank = require('./discordBot/bank/present.js');
-const { interfaceLimitSell, onResponseLimit } = require('./discordBot/bank/limitSell.js');
+const { interfaceLimitSell, onResponseLimit, onResponseStopSell } = require('./discordBot/bank/limitSell.js');
 
 // resore userListe whith restor
 const userListe = restore();
@@ -149,6 +149,11 @@ client.on('interactionCreate', async interaction => {
 			buttonName = buttonName.replace('limit_', '');
 			const Muser = serachid(userListe, interaction.user.id);
 			onResponseLimit(buttonName, NcoingeckoApiClient, Muser, interaction.channel, new Date());
+		} else if (buttonName.startsWith('stopSell_')) {
+			interaction.deferUpdate();
+			buttonName = buttonName.replace('stopSell_', '');
+			const Muser = serachid(userListe, interaction.user.id);
+			onResponseStopSell(buttonName, Muser, interaction.channel);
 		}
 	}
 });

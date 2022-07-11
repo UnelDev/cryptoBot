@@ -130,9 +130,11 @@ https://stackoverflow.com/questions/10231868/pointers-in-javascript  awnser 14
 */
 // eslint-disable-next-line no-inline-comments
 async function sellStop(coingecko, _userListe/* is a array [userlist]*/, clientDiscord) {
+
 	const listDeviseWatch = [];
 	const listDevisePrice = new Map();
 	let sleep = _userListe[0].map(user => {
+		console.log('check ' + user.tag);
 		if (user.limitSell != []) {
 			user.limitSell.forEach(element => {
 				listDeviseWatch.push(element[0]);
@@ -153,6 +155,7 @@ async function sellStop(coingecko, _userListe/* is a array [userlist]*/, clientD
 			});
 		}
 	});
+	delay(1000).then(() => sellStop(coingecko, _userListe, clientDiscord));
 }
 
 async function sellLimit(coingecko, userListe, clientDiscord) {
@@ -179,5 +182,9 @@ async function sellLimit(coingecko, userListe, clientDiscord) {
 			});
 		}
 	});
+}
+
+function delay(time) {
+	return new Promise(resolve => setTimeout(resolve, time));
 }
 module.exports = { sellStop, sellLimit, interfaceLimitSell, onResponseLimit, onResponseStopSell, onResponsePriceStopSell };

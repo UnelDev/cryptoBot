@@ -1,4 +1,4 @@
-const { Client, Intents } = require('discord.js');
+const { Client, Intents, MessageActionRow, MessageButton } = require('discord.js');
 require('dotenv').config({ path: __dirname + '/.env' });
 
 // create new instance of crypto client
@@ -28,7 +28,7 @@ const ping = require('./tools/ping.js');
 const log = require('./tools/log.js');
 const { exchange, exchangeResponse } = require('./discordBot/user/gestion/exchange.js');
 const presentBank = require('./discordBot/bank/present.js');
-const { interfaceLimitSell, onResponseLimit, onResponseStopSell } = require('./discordBot/bank/limitSell.js');
+const { interfaceLimitSell, onResponseLimit, onResponseStopSell, sellLimit, sellStop } = require('./discordBot/bank/limitSell.js');
 
 // resore userListe whith restor
 const userListe = restore();
@@ -65,6 +65,8 @@ let Prefix = defaultPrefix;
 client.once('ready', () => {
 	process.client = client;
 	log('Connected as ' + client.user.tag, client);
+	console.log('0');
+	sellStop(NcoingeckoApiClient, [userListe], client);
 });
 
 client.on('interactionCreate', async interaction => {
@@ -206,6 +208,20 @@ client.on('messageCreate', async message => {
 	} else if (command.startsWith('bank') || command.startsWith('banque')) {
 		presentBank(message.channel, bank, new Date);
 	} else if (command.startsWith('limit sell') || command.startsWith('limitSell') || command.startsWith('sell limit') || command.startsWith('sellLimit') || command.startsWith('stop limit') || command.startsWith('stopLimit') || command.startsWith('limit')) {
+		if (!verifyExist(userListe, message.author.id)) {
+			const row = new MessageActionRow();
+			row.addComponents(
+				new MessageButton()
+					.setCustomId('createAcount')
+					.setLabel('crée un compte !')
+					.setStyle('PRIMARY')
+			);
+			message.channel.send({
+				content: 'vous n\'avez pas crée de compte',
+				components: [row]
+			});
+			return;
+		}
 		interfaceLimitSell(message.author, serachid(userListe, message.author.id), new Date());
 		message.channel.send('l\'outil de limitation vous a été envoyer en mp');
 	}

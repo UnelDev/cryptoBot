@@ -23,11 +23,11 @@ class user {
 	}
 
 	async buy(CoinGecko, channel, name, quantity, price, taxe, bank) {
-		if (this.cash < price) {
+		if (this.cash < price * quantity) {
 			channel.send('vous n\'avez pas ' + price + '$');
 			return false;
 		} else {
-			this.cash -= price;
+			this.cash -= price * quantity;
 			bank.add(taxe);
 
 			const index = this.search(this.walet, name);
@@ -46,10 +46,7 @@ class user {
 	async sell(CoinGecko, channel, name, quantity) {
 		const index = this.search(this.walet, name);
 		const price = await CoinGecko.add(['priceUsd', name]);
-		let total = quantity * price;
-		total *= 1000;
-		total = Math.trunc(total);
-		total /= 1000;
+		const total = quantity * price;
 		if (Number(this.walet[index][1]) < quantity) {
 			channel.send('vous n\'avez pas ' + quantity + ' ' + name);
 			return false;

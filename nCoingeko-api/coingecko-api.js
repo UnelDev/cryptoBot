@@ -3,6 +3,7 @@ const logs = require('../tools/log');
 
 class NcoingeckoApi {
 	// classe permetant de faire un plusieur appel à l'API CoinGecko sans dépasser le nombre de requête autorisé par l'API (1 a la fois)
+	//  /!\ coingecko api is limit to 50 query per seconde
 	constructor() {
 		this.runer = [];
 		this.cache = [];
@@ -16,6 +17,10 @@ class NcoingeckoApi {
 			return test;
 		} else if (args[0] === 'priceUsd') {
 			this.runer.push(this.getPriceUsd(args[1], this.runer.length - 1));
+			const test = await this.runer[this.runer.length - 1];
+			return test;
+		} else if ((args[0] === 'priceUsd -f')) {
+			this.runer.push(this.getPriceUsdForce(args[1], this.runer.length - 1));
 			const test = await this.runer[this.runer.length - 1];
 			return test;
 		} else if (args[0] === 'fetchMarketChart') {
@@ -69,6 +74,24 @@ class NcoingeckoApi {
 		// creation de la clef devise pour le cache temps d'expiration 1 minute
 		const key = 'priceEur_' + devise;
 		if (typeof this.cache[key] != 'undefined' && this.cache[key]['date'] != 'undefined' && new Date().getTime() - this.cache[key]['date'].getTime() <= 60000) {
+			return this.cache[key]['data'];
+		} else {
+			await this.runer[index - 1];
+			const client = new CoinGecko();
+			const price = await client.simple.price({
+				ids: [devise],
+				vs_currencies: ['usd']
+			});
+			this.cache[key] = [];
+			this.cache[key]['date'] = new Date();
+			this.cache[key]['data'] = price.data[devise].usd;
+			return price.data[devise].usd;
+		}
+	}
+	async getPriceUsdForce(devise, index) {
+		// creation de la clef devise pour le cache temps d'expiration 1 seconde
+		const key = 'priceEur_' + devise;
+		if (typeof this.cache[key] != 'undefined' && this.cache[key]['date'] != 'undefined' && new Date().getTime() - this.cache[key]['date'].getTime() <= 1000) {
 			return this.cache[key]['data'];
 		} else {
 			await this.runer[index - 1];

@@ -50,7 +50,7 @@ function restore() {
 		const data = fs.readFileSync('./discordBot/user/save/' + element + '.json',
 			{ encoding: 'utf8', flag: 'r' });
 		const tempUser = JSON.parse(data);
-		const Nuser = new user(tempUser.id, tempUser.tag, tempUser.cash, tempUser.walet, tempUser.history, tempUser.watinMp, true);
+		const Nuser = new user(tempUser.id, tempUser.tag, tempUser.cash, tempUser.walet, tempUser.history, tempUser.watinMp, tempUser.limitSell, true);
 		userListe.push(Nuser);
 	});
 	return userListe;

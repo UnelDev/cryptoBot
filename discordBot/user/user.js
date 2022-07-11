@@ -1,17 +1,20 @@
+const logs = require('../../tools/log.js');
 const log = require('../../tools/log.js');
+const { onResponsePriceStopSell } = require('../bank/limitSell.js');
 const { buyOnResponse } = require('./gestion/buy.js');
 const { exchangeResponseMP } = require('./gestion/exchange.js');
 const { sellOnResponse } = require('./gestion/sell.js');
 const toPresent = require('./gestion/topresent.js');
 const { saveUser } = require('./save.js');
 class user {
-	constructor(id = '', tag = '', cash = 1000, walet = [], history = [], watingMp = '', isRestore = false) {
+	constructor(id = '', tag = '', cash = 1000, walet = [], history = [], watingMp = '', limitSell = [], isRestore = false) {
 		this.id = id;
 		this.tag = tag;
 		this.cash = cash;
 		this.walet = walet;
 		this.history = history;
 		this.watingMp = watingMp;
+		this.limitSell = limitSell;
 		if (!isRestore) { saveUser(this); }
 	}
 
@@ -65,6 +68,38 @@ class user {
 
 		}
 	}
+
+	async sellAll(name, CoinGecko, clientDiscord) {
+		const index = this.search(this.walet, name);
+		if (index == -1) {
+			this.sendMP('vous avez configurer un limitSell sur le ' + name + ' il s\'est activier mais vous n\'avis actuellement pas de ' + name, clientDiscord);
+			return;
+		}
+		const price = await CoinGecko.add(['priceUsd', name]);
+		const total = this.walet[index][1] * price;
+		this.cash += total;
+		this.walet[index][1] = 0;
+		this.history.push([new Date(), JSON.parse(JSON.stringify(this)).walet]);
+		saveUser(this);
+		this.sendMP('un limitSell s\'est activée: ' + name + ' tout vos ' + name + ' on donc été vendu', clientDiscord);
+		try {
+			this.toPresent(CoinGecko, clientDiscord.users.cache.get(this.id), new Date);
+			logs('sending toPresent to ' + user.tag);
+		} catch (error) {
+			logs('faling (cache error) sending toPresent to ' + user.tag);
+		}
+	}
+
+	async sendMP(message, clientDiscord) {
+		try {
+			clientDiscord.users.cache.get(this.id).send(message);
+			logs('sending mP to ' + user.tag + ' ' + message);
+		} catch (error) {
+			logs('faling (cache error) sending mP to ' + user.tag + ' ' + message);
+		}
+
+	}
+
 	async change(devise, target, number, rate, spread, channel, coingecko, bank) {
 		number = Number(number);
 		// rate = rate to change devise in target
@@ -85,6 +120,7 @@ class user {
 		saveUser(this);
 		toPresent(coingecko, channel, this, new Date);
 	}
+
 	async responseMp(response, channel, coingecko) {
 		if (this.watingMp.startsWith('priceFor_')) {
 			this.watingMp.replace('priceFor_', '');
@@ -98,10 +134,13 @@ class user {
 			const array = this.watingMp.split('_');
 			exchangeResponseMP(array[1], array[2], array[3], channel, response, coingecko);
 			this.watingMp = '';
-
+		} else if (this.watingMp.startsWith('stopSell_')) {
+			this.watingMp = this.watingMp.replace('stopSell_', '');
+			onResponsePriceStopSell(this.watingMp, response, this, channel);
 		}
 		saveUser(this);
 	}
+
 	search(array, comparing) {
 		let result = -1;
 		for (let i = 0, len = array.length; i < len; i++) {

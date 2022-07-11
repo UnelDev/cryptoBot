@@ -94,7 +94,7 @@ client.on('interactionCreate', async interaction => {
 			byClient.buy(NcoingeckoApiClient, interaction.channel, arrayResponse[1], arrayResponse[2], arrayResponse[3], arrayResponse[4], bank);
 		} else if (buttonName.startsWith('cancel')) {
 			interaction.deferUpdate();
-			interaction.channel.send('annulation bien prise en compte !');
+			interaction.message.edit({ content: 'annulation bien prise en compte !', embeds: [], components: [] });
 		} else if (buttonName.startsWith('sell_')) {
 			interaction.deferUpdate();
 			buttonName = buttonName.replace('sell_', '');
@@ -148,7 +148,7 @@ client.on('interactionCreate', async interaction => {
 			interaction.deferUpdate();
 			buttonName = buttonName.replace('limit_', '');
 			const Muser = serachid(userListe, interaction.user.id);
-			onResponseLimit(buttonName, Muser, interaction.channel, new Date());
+			onResponseLimit(buttonName, NcoingeckoApiClient, Muser, interaction.channel, new Date());
 		}
 	}
 });

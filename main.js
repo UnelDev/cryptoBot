@@ -65,7 +65,6 @@ let Prefix = defaultPrefix;
 client.once('ready', () => {
 	process.client = client;
 	log('Connected as ' + client.user.tag, client);
-	console.log('0');
 	sellStop(NcoingeckoApiClient, [userListe], client);
 });
 
@@ -80,7 +79,6 @@ client.on('interactionCreate', async interaction => {
 			const coinName = await idToName(buttonName, NcoingeckoApiClient);
 			// coin name is a array
 			information(interaction.channel, coinName[0], NcoingeckoApiClient, isPublic, new Date());
-
 		} else if (buttonName.startsWith('visualize_')) {
 			interaction.deferUpdate();
 			buttonName = buttonName.replace('visualize_', '');
@@ -132,7 +130,6 @@ client.on('interactionCreate', async interaction => {
 			interaction.deferUpdate();
 			const response = buttonName.split('_');
 			moreTimeReplay(interaction.channel, response[1], response[2], NcoingeckoApiClient);
-
 		} else if (buttonName.startsWith('changeTo_')) {
 			interaction.deferUpdate();
 			const response = buttonName.split('_');

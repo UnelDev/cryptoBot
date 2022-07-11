@@ -18,7 +18,7 @@ class user {
 		if (!isRestore) { saveUser(this); }
 	}
 
-	async toPresent(CoinGecko, channel, dateStart) {
+	toPresent(CoinGecko, channel, dateStart) {
 		toPresent(CoinGecko, channel, this, dateStart);
 	}
 
@@ -77,14 +77,24 @@ class user {
 		this.cash += total;
 		this.walet[index][1] = 0;
 		this.history.push([new Date(), JSON.parse(JSON.stringify(this)).walet]);
-		saveUser(this);
 		this.sendMP('un limitSell s\'est activée: ' + name + ' tout vos ' + name + ' on donc été vendu', clientDiscord);
 		try {
-			this.toPresent(CoinGecko, clientDiscord.users.cache.get(this.id), new Date);
+			await toPresent(CoinGecko, clientDiscord.users.cache.get(this.id), this, new Date);
 			logs('sending toPresent to ' + user.tag);
 		} catch (error) {
 			logs('faling (cache error) sending toPresent to ' + user.tag);
 		}
+		const forDelet = this.search(this.limitSell, name);
+		if (forDelet == -1) {
+			this.sendMP('error in deletion in sellAll');
+		}
+		const test = this.limitSell.slice(forDelet, 1);
+		this.limitSell = this.limitSell.filter(value => {
+			if (value != test[0]) {
+				return value;
+			}
+		});
+		await saveUser(this);
 	}
 
 	async sendMP(message, clientDiscord) {

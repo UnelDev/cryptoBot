@@ -1,7 +1,7 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 
-function sell(name, user, coingecko, clientDiscord) {
-	user.sellAll(name, coingecko, clientDiscord);
+async function sell(name, user, coingecko, clientDiscord) {
+	await user.sellAll(name, coingecko, clientDiscord);
 }
 
 async function interfaceLimitSell(channel, user, dateStart) {
@@ -134,7 +134,6 @@ async function sellStop(coingecko, _userListe/* is a array [userlist]*/, clientD
 	const listDeviseWatch = [];
 	const listDevisePrice = new Map();
 	let sleep = _userListe[0].map(user => {
-		console.log('check ' + user.tag);
 		if (user.limitSell != []) {
 			user.limitSell.forEach(element => {
 				listDeviseWatch.push(element[0]);
@@ -148,9 +147,10 @@ async function sellStop(coingecko, _userListe/* is a array [userlist]*/, clientD
 	await Promise.all(sleep);
 	sleep = _userListe[0].map(user => {
 		if (user.limitSell != []) {
-			user.limitSell.forEach(element => {
+			user.limitSell.forEach(async element => {
 				if (listDevisePrice.get(element[0]) <= element[1]) {
-					sell(element[0], user, coingecko, clientDiscord);
+					console.log(listDevisePrice.get(element[0]), '<=', element[1]);
+					await sell(element[0], user, coingecko, clientDiscord);
 				}
 			});
 		}

@@ -153,7 +153,7 @@ client.on('interactionCreate', async interaction => {
 			interaction.deferUpdate();
 			buttonName = buttonName.replace('stopSell_', '');
 			const Muser = serachid(userListe, interaction.user.id);
-			onResponseStopSell(buttonName, Muser, interaction.channel);
+			onResponseStopSell(buttonName, Muser, interaction.channel, NcoingeckoApiClient);
 		}
 	}
 });

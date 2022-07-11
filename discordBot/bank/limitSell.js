@@ -48,14 +48,16 @@ async function onResponseLimit(devise, coingecko, user, channel, dateStart) {
 	});
 }
 
-async function onResponseStopSell(devise, user, channel) {
+async function onResponseStopSell(devise, user, channel, coingecko) {
 	if (user.search(user.walet, devise) == -1) {
 		channel.send('vous ne posedez pas/plus de ' + devise);
 		return;
 	}
+	const price = coingecko.add(['priceUsd', devise]);
 	const embed = new MessageEmbed()
 		.setTitle('vous allez definir un stop sell sur ' + devise)
-		.setDescription('veiller rentrer une limite en $ a partir de laquelle tout vos ' + devise + 'seron vendu');
+		.setDescription('veiller rentrer une limite en $ a partir de laquelle tout vos ' + devise + ' seron vendu')
+		.addField('prix', '1' + devise + '=' + await price + '$');
 	const row = new MessageActionRow()
 		.addComponents(
 			new MessageButton()
@@ -68,6 +70,15 @@ async function onResponseStopSell(devise, user, channel) {
 		embeds: [embed],
 		components: [row]
 	});
+}
+
+async function onResponsePriceStopSell(devise, number, user, channel) {
+	if (user.search(user.walet, devise) == -1) {
+		channel.send('vous ne posedez pas/plus de ' + devise);
+		return;
+	}
+	user.limitSell.push([devise, number]);
+	channel.send('le limite sell du ' + devise + ' a été fixée a ' + number + '$');
 }
 
 function CreateButon(user) {
@@ -109,10 +120,19 @@ function CreateButon(user) {
 }
 
 // auto verif
-async function sellStop(coingecko, userListe, clientDiscord) {
+/*
+I have found a slightly different way implement pointers that is perhaps more general and easier to understand from a C perspective (and thus fits more into the format of the users example).
+
+In JavaScript, like in C, array variables are actually just pointers to the array, so you can use an array as exactly the same as declaring a pointer. This way, all pointers in your code can be used the same way, despite what you named the variable in the original object.
+
+It also allows one to use two different notations referring to the address of the pointer and what is at the address of the pointer.
+https://stackoverflow.com/questions/10231868/pointers-in-javascript  awnser 14
+*/
+// eslint-disable-next-line no-inline-comments
+async function sellStop(coingecko, _userListe/* is a array [userlist]*/, clientDiscord) {
 	const listDeviseWatch = [];
 	const listDevisePrice = new Map();
-	let sleep = userListe.map(user => {
+	let sleep = _userListe[0].map(user => {
 		if (user.limitSell != []) {
 			user.limitSell.forEach(element => {
 				listDeviseWatch.push(element[0]);
@@ -124,7 +144,7 @@ async function sellStop(coingecko, userListe, clientDiscord) {
 		listDevisePrice.set(Element, await coingecko.add(['priceUsd -f', Element]));
 	});
 	await Promise.all(sleep);
-	sleep = userListe.map(user => {
+	sleep = _userListe[0].map(user => {
 		if (user.limitSell != []) {
 			user.limitSell.forEach(element => {
 				if (listDevisePrice.get(element[0]) <= element[1]) {
@@ -160,4 +180,4 @@ async function sellLimit(coingecko, userListe, clientDiscord) {
 		}
 	});
 }
-module.exports = { sellStop, sellLimit, interfaceLimitSell, onResponseLimit, onResponseStopSell };
+module.exports = { sellStop, sellLimit, interfaceLimitSell, onResponseLimit, onResponseStopSell, onResponsePriceStopSell };

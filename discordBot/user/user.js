@@ -1,5 +1,6 @@
 const logs = require('../../tools/log.js');
 const log = require('../../tools/log.js');
+const { onResponsePriceStopSell } = require('../bank/limitSell.js');
 const { buyOnResponse } = require('./gestion/buy.js');
 const { exchangeResponseMP } = require('./gestion/exchange.js');
 const { sellOnResponse } = require('./gestion/sell.js');
@@ -133,7 +134,9 @@ class user {
 			const array = this.watingMp.split('_');
 			exchangeResponseMP(array[1], array[2], array[3], channel, response, coingecko);
 			this.watingMp = '';
-
+		} else if (this.watingMp.startsWith('stopSell_')) {
+			this.watingMp = this.watingMp.replace('stopSell_', '');
+			onResponsePriceStopSell(this.watingMp, response, this, channel);
 		}
 		saveUser(this);
 	}

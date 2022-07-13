@@ -12,14 +12,14 @@ async function toPresent(CoinGecko, channel, user, dateStart) {
 	const embed = new MessageEmbed();
 	embed.setTitle('presentation du compte de @' + user.tag);
 
-	embed.addField('cash', user.cash.toString());
+	embed.addField('cash', user.cash.toString() + '$');
 	let total = 0;
 	for (let i = 0; i < user.walet.length; i++) {
 		if (Number(user.walet[i][1]) != 0) {
 			let price = await CoinGecko.add(['priceUsd', user.walet[i][0]]);
 			// usd , 1*1000 + '$'
 			price = price * Number(user.walet[i][1]);
-			embed.addField(user.walet[i][0], Number(user.walet[i][1]) + ' ' + user.walet[i][0] + ' ≈ ' + price.toString() + '$');
+			embed.addField(user.walet[i][0] + ' ', user.walet[i][1] + ' ' + user.walet[i][0] + ' ≈ ' + price.toString() + '$');
 			total += price;
 		}
 	}
@@ -60,20 +60,21 @@ function CreateButon(user) {
 	let buttons1 = new MessageActionRow();
 	let nbBouton = 0;
 	for (let i = 0; i < user.walet.length; i++) {
+		console.log(i, user.walet[i][0]);
 		if (nbBouton < 5) {
 			buttons = buttons.addComponents(new MessageButton()
-				.setCustomId('search_' + user.walet[i][0])
-				.setLabel('voir ' + user.walet[i][0])
+				.setCustomId('search_' + user.walet[i][0].toString())
+				.setLabel('voir ' + user.walet[i][0].toString())
 				.setStyle('PRIMARY'));
 		} else if (nbBouton < 10) {
 			buttons0 = buttons0.addComponents(new MessageButton()
-				.setCustomId('search_' + user.walet[i][0])
-				.setLabel('voir ' + user.walet[i][0])
+				.setCustomId('search_' + user.walet[i][0].toString())
+				.setLabel('voir ' + user.walet[i][0].toString())
 				.setStyle('PRIMARY'));
 		} else if (nbBouton < 15) {
 			buttons1 = buttons1.addComponents(new MessageButton()
-				.setCustomId('search_' + user.walet[i][0])
-				.setLabel('voir ' + user.walet[i][0])
+				.setCustomId('search_' + user.walet[i][0].toString())
+				.setLabel('voir ' + user.walet[i][0].toString())
 				.setStyle('PRIMARY'));
 		}
 		nbBouton++;

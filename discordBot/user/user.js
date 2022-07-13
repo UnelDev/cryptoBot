@@ -1,18 +1,19 @@
 const logs = require('../../tools/log.js');
-const { onResponsePriceStopSell } = require('../bank/limitSell.js');
+const { onResponsePriceStopSell, onResponsePriceLimitSell } = require('../bank/limitSell.js');
 const { buyOnResponse } = require('./gestion/buy.js');
 const { exchangeResponseMP } = require('./gestion/exchange.js');
 const { sellOnResponse } = require('./gestion/sell.js');
 const toPresent = require('./gestion/topresent.js');
 const { saveUser } = require('./save.js');
 class user {
-	constructor(id = '', tag = '', cash = 1000, walet = [], history = [], watingMp = '', limitSell = [], isRestore = false) {
+	constructor(id = '', tag = '', cash = 1000, walet = [], history = [], watingMp = '', sellStop = [], limitSell = [], isRestore = false) {
 		this.id = id;
 		this.tag = tag;
 		this.cash = cash;
 		this.walet = walet;
 		this.history = history;
 		this.watingMp = watingMp;
+		this.sellStop = sellStop;
 		this.limitSell = limitSell;
 		if (!isRestore) { saveUser(this); }
 	}
@@ -143,6 +144,9 @@ class user {
 		} else if (this.watingMp.startsWith('stopSell_')) {
 			this.watingMp = this.watingMp.replace('stopSell_', '');
 			onResponsePriceStopSell(this.watingMp, response, this, channel);
+		} else if (this.watingMp.startsWith('limitSell_')) {
+			this.watingMp = this.watingMp.replace('limitSell_', '');
+			onResponsePriceLimitSell(this.watingMp, response, this, channel);
 		}
 		saveUser(this);
 	}

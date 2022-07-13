@@ -28,7 +28,7 @@ const ping = require('./tools/ping.js');
 const log = require('./tools/log.js');
 const { exchange, exchangeResponse } = require('./discordBot/user/gestion/exchange.js');
 const presentBank = require('./discordBot/bank/present.js');
-const { interfaceLimitSell, onResponseLimit, onResponseStopSell, sellLimit, sellStop } = require('./discordBot/bank/limitSell.js');
+const { interfaceLimitSell, onResponseLimit, onResponseStopSell, sellStop, onResponseLimitSell, sellLimit } = require('./discordBot/bank/limitSell.js');
 
 // resore userListe whith restor
 const userListe = restore();
@@ -66,6 +66,8 @@ client.once('ready', () => {
 	process.client = client;
 	log('Connected as ' + client.user.tag, client);
 	sellStop(NcoingeckoApiClient, [userListe], client);
+	sellLimit(NcoingeckoApiClient, [userListe], client);
+
 });
 
 client.on('interactionCreate', async interaction => {
@@ -153,6 +155,11 @@ client.on('interactionCreate', async interaction => {
 			buttonName = buttonName.replace('stopSell_', '');
 			const Muser = serachid(userListe, interaction.user.id);
 			onResponseStopSell(buttonName, Muser, interaction.channel, NcoingeckoApiClient);
+		} else if (buttonName.startsWith('limitSell_')) {
+			interaction.deferUpdate();
+			buttonName = buttonName.replace('limitSell_', '');
+			const Muser = serachid(userListe, interaction.user.id);
+			onResponseLimitSell(buttonName, Muser, interaction.channel, NcoingeckoApiClient);
 		}
 	}
 });

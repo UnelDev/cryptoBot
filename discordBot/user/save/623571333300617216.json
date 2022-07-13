@@ -1,1 +1,70 @@
-{"id":"623571333300617216","tag":"Unel#1527","cash":517.5356077089998,"walet":[["monero",1.593],["tezos",60.166],["curve-dao-token","102.371"],["bitcoin","0.004581692"],["matic-network","83.839"]],"history":[],"watingMp":"","limitSell":true}
+{
+    "id": "623571333300617216",
+    "tag": "Unel#1527",
+    "cash": 761.4196377089997,
+    "walet": [
+        [
+            "monero",
+            0
+        ],
+        [
+            "tezos",
+            60.166
+        ],
+        [
+            "curve-dao-token",
+            "102.371"
+        ],
+        [
+            "bitcoin",
+            "0.004581692"
+        ]
+    ],
+    "history": [
+        [
+            "2022-07-13T20:03:15.806Z",
+            [
+                [
+                    "monero",
+                    0
+                ],
+                [
+                    "tezos",
+                    60.166
+                ],
+                [
+                    "curve-dao-token",
+                    "102.371"
+                ],
+                [
+                    "bitcoin",
+                    "0.004581692"
+                ]
+            ]
+        ],
+        [
+            "2022-07-13T20:03:25.848Z",
+            [
+                [
+                    "monero",
+                    0
+                ],
+                [
+                    "tezos",
+                    60.166
+                ],
+                [
+                    "curve-dao-token",
+                    "102.371"
+                ],
+                [
+                    "bitcoin",
+                    "0.004581692"
+                ]
+            ]
+        ]
+    ],
+    "watingMp": "",
+    "sellStop": [],
+    "limitSell": []
+}

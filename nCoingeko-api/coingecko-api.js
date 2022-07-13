@@ -57,7 +57,7 @@ class NcoingeckoApi {
 				// tow many request we send a new request a few moment later
 				delay(1000).then(() => this.add(args));
 			} else {
-				logs('ERROR In CoinGecko-api :' + error);
+				logs('ERROR In CoinGecko-api :' + error + ' the arg: ' + args);
 			}
 		}
 	}

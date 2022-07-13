@@ -56,7 +56,7 @@ async function onResponseStopSell(devise, user, channel, coingecko) {
 	const price = coingecko.add(['priceUsd', devise]);
 	const embed = new MessageEmbed()
 		.setTitle('vous allez definir un stop sell sur ' + devise)
-		.setDescription('veiller rentrer une limite en $ a partir de laquelle tout vos ' + devise + ' seron vendu')
+		.setDescription('veiller rentrer une limite en $ a partir de laquelle tout vos ' + devise + ' seron vendu si leur prix est **inferieur** a cette limite')
 		.addField('prix', '1' + devise + '=' + await price + '$');
 	const row = new MessageActionRow()
 		.addComponents(
@@ -72,7 +72,39 @@ async function onResponseStopSell(devise, user, channel, coingecko) {
 	});
 }
 
+async function onResponseLimitSell(devise, user, channel, coingecko) {
+	if (user.search(user.walet, devise) == -1) {
+		channel.send('vous ne posedez pas/plus de ' + devise);
+		return;
+	}
+	const price = coingecko.add(['priceUsd', devise]);
+	const embed = new MessageEmbed()
+		.setTitle('vous allez definir un stop sell sur ' + devise)
+		.setDescription('veiller rentrer une limite en $ a partir de laquelle tout vos ' + devise + ' seron vendu si leur prix est **superieur** a cette limite')
+		.addField('prix', '1' + devise + '=' + await price + '$');
+	const row = new MessageActionRow()
+		.addComponents(
+			new MessageButton()
+				.setCustomId('cancel')
+				.setLabel('annuler l\'achat')
+				.setStyle('DANGER')
+		);
+	user.watingMp = 'limitSell_' + devise;
+	channel.send({
+		embeds: [embed],
+		components: [row]
+	});
+}
 async function onResponsePriceStopSell(devise, number, user, channel) {
+	if (user.search(user.walet, devise) == -1) {
+		channel.send('vous ne posedez pas/plus de ' + devise);
+		return;
+	}
+	user.StopSell.push([devise, number]);
+	channel.send('le stop sell du ' + devise + ' a été fixée a ' + number + '$');
+}
+
+async function onResponsePriceLimitSell(devise, number, user, channel) {
 	if (user.search(user.walet, devise) == -1) {
 		channel.send('vous ne posedez pas/plus de ' + devise);
 		return;
@@ -134,7 +166,37 @@ async function sellStop(coingecko, _userListe/* is a array [userlist]*/, clientD
 	const listDeviseWatch = [];
 	const listDevisePrice = new Map();
 	let sleep = _userListe[0].map(user => {
-		if (user.limitSell != []) {
+		if (user.sellStop != [] || typeof user.sellStop == 'undefined') {
+			user.sellStop.forEach(element => {
+				listDeviseWatch.push(element[0]);
+			});
+		}
+	});
+	await Promise.all(sleep);
+	sleep = listDeviseWatch.map(async Element => {
+		listDevisePrice.set(Element, await coingecko.add(['priceUsd -f', Element]));
+	});
+	await Promise.all(sleep);
+	sleep = _userListe[0].map(user => {
+		if (user.sellStop != []) {
+			user.sellStop.forEach(async element => {
+				if (listDevisePrice.get(element[0]) <= element[1]) {
+					await sell(element[0], user, coingecko, clientDiscord);
+				}
+			});
+		}
+	});
+	// delay 1m
+	delay(60000).then(() => sellStop(coingecko, _userListe, clientDiscord));
+}
+
+// eslint-disable-next-line no-inline-comments
+async function sellLimit(coingecko, _userListe/* is a array [userlist]*/, clientDiscord) {
+
+	const listDeviseWatch = [];
+	const listDevisePrice = new Map();
+	let sleep = _userListe[0].map(user => {
+		if (user.limitSell != [] || typeof user.limitSell == 'undefined') {
 			user.limitSell.forEach(element => {
 				listDeviseWatch.push(element[0]);
 			});
@@ -148,43 +210,17 @@ async function sellStop(coingecko, _userListe/* is a array [userlist]*/, clientD
 	sleep = _userListe[0].map(user => {
 		if (user.limitSell != []) {
 			user.limitSell.forEach(async element => {
-				if (listDevisePrice.get(element[0]) <= element[1]) {
+				if (listDevisePrice.get(element[0]) >= element[1]) {
 					await sell(element[0], user, coingecko, clientDiscord);
 				}
-				console.log(new Date().getSeconds(), listDevisePrice.get(element[0]));
 			});
 		}
 	});
-	delay(1000).then(() => sellStop(coingecko, _userListe, clientDiscord));
-}
-
-async function sellLimit(coingecko, userListe, clientDiscord) {
-	const listDeviseWatch = [];
-	const listDevisePrice = new Map();
-	let sleep = userListe.map(user => {
-		if (user.limitSell != []) {
-			user.limitSell.forEach(element => {
-				listDeviseWatch.push(element[0]);
-			});
-		}
-	});
-	await Promise.all(sleep);
-	sleep = listDeviseWatch.map(async Element => {
-		listDevisePrice.set(Element, await coingecko.add(['priceUsd -f', Element]));
-	});
-	await Promise.all(sleep);
-	sleep = userListe.map(user => {
-		if (user.limitSell != []) {
-			user.limitSell.forEach(element => {
-				if (listDevisePrice.get(element[0]) >= element[1]) {
-					sell(element[0], user, coingecko, clientDiscord);
-				}
-			});
-		}
-	});
+	// delay 1m
+	delay(60000).then(() => sellLimit(coingecko, _userListe, clientDiscord));
 }
 
 function delay(time) {
 	return new Promise(resolve => setTimeout(resolve, time));
 }
-module.exports = { sellStop, sellLimit, interfaceLimitSell, onResponseLimit, onResponseStopSell, onResponsePriceStopSell };
+module.exports = { sellStop, sellLimit, interfaceLimitSell, onResponseLimit, onResponseStopSell, onResponsePriceStopSell, onResponseLimitSell, onResponsePriceLimitSell };

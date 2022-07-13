@@ -149,9 +149,9 @@ async function sellStop(coingecko, _userListe/* is a array [userlist]*/, clientD
 		if (user.limitSell != []) {
 			user.limitSell.forEach(async element => {
 				if (listDevisePrice.get(element[0]) <= element[1]) {
-					console.log(listDevisePrice.get(element[0]), '<=', element[1]);
 					await sell(element[0], user, coingecko, clientDiscord);
 				}
+				console.log(new Date().getSeconds(), listDevisePrice.get(element[0]));
 			});
 		}
 	});

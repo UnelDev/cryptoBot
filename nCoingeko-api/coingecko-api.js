@@ -1,5 +1,5 @@
 const CoinGecko = require('coingecko-api');
-const logs = require('../tools/log');
+const logs = require('../tools/log.js');
 
 class NcoingeckoApi {
 	// classe permetant de faire un plusieur appel à l'API CoinGecko sans dépasser le nombre de requête autorisé par l'API (1 a la fois)
@@ -10,45 +10,55 @@ class NcoingeckoApi {
 
 	}
 	async add(args) {
-		if (args[0] === 'coinList') {
-			// diferant to 10 minutes in milliseconds
-			this.runer.push(this.coinList(this.runer.length - 1));
-			const test = await this.runer[this.runer.length - 1];
-			return test;
-		} else if (args[0] === 'priceUsd') {
-			this.runer.push(this.getPriceUsd(args[1], this.runer.length - 1));
-			const test = await this.runer[this.runer.length - 1];
-			return test;
-		} else if ((args[0] === 'priceUsd -f')) {
-			this.runer.push(this.getPriceUsdForce(args[1], this.runer.length - 1));
-			const test = await this.runer[this.runer.length - 1];
-			return test;
-		} else if (args[0] === 'fetchMarketChart') {
-			this.runer.push(this.getMarketChart(args[1], this.runer.length - 1));
-			const test = await this.runer[this.runer.length - 1];
-			return test;
-		} else if (args[0] === 'search') {
-			this.runer.push(this.search(args[1], this.runer.length - 1));
-			const test = await this.runer[this.runer.length - 1];
-			return test;
-		} else if (args[0] === 'info') {
-			this.runer.push(this.info(args[1], this.runer.length - 1));
-			const test = await this.runer[this.runer.length - 1];
-			return test;
-		} else if (args[0] === 'fetchMarketChartRange') {
-			this.runer.push(this.fetchMarketChartRange(args[1], args[2], this.runer.length - 1));
-			const test = await this.runer[this.runer.length - 1];
-			return test;
-		} else if (args[0] === 'ping') {
-			this.runer.push(this.ping(this.runer.length - 1, new Date()));
-			const test = await this.runer[this.runer.length - 1];
-			return test;
-		} else if (args[0] === 'exchangesTickers') {
-			this.runer.push(this.exchangesTickers(this.runer.length, args[1], args[2]));
-			const test = await this.runer[this.runer.length - 1];
-			return test;
-		} else {
-			return 'error in args[0]';
+		try {
+			if (args[0] === 'coinList') {
+				// diferant to 10 minutes in milliseconds
+				this.runer.push(this.coinList(this.runer.length - 1));
+				const test = await this.runer[this.runer.length - 1];
+				return test;
+			} else if (args[0] === 'priceUsd') {
+				this.runer.push(this.getPriceUsd(args[1], this.runer.length - 1));
+				const test = await this.runer[this.runer.length - 1];
+				return test;
+			} else if ((args[0] === 'priceUsd -f')) {
+				this.runer.push(this.getPriceUsdForce(args[1], this.runer.length - 1));
+				const test = await this.runer[this.runer.length - 1];
+				return test;
+			} else if (args[0] === 'fetchMarketChart') {
+				this.runer.push(this.getMarketChart(args[1], this.runer.length - 1));
+				const test = await this.runer[this.runer.length - 1];
+				return test;
+			} else if (args[0] === 'search') {
+				this.runer.push(this.search(args[1], this.runer.length - 1));
+				const test = await this.runer[this.runer.length - 1];
+				return test;
+			} else if (args[0] === 'info') {
+				this.runer.push(this.info(args[1], this.runer.length - 1));
+				const test = await this.runer[this.runer.length - 1];
+				return test;
+			} else if (args[0] === 'fetchMarketChartRange') {
+				this.runer.push(this.fetchMarketChartRange(args[1], args[2], this.runer.length - 1));
+				const test = await this.runer[this.runer.length - 1];
+				return test;
+			} else if (args[0] === 'ping') {
+				this.runer.push(this.ping(this.runer.length - 1, new Date()));
+				const test = await this.runer[this.runer.length - 1];
+				return test;
+			} else if (args[0] === 'exchangesTickers') {
+				this.runer.push(this.exchangesTickers(this.runer.length, args[1], args[2]));
+				const test = await this.runer[this.runer.length - 1];
+				return test;
+			} else {
+				return 'error in args[0]';
+			}
+		} catch (error) {
+			console.log(error.code);
+			if (error.code == 1015) {
+				// tow many request we send a new request a few moment later
+				delay(1000).then(() => this.add(args));
+			} else {
+				logs('ERROR In CoinGecko-api :' + error);
+			}
 		}
 	}
 	async coinList(index) {
@@ -91,7 +101,7 @@ class NcoingeckoApi {
 	async getPriceUsdForce(devise, index) {
 		// creation de la clef devise pour le cache temps d'expiration 1 seconde
 		const key = 'priceEur_' + devise;
-		if (typeof this.cache[key] != 'undefined' && this.cache[key]['date'] != 'undefined' && new Date().getTime() - this.cache[key]['date'].getTime() <= 1000) {
+		if (typeof this.cache[key] != 'undefined' && this.cache[key]['date'] != 'undefined' && new Date().getTime() - this.cache[key]['date'].getTime() <= 500) {
 			return this.cache[key]['data'];
 		} else {
 			await this.runer[index - 1];
@@ -191,5 +201,9 @@ class NcoingeckoApi {
 		});
 		return res;
 	}
+}
+
+function delay(time) {
+	return new Promise(resolve => setTimeout(resolve, time));
 }
 module.exports = NcoingeckoApi;

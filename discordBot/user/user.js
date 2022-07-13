@@ -1,5 +1,4 @@
 const logs = require('../../tools/log.js');
-const log = require('../../tools/log.js');
 const { onResponsePriceStopSell } = require('../bank/limitSell.js');
 const { buyOnResponse } = require('./gestion/buy.js');
 const { exchangeResponseMP } = require('./gestion/exchange.js');
@@ -54,7 +53,7 @@ class user {
 			this.cash += total;
 
 			if (index == -1) {
-				log('error in remove money');
+				logs('error in remove money');
 				return false;
 			}
 			this.walet[index][1] = Number(Number(this.walet[index][1])) - Number(Math.round(quantity * 1000) / 1000);

@@ -54,13 +54,11 @@ async function toPresent(CoinGecko, channel, user, dateStart) {
 
 function CreateButon(user) {
 	// create bututon in 5 per 5
-
 	let buttons = new MessageActionRow();
 	let buttons0 = new MessageActionRow();
 	let buttons1 = new MessageActionRow();
 	let nbBouton = 0;
 	for (let i = 0; i < user.walet.length; i++) {
-		console.log(i, user.walet[i][0]);
 		if (nbBouton < 5) {
 			buttons = buttons.addComponents(new MessageButton()
 				.setCustomId('search_' + user.walet[i][0].toString())
@@ -79,11 +77,11 @@ function CreateButon(user) {
 		}
 		nbBouton++;
 	}
-	if (nbBouton < 5) {
+	if (nbBouton <= 5) {
 		return [buttons];
-	} else if (nbBouton < 10) {
+	} else if (nbBouton <= 10) {
 		return [buttons, buttons0];
-	} else if (nbBouton < 15) {
+	} else if (nbBouton <= 15) {
 		return [buttons, buttons0, buttons1];
 	} else {
 		return [];

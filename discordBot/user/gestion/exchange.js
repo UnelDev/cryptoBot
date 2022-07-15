@@ -1,20 +1,15 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const { serachid } = require('./search');
 async function exchange(devise, coingecko, channel, dateStart) {
-	console.log(1);
 	const embed = new MessageEmbed();
 	embed.setTimestamp();
 	embed.setTitle('vous voulez echanger du ' + devise);
 	const targetList = [];
-	console.log(2);
 	const tickersList = await coingecko.add(['exchangesTickers', devise, 'binance']);
-	console.log(3);
 	if (tickersList.tickers.length <= 0) {
 		noResult(embed, devise, channel);
 		return;
 	}
-	console.log(4);
-	console.log(tickersList);
 	const sleep = tickersList.tickers.map(async element => {
 		if (typeof element.target_coin_id != 'undefined') {
 			targetList.push([element.target_coin_id, element.bid_ask_spread_percentage]);
@@ -56,17 +51,17 @@ function CreateButon(targetList, devise) {
 	let buttons1 = new MessageActionRow();
 	let nbBouton = 0;
 	for (let i = 0; i < targetList.length; i++) {
-		if (nbBouton < 5) {
+		if (nbBouton <= 5) {
 			buttons = buttons.addComponents(new MessageButton()
 				.setCustomId('changeTo_' + devise + '_' + targetList[i][0] + '_' + targetList[i][1])
 				.setLabel('echanger contre ' + targetList[i][0])
 				.setStyle('PRIMARY'));
-		} else if (nbBouton < 10) {
+		} else if (nbBouton <= 10) {
 			buttons0 = buttons0.addComponents(new MessageButton()
 				.setCustomId('changeTo_' + devise + '_' + targetList[i][0] + '_' + targetList[i][1])
 				.setLabel('echanger contre ' + targetList[i][0])
 				.setStyle('PRIMARY'));
-		} else if (nbBouton < 15) {
+		} else if (nbBouton <= 15) {
 			buttons1 = buttons1.addComponents(new MessageButton()
 				.setCustomId('changeTo_' + devise + '_' + targetList[i][0] + '_' + targetList[i][1])
 				.setLabel('echanger contre ' + targetList[i][0])
@@ -74,11 +69,11 @@ function CreateButon(targetList, devise) {
 		}
 		nbBouton++;
 	}
-	if (nbBouton < 5) {
+	if (nbBouton <= 5) {
 		return [buttons];
-	} else if (nbBouton < 10) {
+	} else if (nbBouton <= 10) {
 		return [buttons, buttons0];
-	} else if (nbBouton < 15) {
+	} else if (nbBouton <= 15) {
 		return [buttons, buttons0, buttons1];
 	} else {
 		return [];
@@ -86,7 +81,6 @@ function CreateButon(targetList, devise) {
 }
 
 async function exchangeResponse(devise, target, spread, member, coingecko, dateStart, clientlist) {
-	console.log(target);
 	const embed = new MessageEmbed();
 	const price = coingecko.add(['priceUsd', devise]);
 	const priceTarget = coingecko.add(['priceUsd', target]);

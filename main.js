@@ -144,7 +144,7 @@ client.on('interactionCreate', async interaction => {
 		} else if (buttonName.startsWith('change_')) {
 			interaction.deferUpdate();
 			buttonName = buttonName.replace('change_', '');
-			exchange(buttonName, NcoingeckoApiClient, interaction.user, new Date());
+			exchange(buttonName, NcoingeckoApiClient, interaction.message, new Date());
 		} else if (buttonName.startsWith('limit_')) {
 			interaction.deferUpdate();
 			buttonName = buttonName.replace('limit_', '');

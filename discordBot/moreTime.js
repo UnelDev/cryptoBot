@@ -134,6 +134,12 @@ async function moreTimeReplay(channel, devise, time, coingecko) {
 	);
 	row.addComponents(
 		new MessageButton()
+			.setCustomId('change_' + devise)
+			.setLabel('echanger contre une paire')
+			.setStyle('PRIMARY')
+	);
+	row.addComponents(
+		new MessageButton()
 			.setCustomId('moreTime_' + devise)
 			.setLabel('graphique autre periode')
 			.setStyle('PRIMARY')

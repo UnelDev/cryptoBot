@@ -29,6 +29,7 @@ const log = require('./tools/log.js');
 const { exchange, exchangeResponse } = require('./discordBot/user/gestion/exchange.js');
 const presentBank = require('./discordBot/bank/present.js');
 const { interfaceLimitSell, onResponseLimit, onResponseStopSell, sellStop, onResponseLimitSell, sellLimit } = require('./discordBot/bank/limitSell.js');
+const logs = require('./tools/log.js');
 
 // resore userListe whith restor
 const userListe = restore();
@@ -230,7 +231,12 @@ client.on('messageCreate', async message => {
 			});
 			return;
 		}
-		interfaceLimitSell(message.author, serachid(userListe, message.author.id), new Date());
+		const MUser = serachid(userListe, message.author.id);
+		if (MUser == -1) {
+			logs('error in limit');
+			message.channel.send('une erreur est survenu');
+		}
+		interfaceLimitSell(message.author, MUser, new Date());
 		message.channel.send('l\'outil de limitation vous a été envoyer en mp');
 	}
 });

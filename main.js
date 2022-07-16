@@ -30,6 +30,7 @@ const { exchange, exchangeResponse } = require('./discordBot/user/gestion/exchan
 const presentBank = require('./discordBot/bank/present.js');
 const { interfaceLimitSell, onResponseLimit, onResponseStopSell, sellStop, onResponseLimitSell, sellLimit } = require('./discordBot/bank/limitSell.js');
 const logs = require('./tools/log.js');
+const createButton = require('./tools/gestionBot/createButon.js');
 
 // resore userListe whith restor
 const userListe = restore();
@@ -238,6 +239,10 @@ client.on('messageCreate', async message => {
 		}
 		interfaceLimitSell(message.author, MUser, new Date());
 		message.channel.send('l\'outil de limitation vous a été envoyer en mp');
+	} else if (command.startsWith('create button') || command.startsWith('createButton')) {
+		command = command.replace('create button');
+		command = command.replace('createButton');
+		createButton(command, message.channel);
 	}
 });
 module.exports = {

@@ -120,10 +120,24 @@ function legal(editable) {
 		.setDescription('PCT est un bot qui permet d\'investire de facon factice dans la crypto !\n')
 		.setTimestamp()
 		.addField('je sui mineur est ce que j\'ai le droit d\'utiliser PCT ?', 'Oui. Vous le pouvez, vous le pouvez autant que vous pouvez faire une tombola, c\'est l\'article L322-4')
-		.addField('est ce que je peut acheter des vrais crypto a partir de PCT ?', 'Non, PCT est uniquement un miroir des crypto il n\'a pas pour vocation de vous incitée a acheter des crypto est ne vous le permet donc pas');
+		.addField('est ce que je peut acheter des vrais crypto a partir de PCT ?', 'Non, PCT est uniquement un miroir des crypto il n\'a pas pour vocation de vous incitée a acheter des crypto est ne vous le permet donc pas')
+		.addField('credit', '	**développement** ce bot a été integralement crée et ecrit par @unel#1527 en cas de bug contacter moi\n 	**donnée** les donée sur les crypto vienne de CoinGecko et pour certaine comande de CoinGecko API (voir lien)');
+	const row = new MessageActionRow();
+	row.addComponents(
+		new MessageButton()
+			.setCustomId('help_')
+			.setLabel('menu d\'aide')
+			.setStyle('PRIMARY')
+	);
+	row.addComponents(
+		new MessageButton()
+			.setURL('https://github.com/miscavage/CoinGecko-API#-license')
+			.setLabel('menu d\'aide')
+			.setStyle('LINK')
+	);
 	editable.edit({
 		embeds: [embed],
-		components: createRow()
+		components: [row]
 	});
 }
 

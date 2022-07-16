@@ -136,7 +136,9 @@ function command(editable) {
 		.addField('create', 'permet de crée un compte dans le bot, ce compte vous permetera de d\'acheter et de revendre des crypto')
 		.addField('presentation ou p', 'presente l\'etat du marchée avec plusieur crypto tel que: bitcoin, ethereum, binancecoin, iShares MSCI World ETF Tokenized Stock Defichain')
 		.addField('walet', 'afice les information sur votre walet, peut aussi si cella est pertinant tracée une courbe')
-		.addField('help', 'afiche cette aide');
+		.addField('help', 'afiche cette aide')
+		.addField('limit', 'permet de crée des limit et des stop sell vour la rubrique corespondante')
+		.addField('ping', 'permet d\'aficher des statistique sur le reseaux cette commande affiche la latence client serveur, et la latence serveur discord. dans cette commande vous afiche aussi la latance de l\'api (la ou je recuperer mes donée) elle afiche aussi le temps de traitement de la demande dans le serveur');
 
 	editable.edit({
 		embeds: [embed],

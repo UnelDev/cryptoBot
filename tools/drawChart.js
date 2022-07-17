@@ -12,7 +12,16 @@ async function draw(devise, client) {
 		name.splice(0, name.length - 250);
 
 	}
-
+	let ath = -Infinity;
+	let atl = Infinity;
+	const sleep = value.map(element => {
+		if (element > ath) {
+			ath = element;
+		}
+		if (element < atl) {
+			atl = element;
+		}
+	});
 	const fs = require('fs');
 	const ChartJsImage = require('chartjs-to-image');
 	const chart = new ChartJsImage();
@@ -51,34 +60,7 @@ async function draw(devise, client) {
 	// }
 	const buf = await chart.toBinary();
 	fs.writeFileSync('./img/' + devise + '.png', buf);
-	return './img/' + devise + '.png';
+	await Promise.all(sleep);
+	return [ath, atl, './img/' + devise + '.png'];
 }
 module.exports = draw;
-
-/*
-chart.setConfig({
-		type: 'bar',
-		data: {
-			labels: name,
-			datasets: [
-				{
-					label: devise,
-					data: value
-				}
-			]
-		},
-		options: {
-			scales: {
-				yAxes: [
-					{
-						ticks: {
-							callback: (val) => {
-								return val + '$';
-							}
-						}
-					}
-				]
-			}
-		}
-	});
-	*/

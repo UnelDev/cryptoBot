@@ -7,7 +7,7 @@ const log = require('../tools/log.js');
 async function currencyPresentation(channel, money, client, isDev, dateStart) {
 
 	let msg = channel.send('generation en cours... https://tenor.com/view/mr-bean-waiting-still-waiting-gif-13052487');
-	const img = draw(money.id, client);
+	let img = draw(money.id, client);
 	const info = await client.add(['info', money.id]);
 	const embed = new MessageEmbed();
 	embed.setTitle('information sur ' + money.name + ' à ' + new Date().getHours() + ':' + new Date().getMinutes());
@@ -19,13 +19,6 @@ async function currencyPresentation(channel, money, client, isDev, dateStart) {
 	);
 	embed.setThumbnail(money.large);
 	embed.setImage('attachment://image.png');
-	try {
-		embed.addFields(constuctFields(info, isDev));
-	} catch (error) {
-		log('error in currencyPresentation:23' + error);
-		embed.addField('error ocured', '\u200B');
-	}
-
 	embed.setTimestamp();
 	const row = new MessageActionRow();
 	row.addComponents(
@@ -52,13 +45,22 @@ async function currencyPresentation(channel, money, client, isDev, dateStart) {
 			.setLabel('graphique autre periode')
 			.setStyle('PRIMARY')
 	);
+	img = await img;
+	embed.addField('ATH', img[0].toString() + '$')
+		.addField('ATL', img[1].toString() + '$');
+	try {
+		embed.addFields(constuctFields(await info, isDev));
+	} catch (error) {
+		log('error in currencyPresentation: 25 ' + error);
+		embed.addField('error ocured', '\u200B');
+	}
 	msg = await msg;
 	embed.setFooter({ text: 'ces donnée peuvent être incorrecte • ' + (new Date() - dateStart).toString() + 'ms' });
 	msg.edit({
 		content: ' ',
 		embeds: [embed],
 		files: [{
-			attachment: path.resolve(await img),
+			attachment: path.resolve(img[2]),
 			name: 'image.png'
 		}],
 		components: [row]
@@ -67,7 +69,6 @@ async function currencyPresentation(channel, money, client, isDev, dateStart) {
 }
 
 function constuctFields(info, isDev) {
-	console.log(info);
 	const fields = [];
 	if (info.market_data.current_price.usd) {
 		const sate = CalculpriceChange(info.market_data.price_change_percentage_24h);
@@ -149,6 +150,7 @@ function constructDescrition(info, isDev) {
 	if (nameUrl.includes(' ')) {
 		nameUrl = info.name.replaceAll(' ', '-');
 	}
+	nameUrl = nameUrl.toLowerCase();
 	let link;
 	if (isDev) {
 		//						   pi home /

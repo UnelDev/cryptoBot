@@ -5,6 +5,7 @@ const existsSync = require('node:fs').existsSync;
 const fs = require('fs');
 const log = require('../tools/log.js');
 async function currencyPresentation(channel, money, client, isDev, dateStart) {
+
 	let msg = channel.send('generation en cours... https://tenor.com/view/mr-bean-waiting-still-waiting-gif-13052487');
 	const img = draw(money.id, client);
 	const info = await client.add(['info', money.id]);
@@ -66,6 +67,7 @@ async function currencyPresentation(channel, money, client, isDev, dateStart) {
 }
 
 function constuctFields(info, isDev) {
+	console.log(info);
 	const fields = [];
 	if (info.market_data.current_price.usd) {
 		const sate = CalculpriceChange(info.market_data.price_change_percentage_24h);

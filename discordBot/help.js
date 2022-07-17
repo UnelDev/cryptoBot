@@ -209,6 +209,7 @@ function limitStopSell(editable) {
 		.addField('exemple limit sell', 'j\'achete 1 bitcoin a 20 000$ je configure un limit sell a 19 000$ lors ce que le prix du bitcoin passe a 18 999$ il sera vendu en totalitée automatiquement par le bot')
 		.addField('exemple stop sell', 'j\'achete 1 bitcoin a 20 000$ je configure un stop sell a 21 000$ lors ce que le prix du bitcoin passe a 21 000,00...1$ il sera vendu en totalitée automatiquement par le bot')
 		.addField('limitation', 'bon pour ne pas se mentir les stop et limit sell sont tres gourment en requete, je suis limitée a 50 requete minite et chaque limit et stop sell sont verifier toute les deux minute il demande donc une requete pour chaque limite ou stop sell. \n donc svp ne configurer pas 200 limite/stop sell sinon je devrais les limitée !')
+		.addField('precaussion', 'atention l\'or de la vente le bot va aissayer de vous prevenir toutefois discord peut refusée si ca fait trop longtemps que vous avez envoyer un message au bot ! il faut donc que vous verifier que les limite ne se sont pas activée')
 		.addField('commande', 'vous pouvez les activée en tapant limit');
 	editable.edit({
 		embeds: [embed],

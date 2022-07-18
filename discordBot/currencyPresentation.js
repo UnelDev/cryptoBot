@@ -1,13 +1,13 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const path = require('path');
-const draw = require('../tools/drawChart.js');
 const existsSync = require('node:fs').existsSync;
 const fs = require('fs');
 const log = require('../tools/log.js');
+const anotherTime = require('./anotherTime.js');
 async function currencyPresentation(channel, money, client, isDev, dateStart) {
 
 	let msg = channel.send('generation en cours... https://tenor.com/view/mr-bean-waiting-still-waiting-gif-13052487');
-	let img = draw(money.id, client);
+	let img = anotherTime(money.id, 1, client);
 	const info = await client.add(['info', money.id]);
 	const embed = new MessageEmbed();
 	embed.setTitle('information sur ' + money.name + ' à ' + new Date().getHours() + ':' + new Date().getMinutes());

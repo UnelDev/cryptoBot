@@ -18,6 +18,8 @@ async function create(nBDay, coingecko, devise) {
 	const name = [];
 	const value = [];
 	let minDraw = Infinity;
+	let ath = -Infinity;
+	let atl = Infinity;
 	for (let i = 0; i < market.length; i++) {
 		if (nBDay <= 1) {
 			const hours = new Date(market[i][0]).getHours();
@@ -32,8 +34,11 @@ async function create(nBDay, coingecko, devise) {
 		if (minDraw > market[i][1]) {
 			minDraw = market[i][1];
 		}
+		if (market[i][1] > ath) {
+			ath = market[i][1];
+		}
 	}
-
+	atl = minDraw;
 	const configuration = {
 		type: 'bar',
 		data: {
@@ -53,12 +58,12 @@ async function create(nBDay, coingecko, devise) {
 		options: {
 			scales: {
 				y: {
-					min: Math.floor(minDraw - (2 / 100 * minDraw))
+					min: Math.floor(minDraw - (1 / 100 * minDraw))
 				}
 			}
 		}
 	};
-	return configuration;
+	return [ath, atl, configuration];
 }
 async function run(nBDay, coingecko, devise) {
 
@@ -66,7 +71,8 @@ async function run(nBDay, coingecko, devise) {
 	const height = 500;
 	const backgroundColour = 'white';
 	const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height, backgroundColour });
-	const dataUrl = await chartJSNodeCanvas.renderToDataURL(await create(nBDay, coingecko, devise));
+	const img = await create(nBDay, coingecko, devise);
+	const dataUrl = await chartJSNodeCanvas.renderToDataURL(img[2]);
 	const base64Image = dataUrl;
 
 	const base64Data = base64Image.replace(/^data:image\/png;base64,/, '');
@@ -77,6 +83,6 @@ async function run(nBDay, coingecko, devise) {
 			log(err);
 		}
 	});
-	return (pathfile);
+	return ([img[0], img[1], pathfile]);
 }
 module.exports = anotherTime;

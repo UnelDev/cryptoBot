@@ -111,7 +111,7 @@ async function moreTimeReplay(channel, devise, time, coingecko) {
 		nbDay = 730;
 		text = 'en 2 ans';
 	}
-	const img = anotherTime(devise, nbDay, coingecko);
+	let img = anotherTime(devise, nbDay, coingecko);
 
 	const embed = new MessageEmbed();
 	embed.setTitle('information sur ' + devise + text)
@@ -144,12 +144,16 @@ async function moreTimeReplay(channel, devise, time, coingecko) {
 			.setLabel('graphique autre periode')
 			.setStyle('PRIMARY')
 	);
+	img = await img;
+	console.log(img);
+	embed.addField('ATH', img[0].toString() + '$')
+		.addField('ATL', img[1].toString() + '$');
 	msg = await msg;
 	msg.edit({
 		content: ' ',
 		embeds: [embed],
 		files: [{
-			attachment: path.resolve(await img),
+			attachment: path.resolve(await img[2]),
 			name: 'image.png'
 		}],
 		components: [row]

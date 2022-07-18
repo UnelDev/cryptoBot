@@ -13,7 +13,7 @@ const marketPresntation = require('./discordBot/marketPresentation.js');
 const information = require('./discordBot/information.js');
 const idToName = require('./tools/convert/idTo/idToName.js');
 const user = require('./discordBot/user/user.js');
-const verifyExist = require('./discordBot/user/gestion/verifyExist');
+const { verifyExist, verifyExistReturnUser } = require('./discordBot/user/gestion/verifyExist');
 const { buy } = require('./discordBot/user/gestion/buy');
 const { serachid } = require('./discordBot/user/gestion/search.js');
 const { sell } = require('./discordBot/user/gestion/sell.js');
@@ -31,6 +31,7 @@ const presentBank = require('./discordBot/bank/present.js');
 const { interfaceLimitSell, onResponseLimit, onResponseStopSell, sellStop, onResponseLimitSell, sellLimit } = require('./discordBot/bank/limitSell.js');
 const logs = require('./tools/log.js');
 const createButton = require('./tools/gestionBot/createButon.js');
+const gestionLimitSell = require('./discordBot/user/gestion/gestionLimitSell.js');
 
 // resore userListe whith restor
 const userListe = restore();
@@ -243,6 +244,12 @@ client.on('messageCreate', async message => {
 		command = command.replace('create button');
 		command = command.replace('createButton');
 		createButton(command, message.channel);
+	} else if (command.startsWith('remove limite') || command.startsWith('remove limit') || command.startsWith('supr limite') || command.startsWith('supr limit')) {
+		const Muser = await verifyExistReturnUser(userListe, message.author.id, message.channel);
+		if (Muser) {
+			gestionLimitSell(Muser, message.channel, new Date());
+		}
+
 	}
 });
 module.exports = {

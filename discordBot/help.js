@@ -120,10 +120,24 @@ function legal(editable) {
 		.setDescription('PCT est un bot qui permet d\'investire de facon factice dans la crypto !\n')
 		.setTimestamp()
 		.addField('je sui mineur est ce que j\'ai le droit d\'utiliser PCT ?', 'Oui. Vous le pouvez, vous le pouvez autant que vous pouvez faire une tombola, c\'est l\'article L322-4')
-		.addField('est ce que je peut acheter des vrais crypto a partir de PCT ?', 'Non, PCT est uniquement un miroir des crypto il n\'a pas pour vocation de vous incitée a acheter des crypto est ne vous le permet donc pas');
+		.addField('est ce que je peut acheter des vrais crypto a partir de PCT ?', 'Non, PCT est uniquement un miroir des crypto il n\'a pas pour vocation de vous incitée a acheter des crypto est ne vous le permet donc pas')
+		.addField('credit', '	**développement** ce bot a été integralement crée et ecrit par @unel#1527 en cas de bug contacter moi\n 	**donnée** les donée sur les crypto vienne de CoinGecko et pour certaine comande de CoinGecko API (voir lien)');
+	const row = new MessageActionRow();
+	row.addComponents(
+		new MessageButton()
+			.setCustomId('help_')
+			.setLabel('menu d\'aide')
+			.setStyle('PRIMARY')
+	);
+	row.addComponents(
+		new MessageButton()
+			.setURL('https://github.com/miscavage/CoinGecko-API#-license')
+			.setLabel('menu d\'aide')
+			.setStyle('LINK')
+	);
 	editable.edit({
 		embeds: [embed],
-		components: createRow()
+		components: [row]
 	});
 }
 
@@ -136,7 +150,9 @@ function command(editable) {
 		.addField('create', 'permet de crée un compte dans le bot, ce compte vous permetera de d\'acheter et de revendre des crypto')
 		.addField('presentation ou p', 'presente l\'etat du marchée avec plusieur crypto tel que: bitcoin, ethereum, binancecoin, iShares MSCI World ETF Tokenized Stock Defichain')
 		.addField('walet', 'afice les information sur votre walet, peut aussi si cella est pertinant tracée une courbe')
-		.addField('help', 'afiche cette aide');
+		.addField('help', 'afiche cette aide')
+		.addField('limit', 'permet de crée des limit et des stop sell vour la rubrique corespondante')
+		.addField('ping', 'permet d\'aficher des statistique sur le reseaux cette commande affiche la latence client serveur, et la latence serveur discord. dans cette commande vous afiche aussi la latance de l\'api (la ou je recuperer mes donée) elle afiche aussi le temps de traitement de la demande dans le serveur');
 
 	editable.edit({
 		embeds: [embed],
@@ -192,7 +208,9 @@ function limitStopSell(editable) {
 		.addField('limit sell ', 'permet de configurer une limite a laquelle sera vendus vos crypto si leur prix est **superieur** a cette limite')
 		.addField('exemple limit sell', 'j\'achete 1 bitcoin a 20 000$ je configure un limit sell a 19 000$ lors ce que le prix du bitcoin passe a 18 999$ il sera vendu en totalitée automatiquement par le bot')
 		.addField('exemple stop sell', 'j\'achete 1 bitcoin a 20 000$ je configure un stop sell a 21 000$ lors ce que le prix du bitcoin passe a 21 000,00...1$ il sera vendu en totalitée automatiquement par le bot')
-		.addField('limitation', 'bon pour ne pas se mentir les stop et limit sell sont tres gourment en requete, je suis limitée a 50 requete minite et chaque limit et stop sell sont verifier toute les deux minute il demande donc une requete pour chaque limite ou stop sell. \n donc svp ne configurer pas 200 limite/stop sell sinon je devrais les limitée !');
+		.addField('limitation', 'bon pour ne pas se mentir les stop et limit sell sont tres gourment en requete, je suis limitée a 50 requete minite et chaque limit et stop sell sont verifier toute les deux minute il demande donc une requete pour chaque limite ou stop sell. \n donc svp ne configurer pas 200 limite/stop sell sinon je devrais les limitée !')
+		.addField('precaussion', 'atention l\'or de la vente le bot va aissayer de vous prevenir toutefois discord peut refusée si ca fait trop longtemps que vous avez envoyer un message au bot ! il faut donc que vous verifier que les limite ne se sont pas activée')
+		.addField('commande', 'vous pouvez les activée en tapant limit');
 	editable.edit({
 		embeds: [embed],
 		components: createRow()

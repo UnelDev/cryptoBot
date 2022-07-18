@@ -77,7 +77,7 @@ async function create(timeStart, coingecko, devise) {
 		options: {
 			scales: {
 				y: {
-					min: Math.floor(minDraw)
+					min: Math.floor(minDraw - (1 / 100 * minDraw))
 				}
 			}
 		}

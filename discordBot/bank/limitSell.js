@@ -100,7 +100,7 @@ async function onResponsePriceStopSell(devise, number, user, channel) {
 		channel.send('vous ne posedez pas/plus de ' + devise);
 		return;
 	}
-	user.StopSell.push([devise, number]);
+	user.sellStop.push([devise, number]);
 	channel.send('le stop sell du ' + devise + ' a été fixée a ' + number + '$');
 }
 
@@ -127,12 +127,12 @@ function CreateButon(user) {
 				.setCustomId('limit_' + user.walet[i][0])
 				.setLabel('limiter ' + user.walet[i][0])
 				.setStyle('PRIMARY'));
-		} else if (nbBouton < 10) {
+		} else if (nbBouton <= 10) {
 			buttons0 = buttons0.addComponents(new MessageButton()
 				.setCustomId('limit_' + user.walet[i][0])
 				.setLabel('limiter ' + user.walet[i][0])
 				.setStyle('PRIMARY'));
-		} else if (nbBouton < 15) {
+		} else if (nbBouton <= 15) {
 			buttons1 = buttons1.addComponents(new MessageButton()
 				.setCustomId('limit_' + user.walet[i][0])
 				.setLabel('limiter ' + user.walet[i][0])
@@ -140,11 +140,11 @@ function CreateButon(user) {
 		}
 		nbBouton++;
 	}
-	if (nbBouton < 5) {
+	if (nbBouton <= 5) {
 		return [buttons];
-	} else if (nbBouton < 10) {
+	} else if (nbBouton <= 10) {
 		return [buttons, buttons0];
-	} else if (nbBouton < 15) {
+	} else if (nbBouton <= 15) {
 		return [buttons, buttons0, buttons1];
 	} else {
 		return [];

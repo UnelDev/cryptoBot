@@ -29,6 +29,8 @@ const log = require('./tools/log.js');
 const { exchange, exchangeResponse } = require('./discordBot/user/gestion/exchange.js');
 const presentBank = require('./discordBot/bank/present.js');
 const { interfaceLimitSell, onResponseLimit, onResponseStopSell, sellStop, onResponseLimitSell, sellLimit } = require('./discordBot/bank/limitSell.js');
+const logs = require('./tools/log.js');
+const createButton = require('./tools/gestionBot/createButon.js');
 
 // resore userListe whith restor
 const userListe = restore();
@@ -95,6 +97,10 @@ client.on('interactionCreate', async interaction => {
 			const byClient = serachid(userListe, interaction.user.id);
 			byClient.buy(NcoingeckoApiClient, interaction.channel, arrayResponse[1], arrayResponse[2], arrayResponse[3], arrayResponse[4], bank);
 		} else if (buttonName.startsWith('cancel')) {
+			const Muser = serachid(userListe, interaction.user.id);
+			if (Muser == -1) {
+				Muser.watingMp = '';
+			}
 			interaction.deferUpdate();
 			interaction.message.edit({ content: 'annulation bien prise en compte !', embeds: [], components: [] });
 		} else if (buttonName.startsWith('sell_')) {
@@ -226,8 +232,17 @@ client.on('messageCreate', async message => {
 			});
 			return;
 		}
-		interfaceLimitSell(message.author, serachid(userListe, message.author.id), new Date());
+		const MUser = serachid(userListe, message.author.id);
+		if (MUser == -1) {
+			logs('error in limit');
+			message.channel.send('une erreur est survenu');
+		}
+		interfaceLimitSell(message.author, MUser, new Date());
 		message.channel.send('l\'outil de limitation vous a été envoyer en mp');
+	} else if (command.startsWith('create button') || command.startsWith('createButton')) {
+		command = command.replace('create button');
+		command = command.replace('createButton');
+		createButton(command, message.channel);
 	}
 });
 module.exports = {

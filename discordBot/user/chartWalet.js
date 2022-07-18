@@ -71,6 +71,7 @@ async function create(timeStart, coingecko, devise) {
 				label: 'total',
 				borderColor: 'rgb(60,186,159)',
 				backgroundColor: 'rgb(60,186,159,0.1)',
+				borderWidth: 5,
 				fill: false
 			}]
 		},

@@ -20,6 +20,10 @@ async function onResponseLimit(devise, coingecko, user, channel, dateStart) {
 		channel.send('vous ne posedez pas/plus de ' + devise);
 		return;
 	}
+	if (user.search(user.limitSell, devise) != -1) {
+		channel.send('vous ne pouvez pas definir deux limit sell sur ' + devise);
+		return;
+	}
 	const price = coingecko.add(['priceUsd', devise]);
 	const embed = new MessageEmbed();
 	embed.setTitle('choisir des limitation')
@@ -51,6 +55,10 @@ async function onResponseLimit(devise, coingecko, user, channel, dateStart) {
 async function onResponseStopSell(devise, user, channel, coingecko) {
 	if (user.search(user.walet, devise) == -1) {
 		channel.send('vous ne posedez pas/plus de ' + devise);
+		return;
+	}
+	if (user.search(user.sellStop, devise) != -1) {
+		channel.send('vous ne pouvez pas definir deux stop sell sur ' + devise);
 		return;
 	}
 	const price = coingecko.add(['priceUsd', devise]);

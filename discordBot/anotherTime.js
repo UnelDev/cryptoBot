@@ -49,7 +49,7 @@ async function create(nBDay, coingecko, devise) {
 				fill: false,
 				backgroundColor: ['rgba(54, 162, 235, 0.2)'],
 				borderColor: ['rgb(54, 162, 235, 1)'],
-				borderWidth: 1,
+				borderWidth: 5,
 				// define top or bottom axis ,modifies on scale
 				xAxisID: 'xAxis1'
 			}]

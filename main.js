@@ -33,6 +33,7 @@ const logs = require('./tools/log.js');
 const createButton = require('./tools/gestionBot/createButon.js');
 const gestionLimitSell = require('./discordBot/user/gestion/gestionLimitSell.js');
 const { prefix } = require('./tools/gestionBot/changePrefix.js');
+const saveChanel = require('./tools/gestionBot/sendMessage.js');
 
 // resore userListe whith restor
 const userListe = restore();
@@ -246,12 +247,14 @@ client.on('messageCreate', async message => {
 		command = command.replace('createButton');
 		createButton(command, message.channel);
 	} else if (command.startsWith('remove limite') || command.startsWith('remove limit') || command.startsWith('supr limite') || command.startsWith('supr limit')) {
-		const Muser = await verifyExistReturnUser(userListe, message.author.id, message.channel);
+		const Muser = await verifyExist.verifyExistReturnUser(userListe, message.author.id, message.channel);
 		if (Muser) {
 			gestionLimitSell(Muser, message.channel, new Date());
 		}
 	} else if (command.startsWith('prefix')) {
 		prefix(message, Prefix, Prefix);
+	} else if (command.startsWith('annonce')) {
+		saveChanel(message);
 	}
 });
 module.exports = {

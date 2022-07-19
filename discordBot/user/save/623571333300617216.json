@@ -101,25 +101,12 @@
             ]
         ]
     ],
-    "watingMp": "tezos",
+    "watingMp": "matic-network",
     "sellStop": [
         [
             "matic-network",
             "0.59"
-        ],
-        [
-            "monero",
-            "100"
         ]
     ],
-    "limitSell": [
-        [
-            "monero",
-            "500"
-        ],
-        [
-            "tezos",
-            "400"
-        ]
-    ]
+    "limitSell": []
 }

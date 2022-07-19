@@ -152,7 +152,8 @@ function command(editable) {
 		.addField('walet', 'afice les information sur votre walet, peut aussi si cella est pertinant tracée une courbe')
 		.addField('help', 'afiche cette aide')
 		.addField('limit', 'permet de crée des limit et des stop sell vour la rubrique corespondante')
-		.addField('ping', 'permet d\'aficher des statistique sur le reseaux cette commande affiche la latence client serveur, et la latence serveur discord. dans cette commande vous afiche aussi la latance de l\'api (la ou je recuperer mes donée) elle afiche aussi le temps de traitement de la demande dans le serveur');
+		.addField('ping', 'permet d\'aficher des statistique sur le reseaux cette commande affiche la latence client serveur, et la latence serveur discord. dans cette commande vous afiche aussi la latance de l\'api (la ou je recuperer mes donée) elle afiche aussi le temps de traitement de la demande dans le serveur')
+		.addField('supr limit', ' permet de suprimée des limitation (limit sell et stop sell)');
 
 	editable.edit({
 		embeds: [embed],

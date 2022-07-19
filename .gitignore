@@ -102,6 +102,8 @@ dist
 
 # TernJS port file
 .tern-port
+
+# github
 chart.png
 bitcoin.png
 binancecoin.png
@@ -115,4 +117,4 @@ discordBot/user/save/623571333300617216.json
 discordBot/user/save/index.json
 site/Monero.html
 *.html
-discordBot/user/save/623571333300617216.json
+discordBot/user/save/

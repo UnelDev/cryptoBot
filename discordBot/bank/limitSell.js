@@ -227,7 +227,6 @@ async function sellLimit(coingecko, _userListe/* is a array [userlist]*/, client
 	// delay 2m
 	delay(120000).then(() => sellLimit(coingecko, _userListe, clientDiscord));
 }
-
 function delay(time) {
 	return new Promise(resolve => setTimeout(resolve, time));
 }

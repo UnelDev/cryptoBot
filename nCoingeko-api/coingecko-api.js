@@ -26,41 +26,140 @@ class NcoingeckoApi {
 	async add(args) {
 		try {
 			if (args[0] === 'coinList') {
-				// diferant to 10 minutes in milliseconds
-				this.runer.push(this.coinList(this.runer.length - 1));
-				const test = await this.runer[this.runer.length - 1];
+				let test;
+				try {
+					this.runer.push(this.coinList(this.runer.length - 1));
+					test = await this.runer[this.runer.length - 1];
+				} catch (error) {
+					if (error.code == 1015 || error.code == 429) {
+						// tow many request we send a new request a few moment later
+						delay(1000).then(async () => test = await this.add(args));
+						// to do: send message for client
+					} else {
+						logs('ERROR In CoinGecko-api :' + error + ' the arg: ' + args);
+					}
+				}
+
 				return test;
 			} else if (args[0] === 'priceUsd') {
-				this.runer.push(this.getPriceUsd(args[1], this.runer.length - 1));
-				const test = await this.runer[this.runer.length - 1];
+				let test;
+				try {
+					this.runer.push(this.getPriceUsd(args[1], this.runer.length - 1));
+					test = await this.runer[this.runer.length - 1];
+				} catch (error) {
+					if (error.code == 1015 || error.code == 429) {
+						// tow many request we send a new request a few moment later
+						delay(1000).then(async () => test = await this.add(args));
+						// to do: send message for client
+					} else {
+						logs('ERROR In CoinGecko-api :' + error + ' the arg: ' + args);
+					}
+				}
 				return test;
 			} else if ((args[0] === 'priceUsd -f')) {
-				this.runer.push(this.getPriceUsdForce(args[1], this.runer.length - 1));
-				const test = await this.runer[this.runer.length - 1];
+				let test;
+				try {
+					this.runer.push(this.getPriceUsdForce(args[1], this.runer.length - 1));
+					test = await this.runer[this.runer.length - 1];
+				} catch (error) {
+					if (error.code == 1015 || error.code == 429) {
+						// tow many request we send a new request a few moment later
+						delay(1000).then(async () => test = await this.add(args));
+						// to do: send message for client
+					} else {
+						logs('ERROR In CoinGecko-api :' + error + ' the arg: ' + args);
+					}
+				}
 				return test;
 			} else if (args[0] === 'fetchMarketChart') {
-				this.runer.push(this.getMarketChart(args[1], this.runer.length - 1));
-				const test = await this.runer[this.runer.length - 1];
+				let test;
+				try {
+					this.runer.push(this.getMarketChart(args[1], this.runer.length - 1));
+					test = await this.runer[this.runer.length - 1];
+				} catch (error) {
+					if (error.code == 1015 || error.code == 429) {
+						// tow many request we send a new request a few moment later
+						delay(1000).then(async () => test = await this.add(args));
+						// to do: send message for client
+					} else {
+						logs('ERROR In CoinGecko-api :' + error + ' the arg: ' + args);
+					}
+				}
 				return test;
 			} else if (args[0] === 'search') {
-				this.runer.push(this.search(args[1], this.runer.length - 1));
-				const test = await this.runer[this.runer.length - 1];
+				let test;
+				try {
+					this.runer.push(this.search(args[1], this.runer.length - 1));
+					test = await this.runer[this.runer.length - 1];
+				} catch (error) {
+					if (error.code == 1015 || error.code == 429) {
+						// tow many request we send a new request a few moment later
+						delay(1000).then(async () => test = await this.add(args));
+						// to do: send message for client
+					} else {
+						logs('ERROR In CoinGecko-api :' + error + ' the arg: ' + args);
+					}
+				}
 				return test;
 			} else if (args[0] === 'info') {
-				this.runer.push(this.info(args[1], this.runer.length - 1));
-				const test = await this.runer[this.runer.length - 1];
+				let test;
+				try {
+					this.runer.push(this.info(args[1], this.runer.length - 1));
+					test = await this.runer[this.runer.length - 1];
+				} catch (error) {
+					if (error.code == 1015 || error.code == 429) {
+						// tow many request we send a new request a few moment later
+						delay(1000).then(async () => test = await this.add(args));
+						// to do: send message for client
+					} else {
+						logs('ERROR In CoinGecko-api :' + error + ' the arg: ' + args);
+					}
+				}
 				return test;
 			} else if (args[0] === 'fetchMarketChartRange') {
-				this.runer.push(this.fetchMarketChartRange(args[1], args[2], this.runer.length - 1));
-				const test = await this.runer[this.runer.length - 1];
+				let test;
+				try {
+					this.runer.push(this.fetchMarketChartRange(args[1], args[2], this.runer.length - 1));
+					test = await this.runer[this.runer.length - 1];
+				} catch (error) {
+					if (error.code == 1015 || error.code == 429) {
+						// tow many request we send a new request a few moment later
+						delay(1000).then(async () => test = await this.add(args));
+						// to do: send message for client
+					} else {
+						logs('ERROR In CoinGecko-api :' + error + ' the arg: ' + args);
+					}
+				}
 				return test;
 			} else if (args[0] === 'ping') {
-				this.runer.push(this.ping(this.runer.length - 1, new Date()));
-				const test = await this.runer[this.runer.length - 1];
+				let test;
+				try {
+					this.runer.push(this.ping(this.runer.length - 1, new Date()));
+					test = await this.runer[this.runer.length - 1];
+				} catch (error) {
+					if (error.code == 1015 || error.code == 429) {
+						// tow many request we send a new request a few moment later
+						delay(1000).then(async () => test = await this.add(args));
+						// to do: send message for client
+					} else {
+						logs('ERROR In CoinGecko-api :' + error + ' the arg: ' + args);
+					}
+				}
 				return test;
 			} else if (args[0] === 'exchangesTickers') {
-				this.runer.push(this.exchangesTickers(this.runer.length, args[1], args[2]));
-				const test = await this.runer[this.runer.length - 1];
+				let test;
+				try {
+					this.runer.push(this.exchangesTickers(this.runer.length, args[1], args[2]));
+					test = await this.runer[this.runer.length - 1];
+				} catch (error) {
+					if (error.code == 1015 || error.code == 429) {
+						// tow many request we send a new request a few moment later
+						delay(1000).then(async () => test = await this.add(args));
+						// to do: send message for client
+					} else {
+						logs('ERROR In CoinGecko-api :' + error + ' the arg: ' + args);
+					}
+				}
 				return test;
 			} else {
 				return 'error in args[0]';
@@ -70,7 +169,8 @@ class NcoingeckoApi {
 				// tow many request we send a new request a few moment later
 				delay(1000).then(() => this.add(args));
 			} else {
-				logs('ERROR In CoinGecko-api :' + error + ' the arg: ' + args);
+				// if all try catch is unfunctional
+				logs('ERROR In CoinGecko-api (error ???) :' + error + ' the arg: ' + args);
 			}
 		}
 	}

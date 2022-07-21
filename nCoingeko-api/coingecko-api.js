@@ -124,11 +124,14 @@ class NcoingeckoApi {
 				} catch (error) {
 					if (error.code == 1015 || error.code == 429) {
 						// tow many request we send a new request a few moment later
-						delay(1000).then(async () => test = await this.add(args));
+						delay(3000).then(async () => test = await this.add(args));
 						// to do: send message for client
 					} else {
 						logs('ERROR In CoinGecko-api :' + error + ' the arg: ' + args);
 					}
+				}
+				if (test == 'error in coin coingecko:fetchMarketChartRangeAxiosError: Request failed with status code 429') {
+					delay(3000).then(async () => test = await this.add(args));
 				}
 				return test;
 			} else if (args[0] === 'ping') {
@@ -165,7 +168,7 @@ class NcoingeckoApi {
 				return 'error in args[0]';
 			}
 		} catch (error) {
-			if (error.code == 1015) {
+			if (error.code == 1015 || error.code == 429) {
 				// tow many request we send a new request a few moment later
 				delay(1000).then(() => this.add(args));
 			} else {

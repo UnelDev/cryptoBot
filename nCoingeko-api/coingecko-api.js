@@ -1,3 +1,17 @@
+/*
+hi i am getting the same error!
+did you find a solution?
+here is my error:
+undefined:1
+error code: 1015
+^
+
+SyntaxError: Unexpected token e in JSON at position 0
+
+for the moment the blocking requests is: fetchMarketChartRange
+but  client.simple.price is functional
+
+*/
 const CoinGecko = require('coingecko-api');
 const logs = require('../tools/log.js');
 
@@ -52,7 +66,6 @@ class NcoingeckoApi {
 				return 'error in args[0]';
 			}
 		} catch (error) {
-			console.log(error.code);
 			if (error.code == 1015) {
 				// tow many request we send a new request a few moment later
 				delay(1000).then(() => this.add(args));
@@ -75,7 +88,7 @@ class NcoingeckoApi {
 				this.cache[key]['data'] = data.data;
 				return data.data;
 			} catch (error) {
-				console.log('error : ' + error);
+				logs(error);
 				throw error;
 			}
 		}
@@ -132,14 +145,30 @@ class NcoingeckoApi {
 		}
 	}
 	async fetchMarketChartRange(devise, range, index) {
+		// this comment isn't functional for ??? https://github.com/miscavage/CoinGecko-API/issues/38
 		// no cache because date change everytime
+		// await this.runer[index - 1];
+		// const client = new CoinGecko();
+		// const data = await client.coins.fetchMarketChartRange(devise, {
+		// 	from: range[0],
+		// 	to: range[1]
+		// });
+
 		await this.runer[index - 1];
-		const client = new CoinGecko();
-		const data = await client.coins.fetchMarketChartRange(devise, {
-			from: range[0],
-			to: range[1]
+		const axios = require('axios');
+		let res = [];
+		await axios.get('https://api.coingecko.com/api/v3/coins/' + devise + '/market_chart/range?vs_currency=usd&from=' + range[0] + '&to=' + range[1], {
+			headers: {
+				Accept: 'accept',
+				Authorization: 'authorize'
+			}
+		}).then(response => {
+			res = response.data.prices;
+		}).catch(err => {
+			logs('error in coin coingecko:fetchMarketChartRange' + err);
+			res = ['error in coin coingecko:fetchMarketChartRange' + err];
 		});
-		return data.data.prices;
+		return res;
 
 	}
 	async search(find, index) {
@@ -154,7 +183,8 @@ class NcoingeckoApi {
 		}).then(response => {
 			res = response.data.coins;
 		}).catch(err => {
-			res = ['error ' + err];
+			logs('error in coin coingecko:search' + err);
+			res = ['error in coin coingecko:search' + err];
 		});
 		return res;
 	}
@@ -172,7 +202,7 @@ class NcoingeckoApi {
 			res = response.data;
 		}).catch(err => {
 			logs('error in coin coingecko:info' + err);
-			res = ['error ' + err];
+			res = ['error in coin coingecko:info ' + err];
 		});
 		return res;
 	}

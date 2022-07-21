@@ -1,4 +1,4 @@
-const verifyExist = require('./verifyExist');
+const { verifyExist } = require('./verifyExist');
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const { serachid } = require('./search');
 const logs = require('../../../tools/log');
@@ -23,7 +23,7 @@ async function buy(id, channel, member, nCoingeko, clientlist, client) {
 		const price = nCoingeko.add(['priceUsd', id]);
 		createEmbed(clientlist, member, id, await price);
 	} catch (error) {
-		channel.send('une erreur est survenu lors de l\'achat : ' + error + 'contacter @unel#1527');
+		channel.send('une erreur est survenu lors de l\'achat : ' + error + ' contacter @unel#1527');
 		logs('@unel#1527 error in buy error :' + error + ' client : ' + client + 'require :' + id);
 	}
 }

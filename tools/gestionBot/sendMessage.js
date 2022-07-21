@@ -24,6 +24,7 @@ function saveChanel(message) {
 	anoncmentChanel.push(message.channel.id);
 	fs.writeFileSync(path.resolve('./tools/gestionBot/save/AlertChanel/AlertChanel.json'), JSON.stringify(anoncmentChanel));
 	message.channel.send('ce salon a bien été ajouter au sallon d\'anonce.');
+
 }
 
 function stopSaveChanel(message) {
@@ -48,8 +49,43 @@ function stopSaveChanel(message) {
 		message.channel.send('ce channel n\'est pas enregistrer');
 		return;
 	}
-	anoncmentChanel.splice(anoncmentChanel.indexOf(message.channel.id), 1)
+	anoncmentChanel.splice(anoncmentChanel.indexOf(message.channel.id), 1);
 	fs.writeFileSync(path.resolve('./tools/gestionBot/save/AlertChanel/AlertChanel.json'), JSON.stringify(anoncmentChanel));
 	message.channel.send('ce salon a bien été suprimée des sallon d\'anonce.');
 }
-module.exports = { saveChanel, stopSaveChanel };
+
+async function sendAnnouncement(message, discord) {
+	if (message.author.id != '623571333300617216') {
+		message.channel.send('vous n\'avez pas le droit d\'envoier des anonce');
+		return;
+	}
+	fs.access(path.resolve('./tools/gestionBot/save/AlertChanel/AlertChanel.json'), fs.constants.F_OK, (err) => {
+		if (err) {
+			fs.appendFile(path.resolve('./tools/gestionBot/save/AlertChanel/AlertChanel.json'), JSON.stringify([]), err => {
+				if (err) throw err;
+			});
+		}
+	});
+
+	const file = fs.readFileSync(path.resolve('./tools/gestionBot/save/AlertChanel/AlertChanel.json'));
+	const anoncmentChanel = JSON.parse(file);
+	// gestion of atatchment
+	const attachmentsLink = [];
+	let sleep = message.attachments.map(element => {
+		attachmentsLink.push({ attachment: element.url });
+	});
+	await Promise.all(sleep);
+
+	// construct object
+	const object = { content: message.content };
+	if (attachmentsLink.length != 0) {
+		object.files = attachmentsLink;
+	}
+	sleep = anoncmentChanel.map(element => {
+		discord.channels.fetch(element).then(Channel => Channel.send(
+			object
+		));
+	});
+	await Promise.all(sleep);
+}
+module.exports = { saveChanel, stopSaveChanel, sendAnnouncement };

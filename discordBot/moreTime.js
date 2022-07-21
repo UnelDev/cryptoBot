@@ -145,7 +145,6 @@ async function moreTimeReplay(channel, devise, time, coingecko) {
 			.setStyle('PRIMARY')
 	);
 	img = await img;
-	console.log(img);
 	embed.addField('ATH', img[0].toString() + '$')
 		.addField('ATL', img[1].toString() + '$');
 	msg = await msg;

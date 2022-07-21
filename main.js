@@ -33,7 +33,7 @@ const logs = require('./tools/log.js');
 const createButton = require('./tools/gestionBot/createButon.js');
 const gestionLimitSell = require('./discordBot/user/gestion/gestionLimitSell.js');
 const { prefix } = require('./tools/gestionBot/changePrefix.js');
-const { saveChanel, stopSaveChanel } = require('./tools/gestionBot/sendMessage.js');
+const { saveChanel, stopSaveChanel, sendAnnouncement } = require('./tools/gestionBot/sendMessage.js');
 
 // resore userListe whith restor
 const userListe = restore();
@@ -69,7 +69,7 @@ const defaultPrefix = '.';
 let Prefix = defaultPrefix;
 client.once('ready', () => {
 	process.client = client;
-	log('Connected as ' + client.user.tag, client);
+	logs('Connected as ' + client.user.tag, client);
 	sellStop(NcoingeckoApiClient, [userListe], client);
 	sellLimit(NcoingeckoApiClient, [userListe], client);
 
@@ -186,9 +186,15 @@ client.on('messageCreate', async message => {
 	if (message.author.bot) { return; }
 
 	if (message.channel.type == 'DM') {
-		log('[dm] \'' + message.content + '\' from: ' + message.author.tag);
+		logs('[dm] \'' + message.content + '\' from: ' + message.author.tag);
+		if (message.content.startsWith('share')) {
+			message.content = message.content.replace('share', '');
+			sendAnnouncement(message, client);
+			return;
+		}
 		const responseUser = serachid(userListe, message.author.id);
 		responseUser.responseMp(message.content, message.channel, NcoingeckoApiClient);
+
 		return;
 	}
 

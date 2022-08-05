@@ -39,19 +39,19 @@ async function coinGeckoLog(message) {
 			fs.mkdirSync(dir);
 		}
 
-		fs.appendFile('./logs/logs.log', message + ' \n', (err) => {
+		fs.appendFile('./logs/logsCoingecko.log', message + ' \n', (err) => {
 			if (err) {
 				console.log(err);
 				throw err;
 			}
 		});
 	} else {
-		const dir = './logs';
+		const dir = '../logs';
 		if (!fs.existsSync(dir)) {
 			fs.mkdirSync(dir);
 		}
 
-		fs.appendFile('./logs/logs.log', message + ' \n', (err) => {
+		fs.appendFile('../logs/logsCoingecko.log', message + ' \n', (err) => {
 			if (err) {
 				console.log(err);
 				throw err;

@@ -24,6 +24,7 @@ class NcoingeckoApi {
 
 	}
 	async add(args) {
+		logs('coinggecko request: ' + args, 'coinGeckoLog');
 		try {
 			if (args[0] === 'coinList') {
 				let test;

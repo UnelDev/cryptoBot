@@ -56,7 +56,6 @@ async function toPresent(CoinGecko, channel, user, dateStart) {
 async function CreateButon(user, channel) {
 	const ConstructeButon = [];
 	const sleepButon = user.walet.map(element => {
-		console.log(element);
 		if (Number(element[1]) != 0) {
 			ConstructeButon.push([('search_' + element[0].toString()), ('voir ' + element[0].toString())]);
 		}

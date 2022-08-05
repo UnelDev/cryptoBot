@@ -1,7 +1,7 @@
 const path = require('path');
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const chartWalet = require('../chartWalet');
-const log = require('../../../tools/log');
+const logs = require('../../../tools/log');
 async function toPresent(CoinGecko, channel, user, dateStart) {
 	let msg = channel.send('generation en cours... https://tenor.com/view/mr-bean-waiting-still-waiting-gif-13052487');
 	if (user.walet.length < 1) {
@@ -34,7 +34,7 @@ async function toPresent(CoinGecko, channel, user, dateStart) {
 			pathOfImg = chartWalet(user, CoinGecko);
 		} catch (error) {
 			pathOfImg = 'topresent.js';
-			log('error in topresent.js:35');
+			logs('error in topresent.js:35');
 		}
 
 		embed.setImage('attachment://image.png');
@@ -44,50 +44,60 @@ async function toPresent(CoinGecko, channel, user, dateStart) {
 			files: [{
 				attachment: path.resolve(await pathOfImg),
 				name: 'image.png'
-			}],
-			components: CreateButon(user)
+			}]
 		});
+		await CreateButon(user, channel);
 	} else {
-		msg.edit({ embeds: [embed], components: CreateButon(user) });
+		msg.edit({ embeds: [embed] });
+		await CreateButon(user, channel);
 	}
 }
 
-function CreateButon(user) {
-	// create bututon in 5 per 5
-	let buttons = new MessageActionRow();
-	let buttons0 = new MessageActionRow();
-	let buttons1 = new MessageActionRow();
-	let nbBouton = 0;
-	for (let i = 0; i < user.walet.length; i++) {
-		if (nbBouton < 5) {
-			buttons = buttons.addComponents(new MessageButton()
-				.setCustomId('search_' + user.walet[i][0].toString())
-				.setLabel('voir ' + user.walet[i][0].toString())
+async function CreateButon(user, channel) {
+	const ConstructeButon = [];
+	const sleepButon = user.walet.map(element => {
+		if (Number(element[1]) != 0) {
+			ConstructeButon.push([('search_' + element[0].toString()), ('voir ' + element[0].toString())]);
+		}
+	});
+	await Promise.all(sleepButon);
+	createButton(ConstructeButon, channel);
+}
+
+function createButton(creator, channel) {
+	// creator = [[id (string), label (string)],[id (string), label (string)],...]
+	// buttonArray = [[0, 1, 2, 3, 4], ...]
+	const nbBouton = creator.length;
+	let parseButon = 0;
+	let buttonArray = [];
+
+	let numberInWhile = -1;
+	while (nbBouton > parseButon) {
+		numberInWhile++;
+		if (numberInWhile == 0) {
+			buttonArray.push(new MessageActionRow());
+			buttonArray[buttonArray.length - 1] = buttonArray[buttonArray.length - 1].addComponents(new MessageButton()
+				.setCustomId(creator[parseButon][0].toString())
+				.setLabel(creator[parseButon][1].toString())
 				.setStyle('PRIMARY'));
-		} else if (nbBouton < 10) {
-			buttons0 = buttons0.addComponents(new MessageButton()
-				.setCustomId('search_' + user.walet[i][0].toString())
-				.setLabel('voir ' + user.walet[i][0].toString())
-				.setStyle('PRIMARY'));
-		} else if (nbBouton < 15) {
-			buttons1 = buttons1.addComponents(new MessageButton()
-				.setCustomId('search_' + user.walet[i][0].toString())
-				.setLabel('voir ' + user.walet[i][0].toString())
+		} else {
+			buttonArray[buttonArray.length - 1] = buttonArray[buttonArray.length - 1].addComponents(new MessageButton()
+				.setCustomId(creator[parseButon][0].toString())
+				.setLabel(creator[parseButon][1].toString())
 				.setStyle('PRIMARY'));
 		}
-		nbBouton++;
-	}
-	if (nbBouton <= 5) {
-		return [buttons];
-	} else if (nbBouton <= 10) {
-		return [buttons, buttons0];
-	} else if (nbBouton <= 15) {
-		return [buttons, buttons0, buttons1];
-	} else {
-		return [];
+		if (numberInWhile == 4) {
+			numberInWhile = -1;
+		}
+		parseButon++;
+		if (((parseButon % 25) == 0) || (nbBouton <= parseButon)) {
+			channel.send({
+				components: buttonArray
+			});
+			buttonArray = [];
+		}
 	}
 }
-
 
 module.exports = toPresent;
 

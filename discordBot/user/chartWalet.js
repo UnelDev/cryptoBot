@@ -63,7 +63,8 @@ async function create(timeStart, coingecko, devise) {
 	await Promise.all(sleep);
 
 	const configuration = {
-		type: 'bar',
+		// type: 'bar',
+		type: 'line',
 		data: {
 			labels: date,
 			datasets: [{
@@ -86,7 +87,6 @@ async function create(timeStart, coingecko, devise) {
 	return configuration;
 }
 async function run(timeStart, coingecko, devise) {
-
 	const width = 1161;
 	const height = 500;
 	const backgroundColour = 'white';

@@ -32,6 +32,8 @@ const { interfaceLimitSell, onResponseLimit, onResponseStopSell, sellStop, onRes
 const logs = require('./tools/log.js');
 const createButton = require('./tools/gestionBot/createButon.js');
 const gestionLimitSell = require('./discordBot/user/gestion/gestionLimitSell.js');
+const { prefix } = require('./tools/gestionBot/changePrefix.js');
+const { saveChanel, stopSaveChanel, sendAnnouncement } = require('./tools/gestionBot/sendMessage.js');
 
 // resore userListe whith restor
 const userListe = restore();
@@ -67,7 +69,7 @@ const defaultPrefix = '.';
 let Prefix = defaultPrefix;
 client.once('ready', () => {
 	process.client = client;
-	log('Connected as ' + client.user.tag, client);
+	logs('Connected as ' + client.user.tag);
 	sellStop(NcoingeckoApiClient, [userListe], client);
 	sellLimit(NcoingeckoApiClient, [userListe], client);
 
@@ -175,8 +177,8 @@ client.on('messageCreate', async message => {
 	// This part is for commands
 	// This first line is for getting the prefix of the server and if it's not defined, we use the default prefix
 
-	if (fs.existsSync(path.resolve('./prefix/' + message.guildId + '.json'))) {
-		Prefix = JSON.parse(fs.readFileSync(path.resolve('./prefix/' + message.guildId + '.json')));
+	if (fs.existsSync(path.resolve('./discordBot/prefix/' + message.guildId + '.json'))) {
+		Prefix = JSON.parse(fs.readFileSync(path.resolve('./discordBot/prefix/' + message.guildId + '.json'))).prefix;
 	} else {
 		Prefix = defaultPrefix;
 	}
@@ -184,9 +186,15 @@ client.on('messageCreate', async message => {
 	if (message.author.bot) { return; }
 
 	if (message.channel.type == 'DM') {
-		log('[dm] \'' + message.content + '\' from: ' + message.author.tag);
+		logs('[dm] \'' + message.content + '\' from: ' + message.author.tag);
+		if (message.content.startsWith('share')) {
+			message.content = message.content.replace('share', '');
+			sendAnnouncement(message, client);
+			return;
+		}
 		const responseUser = serachid(userListe, message.author.id);
 		responseUser.responseMp(message.content, message.channel, NcoingeckoApiClient);
+
 		return;
 	}
 
@@ -194,7 +202,7 @@ client.on('messageCreate', async message => {
 	let command = message.content.replace(Prefix, '').toLowerCase();
 	log('[COMMAND] \'' + message.content + '\' from: ' + message.author.tag);
 
-	if (command.startsWith('presentation') || command.startsWith('presnetation du marché') || command.startsWith('p') && command != 'ping') {
+	if (command.startsWith('presentation') || command.startsWith('presnetation du marché') || command.startsWith('p') && command != 'ping' && !command.startsWith('prefix')) {
 		marketPresntation(message, NcoingeckoApiClient);
 	} else if (command.startsWith('information') || command.startsWith('info') || command.startsWith('search')) {
 		command = command.replace('information', '');
@@ -245,11 +253,16 @@ client.on('messageCreate', async message => {
 		command = command.replace('createButton');
 		createButton(command, message.channel);
 	} else if (command.startsWith('remove limite') || command.startsWith('remove limit') || command.startsWith('supr limite') || command.startsWith('supr limit')) {
-		const Muser = await verifyExistReturnUser(userListe, message.author.id, message.channel);
+		const Muser = await verifyExist.verifyExistReturnUser(userListe, message.author.id, message.channel);
 		if (Muser) {
 			gestionLimitSell(Muser, message.channel, new Date());
 		}
-
+	} else if (command.startsWith('prefix')) {
+		prefix(message, Prefix, Prefix);
+	} else if (command.startsWith('annonce')) {
+		saveChanel(message);
+	} else if (command.startsWith('stop annonce')) {
+		stopSaveChanel(message);
 	}
 });
 module.exports = {

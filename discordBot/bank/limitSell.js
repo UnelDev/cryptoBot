@@ -194,8 +194,8 @@ async function sellStop(coingecko, _userListe/* is a array [userlist]*/, clientD
 			});
 		}
 	});
-	// delay 1m
-	delay(60000).then(() => sellStop(coingecko, _userListe, clientDiscord));
+	// delay 2m
+	delay(120000).then(() => sellStop(coingecko, _userListe, clientDiscord));
 }
 
 // eslint-disable-next-line no-inline-comments
@@ -224,10 +224,9 @@ async function sellLimit(coingecko, _userListe/* is a array [userlist]*/, client
 			});
 		}
 	});
-	// delay 1m
-	delay(60000).then(() => sellLimit(coingecko, _userListe, clientDiscord));
+	// delay 2m
+	delay(120000).then(() => sellLimit(coingecko, _userListe, clientDiscord));
 }
-
 function delay(time) {
 	return new Promise(resolve => setTimeout(resolve, time));
 }

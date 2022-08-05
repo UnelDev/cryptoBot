@@ -1,3 +1,17 @@
+/*
+hi i am getting the same error!
+did you find a solution?
+here is my error:
+undefined:1
+error code: 1015
+^
+
+SyntaxError: Unexpected token e in JSON at position 0
+
+for the moment the blocking requests is: fetchMarketChartRange
+but  client.simple.price is functional
+
+*/
 const CoinGecko = require('coingecko-api');
 const logs = require('../tools/log.js');
 
@@ -10,54 +24,157 @@ class NcoingeckoApi {
 
 	}
 	async add(args) {
+		logs('coinggecko request: ' + args, 'coinGeckoLog');
 		try {
 			if (args[0] === 'coinList') {
-				// diferant to 10 minutes in milliseconds
-				this.runer.push(this.coinList(this.runer.length - 1));
-				const test = await this.runer[this.runer.length - 1];
+				let test;
+				try {
+					this.runer.push(this.coinList(this.runer.length - 1));
+					test = await this.runer[this.runer.length - 1];
+				} catch (error) {
+					if (error.code == 1015 || error.code == 429) {
+						// tow many request we send a new request a few moment later
+						await delay(1000).then(async () => test = await this.add(args));
+						// to do: send message for client
+					} else {
+						logs('ERROR In CoinGecko-api :' + error + ' the arg: ' + args);
+					}
+				}
+
 				return test;
 			} else if (args[0] === 'priceUsd') {
-				this.runer.push(this.getPriceUsd(args[1], this.runer.length - 1));
-				const test = await this.runer[this.runer.length - 1];
+				let test;
+				try {
+					this.runer.push(this.getPriceUsd(args[1], this.runer.length - 1));
+					test = await this.runer[this.runer.length - 1];
+				} catch (error) {
+					if (error.code == 1015 || error.code == 429) {
+						// tow many request we send a new request a few moment later
+						await delay(1000).then(async () => test = await this.add(args));
+						// to do: send message for client
+					} else {
+						logs('ERROR In CoinGecko-api :' + error + ' the arg: ' + args);
+					}
+				}
 				return test;
 			} else if ((args[0] === 'priceUsd -f')) {
-				this.runer.push(this.getPriceUsdForce(args[1], this.runer.length - 1));
-				const test = await this.runer[this.runer.length - 1];
+				let test;
+				try {
+					this.runer.push(this.getPriceUsdForce(args[1], this.runer.length - 1));
+					test = await this.runer[this.runer.length - 1];
+				} catch (error) {
+					if (error.code == 1015 || error.code == 429) {
+						// tow many request we send a new request a few moment later
+						await delay(1000).then(async () => test = await this.add(args));
+						// to do: send message for client
+					} else {
+						logs('ERROR In CoinGecko-api :' + error + ' the arg: ' + args);
+					}
+				}
 				return test;
 			} else if (args[0] === 'fetchMarketChart') {
-				this.runer.push(this.getMarketChart(args[1], this.runer.length - 1));
-				const test = await this.runer[this.runer.length - 1];
+				let test;
+				try {
+					this.runer.push(this.getMarketChart(args[1], this.runer.length - 1));
+					test = await this.runer[this.runer.length - 1];
+				} catch (error) {
+					if (error.code == 1015 || error.code == 429) {
+						// tow many request we send a new request a few moment later
+						await delay(1000).then(async () => test = await this.add(args));
+						// to do: send message for client
+					} else {
+						logs('ERROR In CoinGecko-api :' + error + ' the arg: ' + args);
+					}
+				}
 				return test;
 			} else if (args[0] === 'search') {
-				this.runer.push(this.search(args[1], this.runer.length - 1));
-				const test = await this.runer[this.runer.length - 1];
+				let test;
+				try {
+					this.runer.push(this.search(args[1], this.runer.length - 1));
+					test = await this.runer[this.runer.length - 1];
+				} catch (error) {
+					if (error.code == 1015 || error.code == 429) {
+						// tow many request we send a new request a few moment later
+						await delay(1000).then(async () => test = await this.add(args));
+						// to do: send message for client
+					} else {
+						logs('ERROR In CoinGecko-api :' + error + ' the arg: ' + args);
+					}
+				}
 				return test;
 			} else if (args[0] === 'info') {
-				this.runer.push(this.info(args[1], this.runer.length - 1));
-				const test = await this.runer[this.runer.length - 1];
+				let test;
+				try {
+					this.runer.push(this.info(args[1], this.runer.length - 1));
+					test = await this.runer[this.runer.length - 1];
+				} catch (error) {
+					if (error.code == 1015 || error.code == 429) {
+						// tow many request we send a new request a few moment later
+						await delay(1000).then(async () => test = await this.add(args));
+						// to do: send message for client
+					} else {
+						logs('ERROR In CoinGecko-api :' + error + ' the arg: ' + args);
+					}
+				}
 				return test;
 			} else if (args[0] === 'fetchMarketChartRange') {
-				this.runer.push(this.fetchMarketChartRange(args[1], args[2], this.runer.length - 1));
-				const test = await this.runer[this.runer.length - 1];
+				let test;
+				try {
+					this.runer.push(this.fetchMarketChartRange(args[1], args[2], this.runer.length - 1));
+					test = await this.runer[this.runer.length - 1];
+				} catch (error) {
+					if (error.code == 1015 || error.code == 429) {
+						// tow many request we send a new request a few moment later
+						await delay(3000).then(async () => test = await this.add(args));
+						// to do: send message for client
+					} else {
+						logs('ERROR In CoinGecko-api :' + error + ' the arg: ' + args);
+					}
+				}
+				if (test[0] == 'error in coin coingecko:fetchMarketChartRangeAxiosError: Request failed with status code 429') {
+					await delay(3000).then(async () => test = await this.add(args));
+				}
 				return test;
 			} else if (args[0] === 'ping') {
-				this.runer.push(this.ping(this.runer.length - 1, new Date()));
-				const test = await this.runer[this.runer.length - 1];
+				let test;
+				try {
+					this.runer.push(this.ping(this.runer.length - 1, new Date()));
+					test = await this.runer[this.runer.length - 1];
+				} catch (error) {
+					if (error.code == 1015 || error.code == 429) {
+						// tow many request we send a new request a few moment later
+						await delay(1000).then(async () => test = await this.add(args));
+						// to do: send message for client
+					} else {
+						logs('ERROR In CoinGecko-api :' + error + ' the arg: ' + args);
+					}
+				}
 				return test;
 			} else if (args[0] === 'exchangesTickers') {
-				this.runer.push(this.exchangesTickers(this.runer.length, args[1], args[2]));
-				const test = await this.runer[this.runer.length - 1];
+				let test;
+				try {
+					this.runer.push(this.exchangesTickers(this.runer.length, args[1], args[2]));
+					test = await this.runer[this.runer.length - 1];
+				} catch (error) {
+					if (error.code == 1015 || error.code == 429) {
+						// tow many request we send a new request a few moment later
+						await delay(1000).then(async () => test = await this.add(args));
+						// to do: send message for client
+					} else {
+						logs('ERROR In CoinGecko-api :' + error + ' the arg: ' + args);
+					}
+				}
 				return test;
 			} else {
 				return 'error in args[0]';
 			}
 		} catch (error) {
-			console.log(error.code);
-			if (error.code == 1015) {
+			if (error.code == 1015 || error.code == 429) {
 				// tow many request we send a new request a few moment later
-				delay(1000).then(() => this.add(args));
+				await delay(1000).then(() => this.add(args));
 			} else {
-				logs('ERROR In CoinGecko-api :' + error + ' the arg: ' + args);
+				// if all try catch is unfunctional
+				logs('ERROR In CoinGecko-api (error ???) :' + error + ' the arg: ' + args);
 			}
 		}
 	}
@@ -75,7 +192,7 @@ class NcoingeckoApi {
 				this.cache[key]['data'] = data.data;
 				return data.data;
 			} catch (error) {
-				console.log('error : ' + error);
+				logs(error);
 				throw error;
 			}
 		}
@@ -132,14 +249,30 @@ class NcoingeckoApi {
 		}
 	}
 	async fetchMarketChartRange(devise, range, index) {
+		// this comment isn't functional for ??? https://github.com/miscavage/CoinGecko-API/issues/38
 		// no cache because date change everytime
+		// await this.runer[index - 1];
+		// const client = new CoinGecko();
+		// const data = await client.coins.fetchMarketChartRange(devise, {
+		// 	from: range[0],
+		// 	to: range[1]
+		// });
+
 		await this.runer[index - 1];
-		const client = new CoinGecko();
-		const data = await client.coins.fetchMarketChartRange(devise, {
-			from: range[0],
-			to: range[1]
+		const axios = require('axios');
+		let res = [];
+		await axios.get('https://api.coingecko.com/api/v3/coins/' + devise + '/market_chart/range?vs_currency=usd&from=' + range[0] + '&to=' + range[1], {
+			headers: {
+				Accept: 'accept',
+				Authorization: 'authorize'
+			}
+		}).then(response => {
+			res = response.data.prices;
+		}).catch(err => {
+			logs('error in coin coingecko:fetchMarketChartRange' + err);
+			res = ['error in coin coingecko:fetchMarketChartRange' + err];
 		});
-		return data.data.prices;
+		return res;
 
 	}
 	async search(find, index) {
@@ -154,7 +287,8 @@ class NcoingeckoApi {
 		}).then(response => {
 			res = response.data.coins;
 		}).catch(err => {
-			res = ['error ' + err];
+			logs('error in coin coingecko:search' + err);
+			res = ['error in coin coingecko:search' + err];
 		});
 		return res;
 	}
@@ -172,7 +306,7 @@ class NcoingeckoApi {
 			res = response.data;
 		}).catch(err => {
 			logs('error in coin coingecko:info' + err);
-			res = ['error ' + err];
+			res = ['error in coin coingecko:info ' + err];
 		});
 		return res;
 	}

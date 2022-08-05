@@ -10,12 +10,14 @@
     "discord.js": "^13.8.1",
     "dotenv": "^16.0.1",
     "eslint": "^8.18.0",
-    "nodemon": "^2.0.18",
     "pnpm": "^7.5.0"
   },
   "scripts": {
     "test": "index.js"
   },
   "author": "@unel",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
 }

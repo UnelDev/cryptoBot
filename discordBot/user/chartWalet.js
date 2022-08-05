@@ -14,6 +14,7 @@ async function chartWalet(user, coingecko) {
 	});
 
 	// devise  = [ 'monero', 'tezos' ]
+	console.log('test1');
 	return (await run(timeStart, coingecko, LastHistory[0]));
 }
 
@@ -63,7 +64,8 @@ async function create(timeStart, coingecko, devise) {
 	await Promise.all(sleep);
 
 	const configuration = {
-		type: 'bar',
+		// type: 'bar',
+		type: 'line',
 		data: {
 			labels: date,
 			datasets: [{
@@ -86,11 +88,12 @@ async function create(timeStart, coingecko, devise) {
 	return configuration;
 }
 async function run(timeStart, coingecko, devise) {
-
+	console.log('test2');
 	const width = 1161;
 	const height = 500;
 	const backgroundColour = 'white';
 	const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height, backgroundColour });
+	console.log('test3');
 	const dataUrl = await chartJSNodeCanvas.renderToDataURL(await create(timeStart, coingecko, devise));
 	const base64Image = dataUrl;
 

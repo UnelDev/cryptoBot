@@ -1,4 +1,4 @@
-const verifyExist = require('./verifyExist');
+const {verifyExist} = require('./verifyExist');
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const { serachid } = require('./search');
 async function sell(id, channel, member, nCoingeko, clientlist, client) {

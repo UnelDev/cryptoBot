@@ -55,7 +55,8 @@ async function gestionLimitSell(user, channel, dateStart) {
 }
 
 function createButton(creator, channel) {
-	// [[0, 1, 2, 3, 4], ...]
+	// creator = [[id (string), label (string)],[id (string), label (string)],...]
+	// buttonArray = [[0, 1, 2, 3, 4], ...]
 	const nbBouton = creator.length;
 	let parseButon = 0;
 	let buttonArray = [];

@@ -8,7 +8,7 @@ class bank {
 
 	}
 	add(number) {
-		this.cash += number;
+		this.cash += Number(this.cash) + Number(number);
 		saveBank(this);
 	}
 }

@@ -13,7 +13,7 @@ const marketPresntation = require('./discordBot/marketPresentation.js');
 const information = require('./discordBot/information.js');
 const idToName = require('./tools/convert/idTo/idToName.js');
 const user = require('./discordBot/user/user.js');
-const verifyExist = require('./discordBot/user/gestion/verifyExist');
+const { verifyExist, verifyExistReturnUser } = require('./discordBot/user/gestion/verifyExist');
 const { buy } = require('./discordBot/user/gestion/buy');
 const { serachid } = require('./discordBot/user/gestion/search.js');
 const { sell } = require('./discordBot/user/gestion/sell.js');
@@ -69,7 +69,7 @@ const defaultPrefix = '.';
 let Prefix = defaultPrefix;
 client.once('ready', () => {
 	process.client = client;
-	logs('Connected as ' + client.user.tag, client);
+	logs('Connected as ' + client.user.tag);
 	sellStop(NcoingeckoApiClient, [userListe], client);
 	sellLimit(NcoingeckoApiClient, [userListe], client);
 

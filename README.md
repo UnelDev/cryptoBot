@@ -17,7 +17,7 @@ crypto bot is enough simple to use for not have many command. Here is the list:
 - create
     - for create acount in the bot
 - presentation or p
-    - for present state of market with 4 crypto : bitcoin, ethereum, binancecoin, iShares MSCI World ETF Tokenized Stock Defichain
+    - for see present state of market with 4 crypto : bitcoin, ethereum, binancecoin, iShares MSCI World ETF Tokenized Stock Defichain
 - walet (? tag of user)
     - for to view your account or if is inform the walet of other account
 - help
@@ -28,7 +28,6 @@ crypto bot is enough simple to use for not have many command. Here is the list:
     - retun ping of discord, you, coingecko(api), internal
 - supr limit
     -for dellet limit sell/stop sell
-
 # statistic
 ## [![Repography logo](https://images.repography.com/logo.svg)](https://repography.com) / Recent activity [![Time period](https://images.repography.com/27169276/UnelDev/cryptoBot/recent-activity/6d29ae32b9e75a131d181c042dfcd2d9_badge.svg)](https://repography.com)
 [![Timeline graph](https://images.repography.com/27169276/UnelDev/cryptoBot/recent-activity/6d29ae32b9e75a131d181c042dfcd2d9_timeline.svg)](https://github.com/UnelDev/cryptoBot/commits)

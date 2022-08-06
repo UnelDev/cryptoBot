@@ -28,6 +28,17 @@ crypto bot is enough simple to use for not have many command. Here is the list:
     - retun ping of discord, you, coingecko(api), internal
 - supr limit
     -for dellet limit sell/stop sell
+
+# clone this bot in your server
+to clone the bot you will have to follow these steps:
+- clone this repo
+- create .env in root of this project
+     - add key DEV_TOKEN=token of bot dev
+     - add key PUBLIC_TOKEN=token of bot (production)
+     - add key LOGGING_CHANNEL=id of channel for logging(warning the bot must be invited)
+     - add key IS_DEV=in your dev computer this key=false but in prod server this key=true
+- initialise npm with npm i
+- start with node . or node main.js
 # statistic
 ## [![Repography logo](https://images.repography.com/logo.svg)](https://repography.com) / Recent activity [![Time period](https://images.repography.com/27169276/UnelDev/cryptoBot/recent-activity/6d29ae32b9e75a131d181c042dfcd2d9_badge.svg)](https://repography.com)
 [![Timeline graph](https://images.repography.com/27169276/UnelDev/cryptoBot/recent-activity/6d29ae32b9e75a131d181c042dfcd2d9_timeline.svg)](https://github.com/UnelDev/cryptoBot/commits)

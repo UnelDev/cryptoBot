@@ -1,7 +1,7 @@
 # cryptoBot
+crypto bot is a fictitious way to trade in crypto in discord. he use api of [coingecko](https://www.coingecko.com/en/api) directly and [CoinGecko-API](https://github.com/miscavage/CoinGecko-API) for interact with crypto market
 
-#statistic
-
+# statistic
 ## [![Repography logo](https://images.repography.com/logo.svg)](https://repography.com) / Recent activity [![Time period](https://images.repography.com/27169276/UnelDev/cryptoBot/recent-activity/6d29ae32b9e75a131d181c042dfcd2d9_badge.svg)](https://repography.com)
 [![Timeline graph](https://images.repography.com/27169276/UnelDev/cryptoBot/recent-activity/6d29ae32b9e75a131d181c042dfcd2d9_timeline.svg)](https://github.com/UnelDev/cryptoBot/commits)
 [![Pull request status graph](https://images.repography.com/27169276/UnelDev/cryptoBot/recent-activity/6d29ae32b9e75a131d181c042dfcd2d9_prs.svg)](https://github.com/UnelDev/cryptoBot/pulls)

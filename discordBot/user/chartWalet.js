@@ -25,12 +25,17 @@ async function create(timeStart, coingecko, devise) {
 	lastTime = Math.floor(lastTime);
 
 	const listOfMarket = [];
+	const statistic = [];
 	let sleep = devise.map(async element => {
+		// check price of devise ( element[0])
 		const allPrices = await coingecko.add(['fetchMarketChartRange', element[0], [firstTime, lastTime]]);
 		for (let i = 0; i < allPrices.length; i++) {
 			allPrices[i][1] *= Number(element[1]);
 		}
 		listOfMarket.push(allPrices);
+		// add at statistic [name of crypto,price, %rise, number]
+		console.log({ allPrices });
+		statistic.push([element[0], Number(allPrices[allPrices.length - 1][1]), Number(allPrices[allPrices.length - 1][1]) - Number(allPrices[0][1]), Number(element[1])]);
 	});
 	await Promise.all(sleep);
 	// listOfMarket = [time,price],[ 1654513322653, 194.52588451732944 ]
@@ -84,14 +89,15 @@ async function create(timeStart, coingecko, devise) {
 			}
 		}
 	};
-	return configuration;
+	return [configuration, statistic];
 }
 async function run(timeStart, coingecko, devise) {
 	const width = 1161;
 	const height = 500;
 	const backgroundColour = 'white';
 	const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height, backgroundColour });
-	const dataUrl = await chartJSNodeCanvas.renderToDataURL(await create(timeStart, coingecko, devise));
+	const priceListe = await create(timeStart, coingecko, devise);
+	const dataUrl = await chartJSNodeCanvas.renderToDataURL(priceListe[0]);
 	const base64Image = dataUrl;
 
 	const base64Data = base64Image.replace(/^data:image\/png;base64,/, '');
@@ -102,6 +108,6 @@ async function run(timeStart, coingecko, devise) {
 			log(err);
 		}
 	});
-	return (pathfile);
+	return ([pathfile, priceListe[1]]);
 }
 module.exports = chartWalet;

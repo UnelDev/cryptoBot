@@ -39,7 +39,18 @@ to clone the bot you will have to follow these steps:
      - add key IS_DEV=in your dev computer this key=false but in prod server this key=true
 - initialise npm with npm i
 - start with node . or node main.js
+
+# slow-down
+this bot is moderately functional because the coingecko api is limited at 50 request per second and 5 request per second for crypto history. And it's too little. If you wallet contains more of 5 crypto you will have to wait more than a minute for the graph to be generated !
+
+# the end of this project
+because everything [is slowed down](#slow-down), the development is horrible. Everything is too long, and d had to stop the development of this project.
+to resume it I would need a [premium version of coingeko](https://www.coingecko.com/en/api/pricing) and is too expensive.
+
 # statistic
+43 days 164 commits have been made for a total of 20 954 additions and 13 890 deletions
+
+
 ## [![Repography logo](https://images.repography.com/logo.svg)](https://repography.com) / Recent activity [![Time period](https://images.repography.com/27169276/UnelDev/cryptoBot/recent-activity/6d29ae32b9e75a131d181c042dfcd2d9_badge.svg)](https://repography.com)
 [![Timeline graph](https://images.repography.com/27169276/UnelDev/cryptoBot/recent-activity/6d29ae32b9e75a131d181c042dfcd2d9_timeline.svg)](https://github.com/UnelDev/cryptoBot/commits)
 [![Pull request status graph](https://images.repography.com/27169276/UnelDev/cryptoBot/recent-activity/6d29ae32b9e75a131d181c042dfcd2d9_prs.svg)](https://github.com/UnelDev/cryptoBot/pulls)

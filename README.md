@@ -1,4 +1,5 @@
 # cryptoBot
+## this project is no longer maintained see [this section](#the-end-of-this-project)
 crypto bot is a fictitious way to trade in crypto in discord. he use api of [coingecko](https://www.coingecko.com/en/api) directly and [CoinGecko-API](https://github.com/miscavage/CoinGecko-API) for interact with crypto market
 
 # command

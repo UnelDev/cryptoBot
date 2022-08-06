@@ -123,9 +123,10 @@ class NcoingeckoApi {
 					this.runer.push(this.fetchMarketChartRange(args[1], args[2], this.runer.length - 1));
 					test = await this.runer[this.runer.length - 1];
 				} catch (error) {
-					if (error.code == 1015 || error.code == 429) {
+					if (error == 'Error: Request failed with status code 1015' || error == 'Error: Request failed with status code 429') {
 						// tow many request we send a new request a few moment later
-						await delay(3000).then(async () => test = await this.add(args));
+						console.log('catch');
+						await delay(60000).then(async () => test = await this.add(args));
 						// to do: send message for client
 					} else {
 						logs('ERROR In CoinGecko-api :' + error + ' the arg: ' + args);
@@ -268,9 +269,6 @@ class NcoingeckoApi {
 			}
 		}).then(response => {
 			res = response.data.prices;
-		}).catch(err => {
-			logs('error in coin coingecko:fetchMarketChartRange' + err);
-			res = ['error in coin coingecko:fetchMarketChartRange' + err];
 		});
 		return res;
 
@@ -287,8 +285,8 @@ class NcoingeckoApi {
 		}).then(response => {
 			res = response.data.coins;
 		}).catch(err => {
-			logs('error in coin coingecko:search' + err);
-			res = ['error in coin coingecko:search' + err];
+			logs('error in coin coingecko:search ' + err);
+			res = ['error in coin coingecko:search ' + err];
 		});
 		return res;
 	}

@@ -49,7 +49,7 @@ because everything [is slowed down](#slow-down), the development is horrible. Ev
 to resume it I would need a [premium version of coingeko](https://www.coingecko.com/en/api/pricing) and is too expensive.
 
 # statistic
-43 days 164 commits have been made for a total of 20 954 additions and 13 890 deletions
+in 43 days 164 commits have been made for a total of 20 954 additions and 13 890 deletions
 
 
 ## [![Repography logo](https://images.repography.com/logo.svg)](https://repography.com) / Recent activity [![Time period](https://images.repography.com/27169276/UnelDev/cryptoBot/recent-activity/6d29ae32b9e75a131d181c042dfcd2d9_badge.svg)](https://repography.com)

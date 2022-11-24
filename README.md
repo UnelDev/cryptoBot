@@ -45,7 +45,7 @@ to clone the bot you will have to follow these steps:
 this bot is moderately functional because the coingecko api is limited at 50 request per second and 5 request per second for crypto history. And it's too little. If you wallet contains more of 5 crypto you will have to wait more than a minute for the graph to be generated !
 
 # the end of this project
-because everything [is slowed down](#slow-down), the development is horrible. Everything is too long, and d had to stop the development of this project.
+because everything [is slowed down](#slow-down), the development is horrible. Everything is too long, and I had to stop the development of this project
 to resume it I would need a [premium version of coingeko](https://www.coingecko.com/en/api/pricing) and is too expensive.
 
 # statistic
